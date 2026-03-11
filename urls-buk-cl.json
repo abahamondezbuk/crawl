@@ -1,0 +1,498 @@
+{
+  "site": "Buk Chile",
+  "extraction_date": "2026-03-11",
+  "total_urls": 69,
+  "category_counts": {
+    "plataforma": 7,
+    "producto": 41,
+    "gestion_de_personas": 13,
+    "desarrollo_organizacional": 6,
+    "beneficios": 6,
+    "finanzas": 6
+  },
+  "pages": [
+    {
+      "id": 1,
+      "nombre": "Home",
+      "nivel": 1,
+      "categoria": "principal",
+      "url": "https://www.buk.cl/"
+    },
+    {
+      "id": 2,
+      "nombre": "Productos",
+      "nivel": 1,
+      "categoria": "Producto",
+      "url": "https://www.buk.cl/productos"
+    },
+    {
+      "id": 3,
+      "nombre": "Buk AI",
+      "nivel": 2,
+      "categoria": "Producto",
+      "url": "https://www.buk.cl/productos/buk-ai"
+    },
+    {
+      "id": 4,
+      "nombre": "Novedades / Roadmap",
+      "nivel": 2,
+      "categoria": "Producto",
+      "url": "https://www.buk.cl/productos/roadmap-novedades-productos"
+    },
+    {
+      "id": 5,
+      "nombre": "Plataforma",
+      "nivel": 2,
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh"
+    },
+    {
+      "id": 6,
+      "nombre": "Estructura Organizacional",
+      "nivel": 3,
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh/estructura-organizacional"
+    },
+    {
+      "id": 7,
+      "nombre": "Portal del Colaborador",
+      "nivel": 3,
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh/portal-del-colaborador"
+    },
+    {
+      "id": 8,
+      "nombre": "Usuarios y Perfiles",
+      "nivel": 3,
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh/usuarios-y-perfiles"
+    },
+    {
+      "id": 9,
+      "nombre": "Workflows",
+      "nivel": 3,
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh/workflows"
+    },
+    {
+      "id": 10,
+      "nombre": "Analítica",
+      "nivel": 3,
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh/reporteria-para-recursos-humanos"
+    },
+    {
+      "id": 11,
+      "nombre": "Security & Compliance",
+      "nivel": 3,
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh/security-compliance"
+    },
+    {
+      "id": 12,
+      "nombre": "Gestión de Personas",
+      "nivel": 2,
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion"
+    },
+    {
+      "id": 13,
+      "nombre": "Remuneraciones",
+      "nivel": 3,
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/software-de-remuneraciones"
+    },
+    {
+      "id": 14,
+      "nombre": "Control de Asistencia",
+      "nivel": 3,
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/control-de-asistencia"
+    },
+    {
+      "id": 15,
+      "nombre": "Gestión de Activos",
+      "nivel": 3,
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/gestion-de-activos"
+    },
+    {
+      "id": 16,
+      "nombre": "Firma Digital y Gestión Documental",
+      "nivel": 3,
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/gestion-documental-y-firma-digital"
+    },
+    {
+      "id": 17,
+      "nombre": "Servicio al Colaborador",
+      "nivel": 3,
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/servicio-al-colaborador"
+    },
+    {
+      "id": 18,
+      "nombre": "Onboarding",
+      "nivel": 3,
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/onboarding"
+    },
+    {
+      "id": 19,
+      "nombre": "Canal de Denuncias",
+      "nivel": 3,
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/canal-de-denuncias"
+    },
+    {
+      "id": 20,
+      "nombre": "Registros DT",
+      "nivel": 3,
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/registros-dt"
+    },
+    {
+      "id": 21,
+      "nombre": "Licencias Médicas Electrónicas",
+      "nivel": 3,
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/licencias-medicas"
+    },
+    {
+      "id": 22,
+      "nombre": "Global Payroll",
+      "nivel": 3,
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/gestion-sueldos-extranjero"
+    },
+    {
+      "id": 23,
+      "nombre": "Honorarios",
+      "nivel": 3,
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/boletas-honorarios"
+    },
+    {
+      "id": 24,
+      "nombre": "Tratos",
+      "nivel": 3,
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/tratos-laborales"
+    },
+    {
+      "id": 25,
+      "nombre": "Desarrollo Organizacional",
+      "nivel": 2,
+      "categoria": "Desarrollo organizacional",
+      "url": "https://www.buk.cl/productos/desarrollo-organizacional"
+    },
+    {
+      "id": 26,
+      "nombre": "Gestión del Desempeño",
+      "nivel": 3,
+      "categoria": "Desarrollo organizacional",
+      "url": "https://www.buk.cl/productos/desarrollo-organizacional/gestion-del-desempeno"
+    },
+    {
+      "id": 27,
+      "nombre": "Comunicación y Reconocimiento",
+      "nivel": 3,
+      "categoria": "Desarrollo organizacional",
+      "url": "https://www.buk.cl/productos/desarrollo-organizacional/comunicacion-y-reconocimiento"
+    },
+    {
+      "id": 28,
+      "nombre": "Selección",
+      "nivel": 3,
+      "categoria": "Desarrollo organizacional",
+      "url": "https://www.buk.cl/productos/desarrollo-organizacional/reclutamiento-y-seleccion"
+    },
+    {
+      "id": 29,
+      "nombre": "Capacitaciones",
+      "nivel": 3,
+      "categoria": "Desarrollo organizacional",
+      "url": "https://www.buk.cl/productos/desarrollo-organizacional/capacitaciones"
+    },
+    {
+      "id": 30,
+      "nombre": "Encuestas",
+      "nivel": 3,
+      "categoria": "Desarrollo organizacional",
+      "url": "https://www.buk.cl/productos/desarrollo-organizacional/encuestas"
+    },
+    {
+      "id": 31,
+      "nombre": "Beneficios",
+      "nivel": 2,
+      "categoria": "Beneficios",
+      "url": "https://www.buk.cl/productos/beneficios-laborales"
+    },
+    {
+      "id": 32,
+      "nombre": "Gestión de Beneficios",
+      "nivel": 3,
+      "categoria": "Beneficios",
+      "url": "https://www.buk.cl/productos/beneficios-laborales/gestion-de-beneficios"
+    },
+    {
+      "id": 33,
+      "nombre": "Seguros de Salud y Vida",
+      "nivel": 3,
+      "categoria": "Beneficios",
+      "url": "https://www.buk.cl/productos/beneficios-laborales/seguros"
+    },
+    {
+      "id": 34,
+      "nombre": "Bienestar Financiero",
+      "nivel": 3,
+      "categoria": "Beneficios",
+      "url": "https://www.buk.cl/productos/beneficios-laborales/bienestar-financiero"
+    },
+    {
+      "id": 35,
+      "nombre": "Planes de Beneficios",
+      "nivel": 3,
+      "categoria": "Beneficios",
+      "url": "https://www.buk.cl/productos/beneficios-laborales/planes-de-beneficios"
+    },
+    {
+      "id": 36,
+      "nombre": "Pack de Descuentos",
+      "nivel": 3,
+      "categoria": "Beneficios",
+      "url": "https://www.buk.cl/productos/beneficios-laborales/pack-de-descuentos"
+    },
+    {
+      "id": 37,
+      "nombre": "Finanzas",
+      "nivel": 2,
+      "categoria": "Finanzas",
+      "url": "https://www.buk.cl/productos/finanzas"
+    },
+    {
+      "id": 38,
+      "nombre": "Pagos a Proveedores",
+      "nivel": 3,
+      "categoria": "Finanzas",
+      "url": "https://www.buk.cl/productos/finanzas/pagos-a-proveedores"
+    },
+    {
+      "id": 39,
+      "nombre": "Rendiciones",
+      "nivel": 3,
+      "categoria": "Finanzas",
+      "url": "https://www.buk.cl/productos/finanzas/rendiciones"
+    },
+    {
+      "id": 40,
+      "nombre": "Órdenes de Compra",
+      "nivel": 3,
+      "categoria": "Finanzas",
+      "url": "https://www.buk.cl/productos/finanzas/ordenes-de-compra"
+    },
+    {
+      "id": 41,
+      "nombre": "Cobranza",
+      "nivel": 3,
+      "categoria": "Finanzas",
+      "url": "https://www.buk.cl/productos/finanzas/gestion-de-cobranza"
+    },
+    {
+      "id": 42,
+      "nombre": "Conciliación Cuentas por Cobrar",
+      "nivel": 3,
+      "categoria": "Finanzas",
+      "url": "https://www.buk.cl/productos/finanzas/conciliacion-cuentas-por-cobrar"
+    },
+    {
+      "id": 43,
+      "nombre": "Precios",
+      "nivel": 1,
+      "categoria": "principal",
+      "url": "https://www.buk.cl/precios"
+    },
+    {
+      "id": 44,
+      "nombre": "Nosotros",
+      "nivel": 1,
+      "categoria": "nosotros",
+      "url": "https://www.buk.cl/quienes-somos"
+    },
+    {
+      "id": 45,
+      "nombre": "Nuestros Clientes",
+      "nivel": 2,
+      "categoria": "nosotros",
+      "url": "https://www.buk.cl/quienes-somos/clientes"
+    },
+    {
+      "id": 46,
+      "nombre": "Experiencia",
+      "nivel": 2,
+      "categoria": "nosotros",
+      "url": "https://www.buk.cl/quienes-somos/experiencia"
+    },
+    {
+      "id": 47,
+      "nombre": "Partners",
+      "nivel": 2,
+      "categoria": "nosotros",
+      "url": "https://www.buk.cl/quienes-somos/partners"
+    },
+    {
+      "id": 48,
+      "nombre": "Recursos",
+      "nivel": 1,
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos"
+    },
+    {
+      "id": 49,
+      "nombre": "Ebooks, Guías y más",
+      "nivel": 2,
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/contenido-escrito-y-videos"
+    },
+    {
+      "id": 50,
+      "nombre": "Estudios",
+      "nivel": 2,
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/estudios"
+    },
+    {
+      "id": 51,
+      "nombre": "Calculadoras",
+      "nivel": 2,
+      "categoria": "Calculadoras",
+      "url": "https://www.buk.cl/recursos/calculadora"
+    },
+    {
+      "id": 52,
+      "nombre": "Calculadora Sueldo Líquido",
+      "nivel": 3,
+      "categoria": "Calculadoras",
+      "url": "https://www.buk.cl/recursos/calculadora/calculadora-sueldo-liquido"
+    },
+    {
+      "id": 53,
+      "nombre": "Calculadora de Finiquito",
+      "nivel": 3,
+      "categoria": "Calculadoras",
+      "url": "https://www.buk.cl/recursos/calculadora/calcular-finiquito"
+    },
+    {
+      "id": 54,
+      "nombre": "Gratificación Legal",
+      "nivel": 3,
+      "categoria": "Calculadoras",
+      "url": "https://www.buk.cl/recursos/calculadora/calculo-de-gratificaciones"
+    },
+    {
+      "id": 55,
+      "nombre": "Calculadora Costo de Personal",
+      "nivel": 3,
+      "categoria": "Calculadoras",
+      "url": "https://www.buk.cl/recursos/calculadora/calculadora-costo-trabajador"
+    },
+    {
+      "id": 56,
+      "nombre": "Buk Starter",
+      "nivel": 2,
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/starter"
+    },
+    {
+      "id": 57,
+      "nombre": "Podcasts",
+      "nivel": 2,
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/podcast"
+    },
+    {
+      "id": 58,
+      "nombre": "Indicadores Previsionales",
+      "nivel": 2,
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/indicadores-previsionales-previred"
+    },
+    {
+      "id": 59,
+      "nombre": "App",
+      "nivel": 2,
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/app"
+    },
+    {
+      "id": 60,
+      "nombre": "Calculadora de Sueldos RR.HH.",
+      "nivel": 2,
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/comparador-de-salarios-chile"
+    },
+    {
+      "id": 61,
+      "nombre": "Eventos",
+      "nivel": 2,
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/eventos-recursos-humanos"
+    },
+    {
+      "id": 62,
+      "nombre": "Buk Academy",
+      "nivel": 2,
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/cursos-buk-academy"
+    },
+    {
+      "id": 63,
+      "nombre": "Blog",
+      "nivel": 1,
+      "categoria": "blog",
+      "url": "https://www.buk.cl/blog"
+    },
+    {
+      "id": 64,
+      "nombre": "Glosario RRHH",
+      "nivel": 2,
+      "categoria": "blog",
+      "url": "https://www.buk.cl/novedades/glosario-rrhh"
+    },
+    {
+      "id": 65,
+      "nombre": "Glosario Finanzas",
+      "nivel": 2,
+      "categoria": "blog",
+      "url": "https://www.buk.cl/novedades/glosario-finanzas"
+    },
+    {
+      "id": 66,
+      "nombre": "Privacidad",
+      "nivel": 1,
+      "categoria": "footer",
+      "url": "https://www.buk.cl/privacidad"
+    },
+    {
+      "id": 67,
+      "nombre": "Protección de Datos",
+      "nivel": 1,
+      "categoria": "footer",
+      "url": "https://www.buk.cl/proteccion-de-datos"
+    },
+    {
+      "id": 68,
+      "nombre": "Preguntas Frecuentes",
+      "nivel": 1,
+      "categoria": "footer",
+      "url": "https://www.buk.cl/preguntas-frecuentes-buk"
+    },
+    {
+      "id": 69,
+      "nombre": "Línea de Confianza y Transparencia",
+      "nivel": 1,
+      "categoria": "footer",
+      "url": "https://www.buk.cl/linea-de-confianza"
+    }
+  ]
+}
