@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – Barrido Web Buk</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg:        #f4f6f9;
+      --color-surface:   #ffffff;
+      --color-border:    #e2e8f0;
+      --color-primary:   #4f46e5;
+      --color-primary-light: #eef2ff;
+      --color-text:      #1e293b;
+      --color-muted:     #64748b;
+      --color-success:   #22c55e;
+      --color-tag-bg:    #f1f5f9;
+      --radius:          8px;
+      --shadow:          0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ── Layout ── */
+    .wrapper { max-width: 1200px; margin: 0 auto; padding: 24px 20px 48px; }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .header-title { font-size: 22px; font-weight: 700; }
+    .header-meta { font-size: 12px; color: var(--color-muted); }
+    .badge-site {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .badge-site::before {
+      content: '';
+      width: 8px; height: 8px;
+      background: var(--color-success);
+      border-radius: 50%;
+    }
+
+    /* ── Cards grid ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 20px;
+    }
+    .card-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--color-muted);
+      margin-bottom: 6px;
+    }
+    .card-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--color-primary);
+      line-height: 1;
+    }
+    .card-sub { font-size: 11px; color: var(--color-muted); margin-top: 4px; }
+    .card--featured {
+      border-color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
+    .card--featured .card-label { color: var(--color-primary); }
+    .card--featured .card-value { color: var(--color-primary); }
+    .card--featured .card-sub   { color: var(--color-primary); opacity: .7; }
+
+    /* ── Section title ── */
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--color-muted);
+      margin-bottom: 12px;
+    }
+
+    /* ── Filters ── */
+    .filters-block {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+    }
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .filter-label { font-size: 12px; color: var(--color-muted); font-weight: 600; margin-right: 4px; }
+    .filter-btn {
+      border: 1px solid var(--color-border);
+      background: var(--color-tag-bg);
+      color: var(--color-text);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .15s, border-color .15s, color .15s;
+      white-space: nowrap;
+    }
+    .filter-btn:hover { background: var(--color-primary-light); border-color: var(--color-primary); color: var(--color-primary); }
+    .filter-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+
+    /* ── Search input ── */
+    .search-wrap { position: relative; margin-bottom: 16px; }
+    .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--color-muted); pointer-events: none; }
+    #search-input {
+      width: 100%;
+      max-width: 360px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 8px 10px 8px 34px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    #search-input:focus { border-color: var(--color-primary); }
+
+    /* ── Table ── */
+    .table-wrap {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .table-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--color-border);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .table-count { font-size: 13px; color: var(--color-muted); }
+    .table-count strong { color: var(--color-text); }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: var(--color-bg); }
+    thead th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--color-muted);
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--color-border);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+    thead th:hover { color: var(--color-primary); }
+    thead th .sort-icon { margin-left: 4px; opacity: .4; }
+    thead th.sort-asc  .sort-icon::after { content: ' ▲'; opacity: 1; }
+    thead th.sort-desc .sort-icon::after { content: ' ▼'; opacity: 1; }
+
+    tbody tr { border-bottom: 1px solid var(--color-border); transition: background .1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--color-bg); }
+    tbody td { padding: 10px 16px; font-size: 13px; vertical-align: middle; }
+
+    /* ID cell */
+    .cell-id { color: var(--color-muted); font-variant-numeric: tabular-nums; width: 40px; }
+
+    /* Nivel badge */
+    .nivel-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--color-tag-bg);
+      color: var(--color-muted);
+    }
+    .nivel-badge.n1 { background: #dbeafe; color: #1d4ed8; }
+    .nivel-badge.n2 { background: #ede9fe; color: #6d28d9; }
+    .nivel-badge.n3 { background: #fce7f3; color: #9d174d; }
+
+    /* Category chip */
+    .cat-chip {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      white-space: nowrap;
+    }
+
+    /* URL cell */
+    .cell-url a {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-size: 12px;
+      word-break: break-all;
+    }
+    .cell-url a:hover { text-decoration: underline; }
+
+    /* Nombre cell */
+    .cell-name { font-weight: 500; }
+
+    /* ── Empty / Error states ── */
+    .state-msg {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--color-muted);
+      font-size: 14px;
+    }
+    .state-msg svg { display: block; margin: 0 auto 12px; opacity: .4; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      table { font-size: 12px; }
+      .cell-url { display: none; } /* hide URL column on small screens */
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div>
+      <h1 class="header-title">Dashboard · Barrido Web</h1>
+      <p class="header-meta" id="meta-date">Cargando datos…</p>
+    </div>
+    <span class="badge-site" id="badge-site">–</span>
+  </header>
+
+  <!-- ── Metric cards ── -->
+  <section>
+    <p class="section-title">Resumen general</p>
+    <div class="cards" id="cards-container">
+      <!-- Renderizado dinámicamente -->
+    </div>
+  </section>
+
+  <!-- ── Category counts ── -->
+  <section>
+    <p class="section-title">URLs por categoría (conteos del barrido)</p>
+    <div class="cards" id="category-counts-container">
+      <!-- Renderizado dinámicamente -->
+    </div>
+  </section>
+
+  <!-- ── Filters ── -->
+  <section class="filters-block">
+    <p class="section-title" style="margin-bottom:10px;">Filtrar por categoría</p>
+    <div class="filter-row" id="filter-buttons">
+      <!-- Generado dinámicamente -->
+    </div>
+  </section>
+
+  <!-- ── Table ── -->
+  <section>
+    <div class="search-wrap">
+      <!-- Search icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="search-input" type="text" placeholder="Buscar por nombre o URL…" />
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-toolbar">
+        <p class="section-title" style="margin:0;">Listado de páginas</p>
+        <span class="table-count" id="table-count">–</span>
+      </div>
+      <div id="table-container">
+        <p class="state-msg">Cargando…</p>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /wrapper -->
+
+<script>
+  /* ──────────────────────────────────────────────
+     CONFIG
+     Cambia esta ruta si el JSON está en otro lugar.
+  ────────────────────────────────────────────── */
+  const JSON_PATH = './urls-buk-cl.json';
+
+  /* ── State ── */
+  let allPages = [];
+  let activeFilter = 'all';
+  let searchQuery = '';
+  let sortKey = 'id';
+  let sortDir = 'asc'; // 'asc' | 'desc'
+
+  /* ── Fetch & bootstrap ── */
+  async function loadData() {
+    try {
+      const res = await fetch(JSON_PATH);
+      if (!res.ok) throw new Error(`HTTP ${res.status} al cargar ${JSON_PATH}`);
+      const data = await res.json();
+      allPages = data.pages || [];
+      renderAll(data);
+    } catch (err) {
+      showFetchError(err.message);
+    }
+  }
+
+  /* ── Render everything ── */
+  function renderAll(data) {
+    renderHeader(data);
+    renderSummaryCards(data);
+    renderCategoryCounts(data.category_counts || {});
+    renderFilterButtons(allPages);
+    renderTable();
+  }
+
+  /* ── Header ── */
+  function renderHeader(data) {
+    const site = data.site || '–';
+    const date = data.extraction_date ? formatDate(data.extraction_date) : '–';
+    document.getElementById('badge-site').textContent = site;
+    document.getElementById('meta-date').textContent =
+      `Fecha de extracción: ${date}`;
+  }
+
+  /* ── Summary cards ── */
+  function renderSummaryCards(data) {
+    const container = document.getElementById('cards-container');
+    // Build unique categories from pages
+    const uniqueCats = [...new Set(allPages.map(p => p.categoria))].filter(Boolean);
+    const uniqueLevels = [...new Set(allPages.map(p => p.nivel))].filter(Boolean);
+
+    const cards = [
+      { label: 'Total URLs', value: data.total_urls ?? allPages.length, sub: 'páginas rastreadas' },
+      { label: 'Categorías', value: uniqueCats.length, sub: 'categorías únicas' },
+      { label: 'Niveles', value: uniqueLevels.length, sub: 'niveles de navegación' },
+    ];
+
+    container.innerHTML = cards.map(c => `
+      <div class="card">
+        <p class="card-label">${c.label}</p>
+        <p class="card-value">${c.value}</p>
+        <p class="card-sub">${c.sub}</p>
+      </div>
+    `).join('');
+  }
+
+  /* ── Category counts section ── */
+  function renderCategoryCounts(counts) {
+    const container = document.getElementById('category-counts-container');
+    const entries = Object.entries(counts);
+    if (!entries.length) {
+      container.innerHTML = '<p style="color:var(--color-muted);font-size:13px;">Sin datos de conteo por categoría.</p>';
+      return;
+    }
+    // "producto" siempre primero; el resto mantiene el orden original del JSON
+    entries.sort(([a], [b]) => {
+      if (a === 'producto') return -1;
+      if (b === 'producto') return 1;
+      return 0;
+    });
+    container.innerHTML = entries.map(([key, val]) => `
+      <div class="card${key === 'producto' ? ' card--featured' : ''}">
+        <p class="card-label">${formatCategoryLabel(key)}</p>
+        <p class="card-value">${val}</p>
+        <p class="card-sub">URLs</p>
+      </div>
+    `).join('');
+  }
+
+  /* ── Filter buttons ── */
+  function renderFilterButtons(pages) {
+    const container = document.getElementById('filter-buttons');
+    const categories = ['all', ...new Set(pages.map(p => p.categoria).filter(Boolean))].sort((a, b) => {
+      if (a === 'all') return -1;
+      if (b === 'all') return 1;
+      return a.localeCompare(b, 'es');
+    });
+
+    container.innerHTML = `<span class="filter-label">Categoría:</span>` +
+      categories.map(cat => `
+        <button
+          class="filter-btn ${cat === activeFilter ? 'active' : ''}"
+          data-cat="${cat}"
+        >${cat === 'all' ? 'Mostrar todo' : formatCategoryLabel(cat)}</button>
+      `).join('');
+
+    // Attach click events
+    container.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeFilter = btn.dataset.cat;
+        // Update active state
+        container.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === activeFilter));
+        renderTable();
+      });
+    });
+  }
+
+  /* ── Table ── */
+  function renderTable() {
+    const filtered = getFilteredPages();
+    const container = document.getElementById('table-container');
+    const countEl = document.getElementById('table-count');
+
+    // Update count
+    const total = allPages.length;
+    const showing = filtered.length;
+    countEl.innerHTML = `Mostrando <strong>${showing}</strong> de <strong>${total}</strong> páginas`;
+
+    if (!filtered.length) {
+      container.innerHTML = `
+        <p class="state-msg">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Sin resultados para los filtros actuales.
+        </p>`;
+      return;
+    }
+
+    const columns = [
+      { key: 'id',       label: 'ID' },
+      { key: 'nombre',   label: 'Nombre' },
+      { key: 'nivel',    label: 'Nivel' },
+      { key: 'categoria', label: 'Categoría' },
+      { key: 'url',      label: 'URL' },
+    ];
+
+    const thead = `
+      <thead>
+        <tr>
+          ${columns.map(col => `
+            <th
+              data-key="${col.key}"
+              class="${sortKey === col.key ? 'sort-' + sortDir : ''}"
+            >${col.label}<span class="sort-icon"></span></th>
+          `).join('')}
+        </tr>
+      </thead>`;
+
+    const tbody = `
+      <tbody>
+        ${filtered.map(page => `
+          <tr>
+            <td class="cell-id">${page.id}</td>
+            <td class="cell-name">${escHtml(page.nombre ?? '–')}</td>
+            <td><span class="nivel-badge n${page.nivel}">${page.nivel ?? '–'}</span></td>
+            <td><span class="cat-chip">${escHtml(formatCategoryLabel(page.categoria ?? '–'))}</span></td>
+            <td class="cell-url"><a href="${escHtml(page.url)}" target="_blank" rel="noopener">${escHtml(page.url)}</a></td>
+          </tr>
+        `).join('')}
+      </tbody>`;
+
+    container.innerHTML = `<table>${thead}${tbody}</table>`;
+
+    // Sort on header click
+    container.querySelectorAll('thead th').forEach(th => {
+      th.addEventListener('click', () => {
+        const key = th.dataset.key;
+        if (sortKey === key) {
+          sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+          sortKey = key;
+          sortDir = 'asc';
+        }
+        renderTable();
+      });
+    });
+  }
+
+  /* ── Filter + search + sort logic ── */
+  function getFilteredPages() {
+    let result = allPages.slice();
+
+    // Category filter
+    if (activeFilter !== 'all') {
+      result = result.filter(p => p.categoria === activeFilter);
+    }
+
+    // Text search
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(p =>
+        (p.nombre  ?? '').toLowerCase().includes(q) ||
+        (p.url     ?? '').toLowerCase().includes(q) ||
+        (p.categoria ?? '').toLowerCase().includes(q)
+      );
+    }
+
+    // Sort
+    result.sort((a, b) => {
+      let av = a[sortKey] ?? '';
+      let bv = b[sortKey] ?? '';
+      if (typeof av === 'number' && typeof bv === 'number') {
+        return sortDir === 'asc' ? av - bv : bv - av;
+      }
+      av = String(av).toLowerCase();
+      bv = String(bv).toLowerCase();
+      return sortDir === 'asc' ? av.localeCompare(bv, 'es') : bv.localeCompare(av, 'es');
+    });
+
+    return result;
+  }
+
+  /* ── Error state ── */
+  function showFetchError(msg) {
+    document.getElementById('table-container').innerHTML = `
+      <p class="state-msg">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        Error al cargar el JSON: <strong>${escHtml(msg)}</strong><br>
+        <span style="font-size:12px;margin-top:6px;display:block;">
+          Asegúrate de estar sirviendo el archivo desde un servidor local (ej: <code>npx serve .</code> o Live Server en VS Code).
+        </span>
+      </p>`;
+    document.getElementById('meta-date').textContent = 'Error al cargar datos';
+  }
+
+  /* ── Helpers ── */
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function formatDate(iso) {
+    try {
+      const [y, m, d] = iso.split('-');
+      return `${d}/${m}/${y}`;
+    } catch { return iso; }
+  }
+
+  function formatCategoryLabel(key) {
+    if (!key) return '–';
+    // Replace underscores, capitalize words
+    return key
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  /* ── Search listener ── */
+  document.getElementById('search-input').addEventListener('input', e => {
+    searchQuery = e.target.value.trim();
+    renderTable();
+  });
+
+  /* ── Init ── */
+  loadData();
+</script>
+</body>
+</html>
