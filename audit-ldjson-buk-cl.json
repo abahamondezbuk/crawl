@@ -1,0 +1,984 @@
+{
+  "audit_info": {
+    "site": "https://www.buk.cl",
+    "fecha_auditoria": "2026-03-11",
+    "total_urls_auditadas": 69,
+    "herramienta": "Playwright MCP + JavaScript DOM evaluation"
+  },
+  "summary": {
+    "total_urls": 69,
+    "urls_con_ldjson": 36,
+    "urls_sin_ldjson": 33,
+    "total_bloques_ldjson": 63,
+    "bloques_validos": 59,
+    "bloques_invalidos": 4,
+    "paginas_con_json_invalido": 4
+  },
+  "category_summary": {
+    "principal": {
+      "total": 3,
+      "con_ldjson": 3,
+      "sin_ldjson": 0,
+      "urls": [1, 43, 44]
+    },
+    "Producto": {
+      "total": 2,
+      "con_ldjson": 1,
+      "sin_ldjson": 1,
+      "urls": [2, 3, 4]
+    },
+    "Plataforma": {
+      "total": 7,
+      "con_ldjson": 2,
+      "sin_ldjson": 5,
+      "urls": [5, 6, 7, 8, 9, 10, 11]
+    },
+    "Gestión de personas": {
+      "total": 13,
+      "con_ldjson": 7,
+      "sin_ldjson": 6,
+      "urls": [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+    },
+    "Desarrollo organizacional": {
+      "total": 6,
+      "con_ldjson": 5,
+      "sin_ldjson": 1,
+      "urls": [25, 26, 27, 28, 29, 30]
+    },
+    "Beneficios": {
+      "total": 6,
+      "con_ldjson": 6,
+      "sin_ldjson": 0,
+      "urls": [31, 32, 33, 34, 35, 36]
+    },
+    "Finanzas": {
+      "total": 6,
+      "con_ldjson": 0,
+      "sin_ldjson": 6,
+      "urls": [37, 38, 39, 40, 41, 42]
+    },
+    "nosotros": {
+      "total": 4,
+      "con_ldjson": 2,
+      "sin_ldjson": 2,
+      "urls": [44, 45, 46, 47]
+    },
+    "recursos": {
+      "total": 12,
+      "con_ldjson": 5,
+      "sin_ldjson": 7,
+      "urls": [48, 49, 50, 51, 56, 57, 58, 59, 60, 61, 62]
+    },
+    "Calculadoras": {
+      "total": 4,
+      "con_ldjson": 3,
+      "sin_ldjson": 1,
+      "urls": [51, 52, 53, 54, 55]
+    },
+    "blog": {
+      "total": 3,
+      "con_ldjson": 3,
+      "sin_ldjson": 0,
+      "urls": [63, 64, 65]
+    },
+    "footer": {
+      "total": 4,
+      "con_ldjson": 1,
+      "sin_ldjson": 3,
+      "urls": [66, 67, 68, 69]
+    }
+  },
+  "schema_type_summary": {
+    "VideoObject": {
+      "count_paginas": 19,
+      "paginas_ids": [1, 5, 11, 13, 14, 15, 16, 17, 18, 19, 26, 27, 28, 29, 30, 33, 35, 44, 62]
+    },
+    "FAQPage": {
+      "count_paginas": 11,
+      "paginas_ids": [3, 34, 36, 43, 44, 52, 53, 54, 60, 61, 68]
+    },
+    "ItemList": {
+      "count_paginas": 3,
+      "paginas_ids": [1, 34, 45]
+    },
+    "DefinedTermSet": {
+      "count_paginas": 2,
+      "paginas_ids": [64, 65]
+    },
+    "BlogPosting": {
+      "count_paginas": 1,
+      "paginas_ids": [63]
+    }
+  },
+  "urls_con_ldjson": [
+    1, 3, 5, 11, 13, 14, 15, 16, 17, 18, 19,
+    26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+    43, 44, 45, 46, 52, 53, 54, 60, 61, 62, 63, 64, 65, 68
+  ],
+  "urls_sin_ldjson": [
+    2, 4, 6, 7, 8, 9, 10, 12, 20, 21, 22, 23, 24,
+    25, 37, 38, 39, 40, 41, 42, 47, 48, 49, 50, 51,
+    55, 56, 57, 58, 59, 66, 67, 69
+  ],
+  "pages": [
+    {
+      "id": 1,
+      "nombre": "Home",
+      "categoria": "principal",
+      "url": "https://www.buk.cl/",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject", "ItemList"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["ItemList"], "error": null}
+      ]
+    },
+    {
+      "id": 2,
+      "nombre": "Productos",
+      "categoria": "Producto",
+      "url": "https://www.buk.cl/productos",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 3,
+      "nombre": "Buk AI",
+      "categoria": "Producto",
+      "url": "https://www.buk.cl/productos/buk-ai",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["FAQPage"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["FAQPage"], "error": null}
+      ]
+    },
+    {
+      "id": 4,
+      "nombre": "Novedades / Roadmap",
+      "categoria": "Producto",
+      "url": "https://www.buk.cl/productos/roadmap-novedades-productos",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 5,
+      "nombre": "Plataforma",
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 6,
+      "nombre": "Estructura Organizacional",
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh/estructura-organizacional",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 7,
+      "nombre": "Portal del Colaborador",
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh/portal-del-colaborador",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 8,
+      "nombre": "Usuarios y Perfiles",
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh/usuarios-y-perfiles",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 9,
+      "nombre": "Workflows",
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh/workflows",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 10,
+      "nombre": "Analítica",
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh/reporteria-para-recursos-humanos",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 11,
+      "nombre": "Security & Compliance",
+      "categoria": "Plataforma",
+      "url": "https://www.buk.cl/productos/plataforma-de-rrhh/security-compliance",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 12,
+      "nombre": "Gestión de Personas",
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 13,
+      "nombre": "Remuneraciones",
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/software-de-remuneraciones",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 14,
+      "nombre": "Control de Asistencia",
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/control-de-asistencia",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 15,
+      "nombre": "Gestión de Activos",
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/gestion-de-activos",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 16,
+      "nombre": "Firma Digital y Gestión Documental",
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/gestion-documental-y-firma-digital",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 17,
+      "nombre": "Servicio al Colaborador",
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/servicio-al-colaborador",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 18,
+      "nombre": "Onboarding",
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/onboarding",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 19,
+      "nombre": "Canal de Denuncias",
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/canal-de-denuncias",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 20,
+      "nombre": "Registros DT",
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/registros-dt",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 21,
+      "nombre": "Licencias Médicas Electrónicas",
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/licencias-medicas",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 22,
+      "nombre": "Global Payroll",
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/gestion-sueldos-extranjero",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 23,
+      "nombre": "Honorarios",
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/boletas-honorarios",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 24,
+      "nombre": "Tratos",
+      "categoria": "Gestión de personas",
+      "url": "https://www.buk.cl/productos/administracion/tratos-laborales",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 25,
+      "nombre": "Desarrollo Organizacional",
+      "categoria": "Desarrollo organizacional",
+      "url": "https://www.buk.cl/productos/desarrollo-organizacional",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 26,
+      "nombre": "Gestión del Desempeño",
+      "categoria": "Desarrollo organizacional",
+      "url": "https://www.buk.cl/productos/desarrollo-organizacional/gestion-del-desempeno",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 27,
+      "nombre": "Comunicación y Reconocimiento",
+      "categoria": "Desarrollo organizacional",
+      "url": "https://www.buk.cl/productos/desarrollo-organizacional/comunicacion-y-reconocimiento",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 28,
+      "nombre": "Selección",
+      "categoria": "Desarrollo organizacional",
+      "url": "https://www.buk.cl/productos/desarrollo-organizacional/reclutamiento-y-seleccion",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 29,
+      "nombre": "Capacitaciones",
+      "categoria": "Desarrollo organizacional",
+      "url": "https://www.buk.cl/productos/desarrollo-organizacional/capacitaciones",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 30,
+      "nombre": "Encuestas",
+      "categoria": "Desarrollo organizacional",
+      "url": "https://www.buk.cl/productos/desarrollo-organizacional/encuestas",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 31,
+      "nombre": "Beneficios",
+      "categoria": "Beneficios",
+      "url": "https://www.buk.cl/productos/beneficios-laborales",
+      "bloques_total": 1,
+      "bloques_validos": 0,
+      "bloques_invalidos": 1,
+      "schema_types": [],
+      "bloques": [
+        {"index": 0, "valido": false, "tipos": [], "error": "JSON inválido (caracteres especiales/comillas tipográficas)"}
+      ]
+    },
+    {
+      "id": 32,
+      "nombre": "Gestión de Beneficios",
+      "categoria": "Beneficios",
+      "url": "https://www.buk.cl/productos/beneficios-laborales/gestion-de-beneficios",
+      "bloques_total": 1,
+      "bloques_validos": 0,
+      "bloques_invalidos": 1,
+      "schema_types": [],
+      "bloques": [
+        {"index": 0, "valido": false, "tipos": [], "error": "JSON inválido (caracteres especiales/comillas tipográficas)"}
+      ]
+    },
+    {
+      "id": 33,
+      "nombre": "Seguros de Salud y Vida",
+      "categoria": "Beneficios",
+      "url": "https://www.buk.cl/productos/beneficios-laborales/seguros",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 34,
+      "nombre": "Bienestar Financiero",
+      "categoria": "Beneficios",
+      "url": "https://www.buk.cl/productos/beneficios-laborales/bienestar-financiero",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["ItemList", "FAQPage"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["ItemList"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["FAQPage"], "error": null}
+      ]
+    },
+    {
+      "id": 35,
+      "nombre": "Planes de Beneficios",
+      "categoria": "Beneficios",
+      "url": "https://www.buk.cl/productos/beneficios-laborales/planes-de-beneficios",
+      "bloques_total": 2,
+      "bloques_validos": 2,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 36,
+      "nombre": "Pack de Descuentos",
+      "categoria": "Beneficios",
+      "url": "https://www.buk.cl/productos/beneficios-laborales/pack-de-descuentos",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["FAQPage"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["FAQPage"], "error": null}
+      ]
+    },
+    {
+      "id": 37,
+      "nombre": "Finanzas",
+      "categoria": "Finanzas",
+      "url": "https://www.buk.cl/productos/finanzas",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 38,
+      "nombre": "Pagos a Proveedores",
+      "categoria": "Finanzas",
+      "url": "https://www.buk.cl/productos/finanzas/pagos-a-proveedores",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 39,
+      "nombre": "Rendiciones",
+      "categoria": "Finanzas",
+      "url": "https://www.buk.cl/productos/finanzas/rendiciones",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 40,
+      "nombre": "Órdenes de Compra",
+      "categoria": "Finanzas",
+      "url": "https://www.buk.cl/productos/finanzas/ordenes-de-compra",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 41,
+      "nombre": "Cobranza",
+      "categoria": "Finanzas",
+      "url": "https://www.buk.cl/productos/finanzas/gestion-de-cobranza",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 42,
+      "nombre": "Conciliación Cuentas por Cobrar",
+      "categoria": "Finanzas",
+      "url": "https://www.buk.cl/productos/finanzas/conciliacion-cuentas-por-cobrar",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 43,
+      "nombre": "Precios",
+      "categoria": "principal",
+      "url": "https://www.buk.cl/precios",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["FAQPage"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["FAQPage"], "error": null}
+      ]
+    },
+    {
+      "id": 44,
+      "nombre": "Nosotros",
+      "categoria": "principal",
+      "url": "https://www.buk.cl/quienes-somos",
+      "bloques_total": 6,
+      "bloques_validos": 5,
+      "bloques_invalidos": 1,
+      "schema_types": ["VideoObject", "FAQPage"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 1, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 2, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 3, "valido": true, "tipos": ["VideoObject"], "error": null},
+        {"index": 4, "valido": true, "tipos": ["FAQPage"], "error": null},
+        {"index": 5, "valido": false, "tipos": [], "error": "JSON inválido (caracteres especiales/comillas tipográficas)"}
+      ]
+    },
+    {
+      "id": 45,
+      "nombre": "Nuestros Clientes",
+      "categoria": "nosotros",
+      "url": "https://www.buk.cl/quienes-somos/clientes",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["ItemList"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["ItemList"], "error": null}
+      ]
+    },
+    {
+      "id": 46,
+      "nombre": "Experiencia",
+      "categoria": "nosotros",
+      "url": "https://www.buk.cl/quienes-somos/experiencia",
+      "bloques_total": 1,
+      "bloques_validos": 0,
+      "bloques_invalidos": 1,
+      "schema_types": [],
+      "bloques": [
+        {"index": 0, "valido": false, "tipos": [], "error": "JSON inválido (caracteres especiales/comillas tipográficas)"}
+      ]
+    },
+    {
+      "id": 47,
+      "nombre": "Partners",
+      "categoria": "nosotros",
+      "url": "https://www.buk.cl/quienes-somos/partners",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 48,
+      "nombre": "Recursos",
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 49,
+      "nombre": "Ebooks, Guías y más",
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/contenido-escrito-y-videos",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 50,
+      "nombre": "Estudios",
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/estudios",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 51,
+      "nombre": "Calculadoras",
+      "categoria": "Calculadoras",
+      "url": "https://www.buk.cl/recursos/calculadora",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 52,
+      "nombre": "Calculadora Sueldo Líquido",
+      "categoria": "Calculadoras",
+      "url": "https://www.buk.cl/recursos/calculadora/calculadora-sueldo-liquido",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["FAQPage"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["FAQPage"], "error": null}
+      ]
+    },
+    {
+      "id": 53,
+      "nombre": "Calculadora de Finiquito",
+      "categoria": "Calculadoras",
+      "url": "https://www.buk.cl/recursos/calculadora/calcular-finiquito",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["FAQPage"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["FAQPage"], "error": null}
+      ]
+    },
+    {
+      "id": 54,
+      "nombre": "Gratificación Legal",
+      "categoria": "Calculadoras",
+      "url": "https://www.buk.cl/recursos/calculadora/calculo-de-gratificaciones",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["FAQPage"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["FAQPage"], "error": null}
+      ]
+    },
+    {
+      "id": 55,
+      "nombre": "Calculadora Costo de Personal",
+      "categoria": "Calculadoras",
+      "url": "https://www.buk.cl/recursos/calculadora/calculadora-costo-trabajador",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 56,
+      "nombre": "Buk Starter",
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/starter",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 57,
+      "nombre": "Podcasts",
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/podcast",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 58,
+      "nombre": "Indicadores Previsionales",
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/indicadores-previsionales-previred",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 59,
+      "nombre": "App",
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/app",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 60,
+      "nombre": "Calculadora de Sueldos RR.HH.",
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/comparador-de-salarios-chile",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["FAQPage"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["FAQPage"], "error": null}
+      ]
+    },
+    {
+      "id": 61,
+      "nombre": "Eventos",
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/recursos/eventos-recursos-humanos",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["FAQPage"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["FAQPage"], "error": null}
+      ]
+    },
+    {
+      "id": 62,
+      "nombre": "Buk Academy",
+      "categoria": "recursos",
+      "url": "https://www.buk.cl/cursos-buk-academy",
+      "url_final": "https://www.buk.cl/recursos/cursos-buk-academy",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["VideoObject"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["VideoObject"], "error": null}
+      ]
+    },
+    {
+      "id": 63,
+      "nombre": "Blog",
+      "categoria": "blog",
+      "url": "https://www.buk.cl/blog",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["BlogPosting"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["BlogPosting"], "error": null}
+      ]
+    },
+    {
+      "id": 64,
+      "nombre": "Glosario RRHH",
+      "categoria": "blog",
+      "url": "https://www.buk.cl/novedades/glosario-rrhh",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["DefinedTermSet"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["DefinedTermSet"], "error": null}
+      ]
+    },
+    {
+      "id": 65,
+      "nombre": "Glosario Finanzas",
+      "categoria": "blog",
+      "url": "https://www.buk.cl/novedades/glosario-finanzas",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["DefinedTermSet"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["DefinedTermSet"], "error": null}
+      ]
+    },
+    {
+      "id": 66,
+      "nombre": "Privacidad",
+      "categoria": "footer",
+      "url": "https://www.buk.cl/privacidad",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 67,
+      "nombre": "Protección de Datos",
+      "categoria": "footer",
+      "url": "https://www.buk.cl/proteccion-de-datos",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    },
+    {
+      "id": 68,
+      "nombre": "Preguntas Frecuentes",
+      "categoria": "footer",
+      "url": "https://www.buk.cl/preguntas-frecuentes-buk",
+      "bloques_total": 1,
+      "bloques_validos": 1,
+      "bloques_invalidos": 0,
+      "schema_types": ["FAQPage"],
+      "bloques": [
+        {"index": 0, "valido": true, "tipos": ["FAQPage"], "error": null}
+      ]
+    },
+    {
+      "id": 69,
+      "nombre": "Línea de Confianza y Transparencia",
+      "categoria": "footer",
+      "url": "https://www.buk.cl/linea-de-confianza",
+      "bloques_total": 0,
+      "bloques_validos": 0,
+      "bloques_invalidos": 0,
+      "schema_types": [],
+      "bloques": []
+    }
+  ],
+  "notas": [
+    "IDs 31, 32, 46: Bloques ld+json presentes pero con JSON inválido (probablemente comillas tipográficas u otros caracteres especiales no permitidos en JSON).",
+    "ID 44 (quienes-somos): 6 bloques en total; 4x VideoObject, 1x FAQPage, 1 inválido.",
+    "ID 62 (Buk Academy): La URL https://www.buk.cl/cursos-buk-academy redirige a https://www.buk.cl/recursos/cursos-buk-academy.",
+    "La categoría 'Finanzas' (IDs 37-42) no tiene ningún bloque ld+json implementado.",
+    "Los tipos de schema más usados son VideoObject (19 páginas) y FAQPage (11 páginas).",
+    "Tipos únicos encontrados: VideoObject, FAQPage, ItemList, DefinedTermSet, BlogPosting."
+  ]
+}
