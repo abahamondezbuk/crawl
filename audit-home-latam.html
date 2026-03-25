@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auditoría Web LATAM — Buk Homes</title>
+<style>
+  :root {
+    --green: #22c55e;
+    --green-bg: #f0fdf4;
+    --green-border: #bbf7d0;
+    --yellow: #f59e0b;
+    --yellow-bg: #fffbeb;
+    --yellow-border: #fde68a;
+    --red: #ef4444;
+    --red-bg: #fef2f2;
+    --red-border: #fecaca;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --blue: #3b82f6;
+    --blue-bg: #eff6ff;
+    --indigo: #6366f1;
+    --purple: #8b5cf6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-800);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* HEADER */
+  .page-header {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+    color: white;
+    padding: 40px 32px 32px;
+    text-align: center;
+  }
+  .page-header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .page-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .page-header p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .page-header .meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 20px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+  }
+  .page-header .meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 16px 32px;
+    background: white;
+    border-bottom: 1px solid var(--gray-200);
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--gray-600);
+    font-weight: 500;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .dot-green { background: var(--green); }
+  .dot-yellow { background: var(--yellow); }
+  .dot-red { background: var(--red); }
+
+  /* OVERVIEW GRID */
+  .overview {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    background: white;
+    border-bottom: 3px solid var(--gray-200);
+  }
+  .overview-card {
+    padding: 20px 16px;
+    text-align: center;
+    border-right: 1px solid var(--gray-200);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .overview-card:last-child { border-right: none; }
+  .overview-card:hover { background: var(--gray-50); }
+  .overview-card.active { background: var(--blue-bg); border-bottom: 3px solid var(--blue); }
+  .overview-flag { font-size: 28px; margin-bottom: 4px; }
+  .overview-country { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 8px; }
+  .overview-domain { font-size: 12px; color: var(--gray-600); margin-bottom: 10px; }
+  .overview-score {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .overview-label { font-size: 11px; color: var(--gray-400); margin-top: 3px; }
+
+  /* MAIN CONTENT */
+  .container { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 12px;
+    margin-top: 28px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .section-title:first-child { margin-top: 0; }
+
+  /* COUNTRY PANEL */
+  .country-panel { display: none; }
+  .country-panel.active { display: block; }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 20px 24px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .panel-flag { font-size: 40px; }
+  .panel-info h2 { font-size: 20px; font-weight: 700; }
+  .panel-info a { font-size: 13px; color: var(--blue); text-decoration: none; }
+  .panel-info a:hover { text-decoration: underline; }
+  .panel-score {
+    margin-left: auto;
+    text-align: center;
+  }
+  .panel-score .big-score {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .panel-score .score-label { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+
+  /* SCORES GRID */
+  .scores-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .score-card {
+    background: white;
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+  .score-card .cat-icon { font-size: 20px; margin-bottom: 6px; }
+  .score-card .cat-name { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-400); margin-bottom: 8px; }
+  .score-card .cat-score { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+  .score-bar-bg { background: var(--gray-200); border-radius: 3px; height: 5px; }
+  .score-bar { height: 5px; border-radius: 3px; transition: width 1s; }
+
+  /* DETAIL GRID */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .detail-card {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+  .detail-card-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gray-600);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .detail-card-body { padding: 12px 16px; }
+
+  /* ISSUE ITEMS */
+  .issue-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .issue-item:last-child { border-bottom: none; }
+  .issue-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* HIGHLIGHT ITEMS */
+  .highlight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .highlight-item:last-child { border-bottom: none; }
+
+  /* QUICK WINS */
+  .qw-item {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .qw-badge {
+    background: var(--green);
+    color: white;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .qw-badge.medium {
+    background: var(--yellow);
+    color: white;
+  }
+  .qw-badge.low {
+    background: var(--gray-400);
+    color: white;
+  }
+  .qw-item.medium { background: var(--yellow-bg); border-color: var(--yellow-border); }
+  .qw-item.low { background: var(--gray-50); border-color: var(--gray-200); }
+
+  /* ANALYST BOX */
+  .analyst-box {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .analyst-box h3 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .analyst-box p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.9);
+  }
+  .analyst-box .blocker {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+  }
+  .analyst-box .blocker strong { color: #fbbf24; }
+
+  /* METRICS TABLE */
+  .metrics-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .metrics-table th {
+    text-align: left;
+    padding: 8px 10px;
+    background: var(--gray-50);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gray-400);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .metrics-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--gray-100);
+    color: var(--gray-700);
+  }
+  .metrics-table tr:last-child td { border-bottom: none; }
+  .metrics-table .val-good { color: var(--green); font-weight: 600; }
+  .metrics-table .val-warn { color: var(--yellow); font-weight: 600; }
+  .metrics-table .val-bad { color: var(--red); font-weight: 600; }
+
+  /* COMPARISON TABLE */
+  .comparison-section { margin-top: 40px; }
+  .comp-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; border: 1px solid var(--gray-200); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .comp-table th {
+    padding: 12px 16px;
+    text-align: center;
+    background: var(--gray-800);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .comp-table th:first-child { text-align: left; }
+  .comp-table td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 13px;
+  }
+  .comp-table td:first-child { text-align: left; font-weight: 600; color: var(--gray-700); }
+  .comp-table tr:last-child td { border-bottom: none; }
+  .comp-table .score-cell {
+    font-weight: 700;
+    font-size: 15px;
+    border-radius: 6px;
+    padding: 4px 8px;
+    display: inline-block;
+  }
+  .comp-table tr:hover td { background: var(--gray-50); }
+
+  /* SCORE COLORS */
+  .score-green { color: #166534; background: var(--green-bg); }
+  .score-yellow { color: #92400e; background: var(--yellow-bg); }
+  .score-red { color: #991b1b; background: var(--red-bg); }
+
+  /* COLOR HELPERS */
+  .text-green { color: var(--green); }
+  .text-yellow { color: var(--yellow); }
+  .text-red { color: var(--red); }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    background: white;
+    border-bottom: 2px solid var(--gray-200);
+    padding: 0 24px;
+  }
+  .nav-tab {
+    padding: 14px 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-400);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-tab:hover { color: var(--gray-700); }
+  .nav-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+  .nav-tab .tab-score {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+  }
+
+  /* FOOTER */
+  .page-footer {
+    text-align: center;
+    padding: 24px;
+    color: var(--gray-400);
+    font-size: 12px;
+    border-top: 1px solid var(--gray-200);
+    background: white;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 900px) {
+    .overview { grid-template-columns: repeat(3, 1fr); }
+    .scores-grid { grid-template-columns: repeat(3, 1fr); }
+    .detail-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .overview { grid-template-columns: repeat(2, 1fr); }
+    .scores-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="badge">Auditoría Técnica</div>
+  <h1>Web Performance Audit — Buk LATAM Homes</h1>
+  <p>Análisis de SEO, Schema, Performance, Accesibilidad y Buenas Prácticas para los 5 dominios principales</p>
+  <div class="meta">
+    <span>📅 25 de marzo 2026</span>
+    <span>🌐 5 sitios auditados</span>
+    <span>🔬 Playwright MCP · DOM + Timing API</span>
+    <span>📋 Solo home pages</span>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><span class="dot dot-green"></span> 80–100 Óptimo</div>
+  <div class="legend-item"><span class="dot dot-yellow"></span> 50–79 Mejorable</div>
+  <div class="legend-item"><span class="dot dot-red"></span> 0–49 Crítico</div>
+  <div class="legend-item" style="margin-left:16px; color: var(--gray-400);">Metodología: Playwright + DOM API + Performance Timing. Nota: LCP/CLS requieren Lighthouse para medición precisa.</div>
+</div>
+
+<!-- OVERVIEW -->
+<div class="overview" id="overview">
+  <div class="overview-card" onclick="showTab('cl')" id="tab-cl">
+    <div class="overview-flag">🇨🇱</div>
+    <div class="overview-country">Chile</div>
+    <div class="overview-domain">buk.cl</div>
+    <div class="overview-score" id="score-cl-avg">75</div>
+    <div class="overview-label">promedio general</div>
+  </div>
+  <div class="overview-card" onclick="showTab('co')" id="tab-co">
+    <div class="overview-flag">🇨🇴</div>
+    <div class="overview-country">Colombia</div>
+    <div class="overview-domain">buk.co</div>
+    <div class="overview-score" id="score-co-avg">66</div>
+    <div class="overview-label">promedio general</div>
+  </div>
+  <div class="overview-card" onclick="showTab('pe')" id="tab-pe">
+    <div class="overview-flag">🇵🇪</div>
+    <div class="overview-country">Perú</div>
+    <div class="overview-domain">buk.pe</div>
+    <div class="overview-score" id="score-pe-avg">66</div>
+    <div class="overview-label">promedio general</div>
+  </div>
+  <div class="overview-card" onclick="showTab('mx')" id="tab-mx">
+    <div class="overview-flag">🇲🇽</div>
+    <div class="overview-country">México</div>
+    <div class="overview-domain">buk.mx</div>
+    <div class="overview-score" id="score-mx-avg">61</div>
+    <div class="overview-label">promedio general</div>
+  </div>
+  <div class="overview-card" onclick="showTab('br')" id="tab-br">
+    <div class="overview-flag">🇧🇷</div>
+    <div class="overview-country">Brasil</div>
+    <div class="overview-domain">buk.com.br</div>
+    <div class="overview-score" id="score-br-avg">69</div>
+    <div class="overview-label">promedio general</div>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="showTab('cl')" id="navtab-cl">🇨🇱 Chile <span class="tab-score score-yellow">75</span></div>
+  <div class="nav-tab" onclick="showTab('co')" id="navtab-co">🇨🇴 Colombia <span class="tab-score score-yellow">66</span></div>
+  <div class="nav-tab" onclick="showTab('pe')" id="navtab-pe">🇵🇪 Perú <span class="tab-score score-yellow">66</span></div>
+  <div class="nav-tab" onclick="showTab('mx')" id="navtab-mx">🇲🇽 México <span class="tab-score score-yellow">61</span></div>
+  <div class="nav-tab" onclick="showTab('br')" id="navtab-br">🇧🇷 Brasil <span class="tab-score score-yellow">69</span></div>
+  <div class="nav-tab" onclick="showTab('comp')" id="navtab-comp">📊 Comparativa</div>
+</div>
+
+<!-- MAIN CONTAINER -->
+<div class="container">
+
+  <!-- =============================== CHILE =============================== -->
+  <div class="country-panel active" id="panel-cl">
+
+    <div class="panel-header">
+      <div class="panel-flag">🇨🇱</div>
+      <div class="panel-info">
+        <h2>Chile — buk.cl</h2>
+        <a href="https://www.buk.cl" target="_blank">https://www.buk.cl</a>
+        <div style="font-size:12px;color:var(--gray-400);margin-top:4px;">Auditado: 25/03/2026 · Home page únicamente</div>
+      </div>
+      <div class="panel-score">
+        <div class="big-score text-yellow">75</div>
+        <div class="score-label">Promedio general</div>
+      </div>
+    </div>
+
+    <div class="analyst-box">
+      <h3>🤖 Análisis IA — Perspectiva consultor</h3>
+      <p>buk.cl es el referente del grupo con la mejor base técnica: TTFB de 85ms, estructura semántica completa, y el mayor coverage de alt texts (97%). Sin embargo, la presencia de 304 imágenes en el home y un peso transferido de 1.6MB denotan un sitio sobrecargado visualmente. El error de JavaScript en <code>template_header-2025.js</code> (<em>null.addEventListener</em>) es un bug activo que puede afectar la funcionalidad del header para algunos usuarios.</p>
+      <div class="blocker">
+        <strong>Principal freno de performance:</strong> Exceso de imágenes (304) y ausencia de Organization/WebSite schema reducen visibilidad en rich results y sobrecargan el thread principal.<br>
+        <strong>Principal oportunidad:</strong> Implementar schema Organization + WebSite permitiría activar sitelinks y searchbox en Google, maximizando el espacio en SERP para queries de marca.
+      </div>
+    </div>
+
+    <div class="scores-grid">
+      <div class="score-card">
+        <div class="cat-icon">🔍</div>
+        <div class="cat-name">SEO</div>
+        <div class="cat-score text-green">85</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:85%;background:var(--green)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">🗂️</div>
+        <div class="cat-name">Schema</div>
+        <div class="cat-score text-yellow">72</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:72%;background:var(--yellow)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">⚡</div>
+        <div class="cat-name">Performance</div>
+        <div class="cat-score text-yellow">72</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:72%;background:var(--yellow)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">♿</div>
+        <div class="cat-name">Accesibilidad</div>
+        <div class="cat-score text-green">80</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:80%;background:var(--green)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">✅</div>
+        <div class="cat-name">Best Practices</div>
+        <div class="cat-score text-yellow">68</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:68%;background:var(--yellow)"></div></div>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-card">
+        <div class="detail-card-header">🚨 Issues detectados</div>
+        <div class="detail-card-body">
+          <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>JS Error activo:</strong> TypeError "Cannot read properties of null (reading 'addEventListener')" en template_header-2025.js — afecta funcionalidad del header</div></div>
+          <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>CORS en GTM server-side:</strong> gtm-wrb9w6f.rj.r.appspot.com bloqueado — pérdida parcial de datos de analítica</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>304 imágenes en home:</strong> Volumen excesivo, aumenta el peso total a 1.6MB y ralentiza la carga</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>loadComplete: 3.17s</strong> — supera el umbral recomendado de 2.5s</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Sin robots meta tag:</strong> No está configurado el tag &lt;meta name="robots"&gt; (indexable por defecto, pero es buena práctica explicitarlo)</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Sin schema Organization/WebSite:</strong> Impide activar sitelinks y searchbox en SERP de Google</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Unexpected token '&lt;':</strong> Respuesta HTML donde se esperaba JS — recurso externo devolviendo error como HTML</div></div>
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-card-header">✨ Highlights positivos</div>
+        <div class="detail-card-body">
+          <div class="highlight-item"><span>🟢</span><div><strong>TTFB: 85ms</strong> — excelente tiempo de respuesta del servidor, el mejor del grupo</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Alt texts: 97%</strong> — 295/304 imágenes con alt (mejor del grupo)</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>DCL: 774ms</strong> — DOMContentLoaded bajo 800ms</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Lazy loading: 65%</strong> — 197/304 imágenes con loading="lazy"</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Estructura HTML semántica completa:</strong> main + nav + header + footer presentes</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>70 ARIA landmarks:</strong> buena cobertura de roles accesibles</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Meta description optimizada:</strong> 154 chars en el rango ideal</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>VideoObject + ItemList:</strong> 2 schemas bien implementados</div></div>
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-card-header">📊 Métricas técnicas</div>
+        <div class="detail-card-body">
+          <table class="metrics-table">
+            <tr><th>Métrica</th><th>Valor</th></tr>
+            <tr><td>TTFB</td><td class="val-good">85ms</td></tr>
+            <tr><td>DOMContentLoaded</td><td class="val-good">774ms</td></tr>
+            <tr><td>Load Complete</td><td class="val-warn">3,169ms</td></tr>
+            <tr><td>Total transferido</td><td class="val-warn">1.6 MB</td></tr>
+            <tr><td>Total recursos</td><td class="val-warn">250+</td></tr>
+            <tr><td>Imágenes totales</td><td class="val-bad">304</td></tr>
+            <tr><td>Alt coverage</td><td class="val-good">97%</td></tr>
+            <tr><td>Lazy loading</td><td class="val-good">65%</td></tr>
+            <tr><td>Schemas</td><td class="val-good">2 (sin errores)</td></tr>
+            <tr><td>Errores consola</td><td class="val-warn">5</td></tr>
+            <tr><td>H1</td><td class="val-good">1 ✓</td></tr>
+            <tr><td>Canonical</td><td class="val-good">✓</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">⚡ Quick Wins — Acciones priorizadas</div>
+    <div class="qw-item">
+      <span class="qw-badge">ALTA</span>
+      <div><strong>Corregir TypeError en template_header-2025.js:</strong> El null.addEventListener rompe funcionalidad del header. Verificar que el elemento DOM exista antes del eventListener o mover el script al final del body.</div>
+    </div>
+    <div class="qw-item medium">
+      <span class="qw-badge medium">MEDIA</span>
+      <div><strong>Implementar schema Organization + WebSite:</strong> Añadir JSON-LD con @type Organization (nombre, logo, redes sociales) y WebSite (SearchAction para sitelinks searchbox). Impacto: mejora rich results en branded queries.</div>
+    </div>
+    <div class="qw-item medium">
+      <span class="qw-badge medium">MEDIA</span>
+      <div><strong>Auditar y reducir imágenes en home:</strong> 304 imágenes es excesivo. Identificar imágenes duplicadas, ocultas o fuera de viewport. Estimación: reducción de 30-40% del peso total. Usar WebP + dimensions explícitas para evitar layout shifts.</div>
+    </div>
+    <div class="qw-item medium">
+      <span class="qw-badge medium">MEDIA</span>
+      <div><strong>Corregir CORS en GTM server-side:</strong> Configurar headers Access-Control-Allow-Origin en gtm-wrb9w6f.rj.r.appspot.com para no perder eventos de analítica desde Chile.</div>
+    </div>
+    <div class="qw-item low">
+      <span class="qw-badge low">BAJA</span>
+      <div><strong>Agregar &lt;meta name="robots" content="index, follow"&gt;:</strong> Buena práctica para declarar explícitamente la intención de indexación. Riesgo bajo, esfuerzo mínimo.</div>
+    </div>
+  </div>
+
+  <!-- =============================== COLOMBIA =============================== -->
+  <div class="country-panel" id="panel-co">
+
+    <div class="panel-header">
+      <div class="panel-flag">🇨🇴</div>
+      <div class="panel-info">
+        <h2>Colombia — buk.co</h2>
+        <a href="https://www.buk.co" target="_blank">https://www.buk.co</a>
+        <div style="font-size:12px;color:var(--gray-400);margin-top:4px;">Auditado: 25/03/2026 · Home page únicamente</div>
+      </div>
+      <div class="panel-score">
+        <div class="big-score text-yellow">66</div>
+        <div class="score-label">Promedio general</div>
+      </div>
+    </div>
+
+    <div class="analyst-box">
+      <h3>🤖 Análisis IA — Perspectiva consultor</h3>
+      <p>buk.co tiene el DOMContentLoaded más rápido del grupo (682ms) y buen peso total (1.3MB), pero pierde puntos en tres frentes: un schema JSON-LD con error de parseo, cobertura de alt texts pobre (57%), y bajo lazy loading (38%). El schema inválido es especialmente preocupante porque Google podría ignorar por completo ese bloque de datos estructurados.</p>
+      <div class="blocker">
+        <strong>Principal freno SEO:</strong> Schema con parse_error activo significa que uno de los 3 bloques JSON-LD tiene sintaxis inválida. Google Search Console probablemente reporta este error pero pasa desapercibido.<br>
+        <strong>Principal oportunidad:</strong> Corregir el schema y mejorar alt texts abre dos vectores: rich results por schema y mejora de accesibilidad que también afecta rankings.
+      </div>
+    </div>
+
+    <div class="scores-grid">
+      <div class="score-card">
+        <div class="cat-icon">🔍</div>
+        <div class="cat-name">SEO</div>
+        <div class="cat-score text-green">82</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:82%;background:var(--green)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">🗂️</div>
+        <div class="cat-name">Schema</div>
+        <div class="cat-score text-red">55</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:55%;background:var(--red)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">⚡</div>
+        <div class="cat-name">Performance</div>
+        <div class="cat-score text-yellow">65</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:65%;background:var(--yellow)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">♿</div>
+        <div class="cat-name">Accesibilidad</div>
+        <div class="cat-score text-yellow">62</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:62%;background:var(--yellow)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">✅</div>
+        <div class="cat-name">Best Practices</div>
+        <div class="cat-score text-yellow">65</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:65%;background:var(--yellow)"></div></div>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-card">
+        <div class="detail-card-header">🚨 Issues detectados</div>
+        <div class="detail-card-body">
+          <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>Schema JSON-LD con parse_error:</strong> Uno de los 3 bloques de datos estructurados tiene JSON inválido — Google lo ignora completamente</div></div>
+          <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>Alt texts solo 57%:</strong> 50 de 115 imágenes sin atributo alt — penaliza SEO y excluye a usuarios de lectores de pantalla</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Lazy loading solo 38%:</strong> 71 imágenes cargando en viewport inicial sin necesidad</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>CORS en GTM server-side:</strong> gtm-wrb9w6f.rj.r.appspot.com bloqueado — pérdida de datos analíticos</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Sin Organization/WebSite schema:</strong> No existe schema de organización para rich results de marca</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Sin robots meta tag</strong></div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>TTFB: 155ms</strong> — aceptable pero mejorable (vs 85ms de .cl)</div></div>
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-card-header">✨ Highlights positivos</div>
+        <div class="detail-card-body">
+          <div class="highlight-item"><span>🟢</span><div><strong>DCL más rápido del grupo: 682ms</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>loadComplete bajo 3s: 2,966ms</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Peso total aceptable: 1.3MB</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>3 schemas implementados</strong> (VideoObject + ItemList presentes)</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>H1 único y relevante</strong> ("Software de Recursos Humanos")</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>48 ARIA landmarks</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Canonical correcto</strong> apuntando a www.buk.co/</div></div>
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-card-header">📊 Métricas técnicas</div>
+        <div class="detail-card-body">
+          <table class="metrics-table">
+            <tr><th>Métrica</th><th>Valor</th></tr>
+            <tr><td>TTFB</td><td class="val-warn">155ms</td></tr>
+            <tr><td>DOMContentLoaded</td><td class="val-good">682ms</td></tr>
+            <tr><td>Load Complete</td><td class="val-good">2,966ms</td></tr>
+            <tr><td>Total transferido</td><td class="val-warn">1.3 MB</td></tr>
+            <tr><td>Total recursos</td><td class="val-warn">250+</td></tr>
+            <tr><td>Imágenes totales</td><td class="val-warn">115</td></tr>
+            <tr><td>Alt coverage</td><td class="val-bad">57%</td></tr>
+            <tr><td>Lazy loading</td><td class="val-bad">38%</td></tr>
+            <tr><td>Schemas</td><td class="val-bad">3 (1 parse_error)</td></tr>
+            <tr><td>Errores consola</td><td class="val-warn">4</td></tr>
+            <tr><td>H1</td><td class="val-good">1 ✓</td></tr>
+            <tr><td>Canonical</td><td class="val-good">✓</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">⚡ Quick Wins — Acciones priorizadas</div>
+    <div class="qw-item">
+      <span class="qw-badge">ALTA</span>
+      <div><strong>Validar y corregir schema JSON-LD inválido:</strong> Pegar el bloque problemático en schema.org/validator o el Rich Results Test de Google. Probablemente un comma o comilla mal cerrada. Impacto inmediato en Google Search Console.</div>
+    </div>
+    <div class="qw-item">
+      <span class="qw-badge">ALTA</span>
+      <div><strong>Agregar alt text a 50 imágenes sin atributo:</strong> Priorizar las imágenes above-the-fold. Alt texts descriptivos mejoran SEO de imágenes y accesibilidad WCAG 2.1 AA. Esfuerzo estimado: 2-3 horas en HubSpot CMS.</div>
+    </div>
+    <div class="qw-item medium">
+      <span class="qw-badge medium">MEDIA</span>
+      <div><strong>Implementar lazy loading en imágenes below-the-fold:</strong> Agregar loading="lazy" a las 71 imágenes restantes. Reducción estimada de 15-20% en peso inicial de página.</div>
+    </div>
+    <div class="qw-item medium">
+      <span class="qw-badge medium">MEDIA</span>
+      <div><strong>Añadir schema Organization:</strong> Con logo, sameAs (perfiles sociales), nombre y URL. Potencia los sitelinks en branded searches para Colombia.</div>
+    </div>
+    <div class="qw-item low">
+      <span class="qw-badge low">BAJA</span>
+      <div><strong>Revisar CORS en GTM server-side:</strong> Afecta recolección de datos analíticos. Configurar CORS headers o migrar a GA4 directo sin server-side proxy.</div>
+    </div>
+  </div>
+
+  <!-- =============================== PERU =============================== -->
+  <div class="country-panel" id="panel-pe">
+
+    <div class="panel-header">
+      <div class="panel-flag">🇵🇪</div>
+      <div class="panel-info">
+        <h2>Perú — buk.pe</h2>
+        <a href="https://www.buk.pe" target="_blank">https://www.buk.pe</a>
+        <div style="font-size:12px;color:var(--gray-400);margin-top:4px;">Auditado: 25/03/2026 · Home page únicamente</div>
+      </div>
+      <div class="panel-score">
+        <div class="big-score text-yellow">66</div>
+        <div class="score-label">Promedio general</div>
+      </div>
+    </div>
+
+    <div class="analyst-box">
+      <h3>🤖 Análisis IA — Perspectiva consultor</h3>
+      <p>buk.pe tiene el mayor volumen de errores de consola del grupo (13) — casi todos provenientes de un servidor GTM personalizado (<code>gtms-pe.buktechnology.com</code>) que tiene CORS mal configurado. Esto indica que Perú usa una infraestructura de tracking diferente al resto del grupo, probablemente un servidor de colección de datos propio que no está configurado correctamente. También presenta los peores tiempos de carga: DOMContentLoaded en 1.9s y loadComplete en 4.1s.</p>
+      <div class="blocker">
+        <strong>Principal freno:</strong> La infraestructura de GTM personalizada (gtms-pe.buktechnology.com) está generando 10+ errores CORS por page load, consumiendo recursos del browser y bloqueando threads que deberían procesar el contenido.<br>
+        <strong>Principal oportunidad:</strong> Resolver el CORS y optimizar el critical rendering path podría reducir DOMContentLoaded de 1.9s a menos de 1s.
+      </div>
+    </div>
+
+    <div class="scores-grid">
+      <div class="score-card">
+        <div class="cat-icon">🔍</div>
+        <div class="cat-name">SEO</div>
+        <div class="cat-score text-green">80</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:80%;background:var(--green)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">🗂️</div>
+        <div class="cat-name">Schema</div>
+        <div class="cat-score text-yellow">70</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:70%;background:var(--yellow)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">⚡</div>
+        <div class="cat-name">Performance</div>
+        <div class="cat-score text-yellow">62</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:62%;background:var(--yellow)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">♿</div>
+        <div class="cat-name">Accesibilidad</div>
+        <div class="cat-score text-yellow">72</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:72%;background:var(--yellow)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">✅</div>
+        <div class="cat-name">Best Practices</div>
+        <div class="cat-score text-red">45</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:45%;background:var(--red)"></div></div>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-card">
+        <div class="detail-card-header">🚨 Issues detectados</div>
+        <div class="detail-card-body">
+          <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>13 errores de consola</strong> — el peor del grupo. Todos relacionados con CORS en gtms-pe.buktechnology.com</div></div>
+          <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>CORS masivo en GTM personalizado:</strong> gtms-pe.buktechnology.com sin header Access-Control-Allow-Origin — las peticiones de analítica fallan en cascada</div></div>
+          <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>DOMContentLoaded: 1,938ms</strong> — el más lento del grupo (2.5x más que buk.cl)</div></div>
+          <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>loadComplete: 4,083ms</strong> — supera 4 segundos, umbral crítico para bounce rate</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>TypeError en template_global-main-2024.js:</strong> null.addEventListener — mismo patrón que .cl</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Meta description corta: 121 chars</strong> — bajo el rango ideal (150-160)</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Sin Organization/WebSite schema</strong></div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Sin robots meta tag</strong></div></div>
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-card-header">✨ Highlights positivos</div>
+        <div class="detail-card-body">
+          <div class="highlight-item"><span>🟢</span><div><strong>73 ARIA landmarks</strong> — el mejor del grupo en accesibilidad ARIA</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Alt texts: 90%</strong> — 144/160 imágenes con alt</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Lazy loading: 60%</strong> — 96/160 imágenes</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Canonical correcto</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>HTTPS activo</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Estructura HTML semántica completa</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>VideoObject + ItemList schemas correctos</strong></div></div>
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-card-header">📊 Métricas técnicas</div>
+        <div class="detail-card-body">
+          <table class="metrics-table">
+            <tr><th>Métrica</th><th>Valor</th></tr>
+            <tr><td>TTFB</td><td class="val-warn">139ms</td></tr>
+            <tr><td>DOMContentLoaded</td><td class="val-bad">1,938ms</td></tr>
+            <tr><td>Load Complete</td><td class="val-bad">4,083ms</td></tr>
+            <tr><td>Total transferido</td><td class="val-warn">1.44 MB</td></tr>
+            <tr><td>Total recursos</td><td class="val-warn">250+</td></tr>
+            <tr><td>Imágenes totales</td><td class="val-warn">160</td></tr>
+            <tr><td>Alt coverage</td><td class="val-good">90%</td></tr>
+            <tr><td>Lazy loading</td><td class="val-good">60%</td></tr>
+            <tr><td>Schemas</td><td class="val-good">2 (sin errores)</td></tr>
+            <tr><td>Errores consola</td><td class="val-bad">13</td></tr>
+            <tr><td>H1</td><td class="val-good">1 ✓</td></tr>
+            <tr><td>Canonical</td><td class="val-good">✓</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">⚡ Quick Wins — Acciones priorizadas</div>
+    <div class="qw-item">
+      <span class="qw-badge">ALTA</span>
+      <div><strong>Corregir CORS en gtms-pe.buktechnology.com:</strong> Añadir header <code>Access-Control-Allow-Origin: https://www.buk.pe</code> en el servidor de colección de datos. Esta sola corrección elimina 10 de los 13 errores de consola y libera recursos del browser.</div>
+    </div>
+    <div class="qw-item">
+      <span class="qw-badge">ALTA</span>
+      <div><strong>Reducir DOMContentLoaded de 1.9s:</strong> Auditar scripts que bloquean el rendering (especialmente GTM y Facebook Pixel). Usar defer/async en scripts no críticos. Meta: bajar a menos de 1s.</div>
+    </div>
+    <div class="qw-item medium">
+      <span class="qw-badge medium">MEDIA</span>
+      <div><strong>Corregir TypeError en template_global-main-2024.js:</strong> El error null.addEventListener sugiere que el script se ejecuta antes que el elemento esté en el DOM. Mover el script al final del body o usar DOMContentLoaded listener.</div>
+    </div>
+    <div class="qw-item medium">
+      <span class="qw-badge medium">MEDIA</span>
+      <div><strong>Ampliar meta description a 150-160 chars:</strong> Actualmente 121 chars. Agregar un CTA o diferenciador de Perú. Ej: "…¡Optimiza tus procesos de RR.HH. en Perú hoy mismo!"</div>
+    </div>
+    <div class="qw-item low">
+      <span class="qw-badge low">BAJA</span>
+      <div><strong>Implementar schema Organization:</strong> Mismo impacto que en otros países para branded searches peruanas.</div>
+    </div>
+  </div>
+
+  <!-- =============================== MEXICO =============================== -->
+  <div class="country-panel" id="panel-mx">
+
+    <div class="panel-header">
+      <div class="panel-flag">🇲🇽</div>
+      <div class="panel-info">
+        <h2>México — buk.mx</h2>
+        <a href="https://www.buk.mx" target="_blank">https://www.buk.mx</a>
+        <div style="font-size:12px;color:var(--gray-400);margin-top:4px;">Auditado: 25/03/2026 · Home page únicamente</div>
+      </div>
+      <div class="panel-score">
+        <div class="big-score text-yellow">61</div>
+        <div class="score-label">Promedio general</div>
+      </div>
+    </div>
+
+    <div class="analyst-box">
+      <h3>🤖 Análisis IA — Perspectiva consultor</h3>
+      <p>buk.mx es el sitio con el score más bajo del grupo y concentra los peores resultados en accesibilidad (52) y schema (50). Solo el 48% de las imágenes tienen alt text y apenas el 26% usan lazy loading — el peor resultado en ambas métricas. Además, el schema JSON-LD tiene un error de parseo y hay un error 400 en un servicio de terceros (aplo-evnt.com). El sitio claramente necesita una auditoría de accesibilidad completa.</p>
+      <div class="blocker">
+        <strong>Principal freno:</strong> El bajo ARIA landmark count (27, vs 70 de Chile) y la cobertura de alt texts (48%) no solo impactan accesibilidad sino también el SEO de imágenes en Google Imágenes para el mercado mexicano.<br>
+        <strong>Principal oportunidad:</strong> buk.mx tiene el título más completo del grupo (55 chars con keywords). Capitalizar esa fortaleza SEO resolviendo schema y alt texts puede acelerar visibilidad orgánica en México.
+      </div>
+    </div>
+
+    <div class="scores-grid">
+      <div class="score-card">
+        <div class="cat-icon">🔍</div>
+        <div class="cat-name">SEO</div>
+        <div class="cat-score text-green">83</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:83%;background:var(--green)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">🗂️</div>
+        <div class="cat-name">Schema</div>
+        <div class="cat-score text-red">50</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:50%;background:var(--red)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">⚡</div>
+        <div class="cat-name">Performance</div>
+        <div class="cat-score text-yellow">60</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:60%;background:var(--yellow)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">♿</div>
+        <div class="cat-name">Accesibilidad</div>
+        <div class="cat-score text-red">52</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:52%;background:var(--red)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">✅</div>
+        <div class="cat-name">Best Practices</div>
+        <div class="cat-score text-yellow">60</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:60%;background:var(--yellow)"></div></div>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-card">
+        <div class="detail-card-header">🚨 Issues detectados</div>
+        <div class="detail-card-body">
+          <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>Alt texts solo 48%:</strong> 56 de 107 imágenes sin alt — el peor del grupo en coverage de accesibilidad de imágenes</div></div>
+          <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>Lazy loading solo 26%:</strong> 79 imágenes sin lazy loading — el peor del grupo</div></div>
+          <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>Schema JSON-LD con parse_error:</strong> El segundo bloque tiene JSON inválido — ItemList ausente o corrupto</div></div>
+          <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>Solo 27 ARIA landmarks:</strong> El más bajo del grupo — impacta la navegación por teclado y lectores de pantalla</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>DOMContentLoaded: 1,713ms</strong> — 2x más lento que buk.cl</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Error 400 en aplo-evnt.com:</strong> Servicio de terceros de intent marketing fallando — debe revisarse o eliminarse</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>CORS en GTM server-side</strong></div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Sin Organization/WebSite schema</strong></div></div>
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-card-header">✨ Highlights positivos</div>
+        <div class="detail-card-body">
+          <div class="highlight-item"><span>🟢</span><div><strong>Mejor title tag del grupo:</strong> 55 chars con keyword principal + marca</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>TTFB: 110ms</strong> — aceptable</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Meta description relevante: 138 chars</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Canonical correcto</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>HTTPS activo</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Estructura HTML semántica completa</strong> (main, nav, header, footer)</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Peso total aceptable: 1.23MB</strong></div></div>
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-card-header">📊 Métricas técnicas</div>
+        <div class="detail-card-body">
+          <table class="metrics-table">
+            <tr><th>Métrica</th><th>Valor</th></tr>
+            <tr><td>TTFB</td><td class="val-warn">110ms</td></tr>
+            <tr><td>DOMContentLoaded</td><td class="val-bad">1,713ms</td></tr>
+            <tr><td>Load Complete</td><td class="val-warn">3,462ms</td></tr>
+            <tr><td>Total transferido</td><td class="val-warn">1.23 MB</td></tr>
+            <tr><td>Total recursos</td><td class="val-warn">250+</td></tr>
+            <tr><td>Imágenes totales</td><td class="val-warn">107</td></tr>
+            <tr><td>Alt coverage</td><td class="val-bad">48%</td></tr>
+            <tr><td>Lazy loading</td><td class="val-bad">26%</td></tr>
+            <tr><td>Schemas</td><td class="val-bad">2 (1 parse_error)</td></tr>
+            <tr><td>Errores consola</td><td class="val-warn">5</td></tr>
+            <tr><td>ARIA landmarks</td><td class="val-bad">27</td></tr>
+            <tr><td>H1</td><td class="val-good">1 ✓</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">⚡ Quick Wins — Acciones priorizadas</div>
+    <div class="qw-item">
+      <span class="qw-badge">ALTA</span>
+      <div><strong>Agregar alt text a 56 imágenes sin atributo:</strong> Es la acción de mayor impacto combinado (SEO + Accesibilidad + WCAG compliance). Priorizar hero image, product screenshots y logos. Usar alt descriptivo, no genérico.</div>
+    </div>
+    <div class="qw-item">
+      <span class="qw-badge">ALTA</span>
+      <div><strong>Implementar lazy loading en imágenes below-the-fold:</strong> Solo 26% tienen lazy loading. Agregar loading="lazy" a las 79 imágenes restantes puede reducir el peso de carga inicial en 30-40% (estimación ~400KB de imágenes diferidas).</div>
+    </div>
+    <div class="qw-item">
+      <span class="qw-badge">ALTA</span>
+      <div><strong>Corregir schema JSON-LD inválido:</strong> Validar con Rich Results Test de Google. El schema con parse_error significa cero datos estructurados reconocidos para ese bloque.</div>
+    </div>
+    <div class="qw-item medium">
+      <span class="qw-badge medium">MEDIA</span>
+      <div><strong>Auditar y aumentar ARIA landmarks (de 27 a 60+):</strong> Agregar role="region" + aria-label a secciones principales. Esto también mejora la navegación por teclado requerida por WCAG 2.1.</div>
+    </div>
+    <div class="qw-item medium">
+      <span class="qw-badge medium">MEDIA</span>
+      <div><strong>Evaluar y eliminar aplo-evnt.com:</strong> Servicio de terceros devolviendo error 400. Si no genera valor medible, eliminarlo reduce requests y mejora best practices score.</div>
+    </div>
+  </div>
+
+  <!-- =============================== BRASIL =============================== -->
+  <div class="country-panel" id="panel-br">
+
+    <div class="panel-header">
+      <div class="panel-flag">🇧🇷</div>
+      <div class="panel-info">
+        <h2>Brasil — buk.com.br</h2>
+        <a href="https://www.buk.com.br" target="_blank">https://www.buk.com.br</a>
+        <div style="font-size:12px;color:var(--gray-400);margin-top:4px;">Auditado: 25/03/2026 · Home page únicamente</div>
+      </div>
+      <div class="panel-score">
+        <div class="big-score text-yellow">69</div>
+        <div class="score-label">Promedio general</div>
+      </div>
+    </div>
+
+    <div class="analyst-box">
+      <h3>🤖 Análisis IA — Perspectiva consultor</h3>
+      <p>buk.com.br es el sitio técnicamente más eficiente del grupo: menor cantidad de recursos (185 vs 250+ en otros), mejor loadComplete (2.74s), menor peso total (1.01MB) y solo 2 errores de consola. Sin embargo, pierde puntos en accesibilidad de imágenes (54% alt) y tiene una anomalía en schema: 3 bloques VideoObject duplicados, lo cual puede confundir a los crawlers y diluir señales. Además, 4 recursos de HubSpot retrasan el evento load, lo que impacta métricas de performance percibida.</p>
+      <div class="blocker">
+        <strong>Principal freno:</strong> Los 3 VideoObject schemas duplicados y los recursos HubSpot bloqueando el load event. Los scripts pesados de HubSpot (4 warnings de delayed load) sugieren que scripts del CMS se cargan sin async/defer.<br>
+        <strong>Principal oportunidad:</strong> Brasil ya tiene la base técnica más sólida. Resolver alt texts y schema duplicado puede llevar este sitio a ser el líder del grupo con ajustes menores.
+      </div>
+    </div>
+
+    <div class="scores-grid">
+      <div class="score-card">
+        <div class="cat-icon">🔍</div>
+        <div class="cat-name">SEO</div>
+        <div class="cat-score text-green">82</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:82%;background:var(--green)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">🗂️</div>
+        <div class="cat-name">Schema</div>
+        <div class="cat-score text-yellow">65</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:65%;background:var(--yellow)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">⚡</div>
+        <div class="cat-name">Performance</div>
+        <div class="cat-score text-yellow">68</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:68%;background:var(--yellow)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">♿</div>
+        <div class="cat-name">Accesibilidad</div>
+        <div class="cat-score text-yellow">58</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:58%;background:var(--yellow)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="cat-icon">✅</div>
+        <div class="cat-name">Best Practices</div>
+        <div class="cat-score text-yellow">72</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:72%;background:var(--yellow)"></div></div>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-card">
+        <div class="detail-card-header">🚨 Issues detectados</div>
+        <div class="detail-card-body">
+          <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>Alt texts solo 54%:</strong> 40 de 87 imágenes sin alt — tercer peor del grupo</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>3 VideoObject schemas duplicados:</strong> El mismo tipo de schema 3 veces puede confundir a Google — potencialmente un error de implementación en HubSpot</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>4 recursos HubSpot retrasan load event:</strong> Scripts del CMS sin async/defer bloquean el evento window.load</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>TTFB: 208ms</strong> — el más alto del grupo. Servidor de Brasil más lento que LatAm</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Lazy loading solo 38%:</strong> 54 imágenes sin lazy loading</div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Sin Organization/WebSite schema</strong></div></div>
+          <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Sin robots meta tag</strong></div></div>
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-card-header">✨ Highlights positivos</div>
+        <div class="detail-card-body">
+          <div class="highlight-item"><span>🟢</span><div><strong>Menor cantidad de recursos: 185</strong> (vs 250+ en otros 4 sitios)</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>loadComplete más rápido: 2,740ms</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Peso total más bajo: 1.01MB</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Solo 2 errores de consola</strong> — el más limpio del grupo</div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>4 schemas implementados</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>DOMContentLoaded: 762ms</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Estructura HTML semántica completa</strong></div></div>
+          <div class="highlight-item"><span>🟢</span><div><strong>Title tag bien optimizado: 61 chars</strong></div></div>
+        </div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-card-header">📊 Métricas técnicas</div>
+        <div class="detail-card-body">
+          <table class="metrics-table">
+            <tr><th>Métrica</th><th>Valor</th></tr>
+            <tr><td>TTFB</td><td class="val-warn">208ms</td></tr>
+            <tr><td>DOMContentLoaded</td><td class="val-good">762ms</td></tr>
+            <tr><td>Load Complete</td><td class="val-good">2,740ms</td></tr>
+            <tr><td>Total transferido</td><td class="val-good">1.01 MB</td></tr>
+            <tr><td>Total recursos</td><td class="val-good">185</td></tr>
+            <tr><td>Imágenes totales</td><td class="val-good">87</td></tr>
+            <tr><td>Alt coverage</td><td class="val-bad">54%</td></tr>
+            <tr><td>Lazy loading</td><td class="val-bad">38%</td></tr>
+            <tr><td>Schemas</td><td class="val-warn">4 (3 VideoObject dup.)</td></tr>
+            <tr><td>Errores consola</td><td class="val-good">2</td></tr>
+            <tr><td>H1</td><td class="val-good">1 ✓</td></tr>
+            <tr><td>Canonical</td><td class="val-good">✓</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">⚡ Quick Wins — Acciones priorizadas</div>
+    <div class="qw-item">
+      <span class="qw-badge">ALTA</span>
+      <div><strong>Agregar alt text a 40 imágenes sin atributo:</strong> Con el menor volumen de imágenes del grupo (87), este fix tiene bajo esfuerzo y alto impacto. Enfocarse en screenshots de producto e iconos de features.</div>
+    </div>
+    <div class="qw-item">
+      <span class="qw-badge">ALTA</span>
+      <div><strong>Eliminar/consolidar VideoObject schemas duplicados:</strong> Verificar por qué HubSpot está inyectando 3 bloques VideoObject. Mantener 1 por video presente en la página. Usar el Structured Data Testing Tool para confirmar.</div>
+    </div>
+    <div class="qw-item medium">
+      <span class="qw-badge medium">MEDIA</span>
+      <div><strong>Optimizar scripts HubSpot que bloquean load event:</strong> 4 recursos de HubSpot retrasan window.load. Revisar configuración de scripts en HubSpot CMS para agregar defer/async donde sea posible.</div>
+    </div>
+    <div class="qw-item medium">
+      <span class="qw-badge medium">MEDIA</span>
+      <div><strong>Implementar lazy loading en más imágenes (de 38% a 70%+):</strong> Con 87 imágenes en total, el esfuerzo es menor que en otros sitios. Agregar loading="lazy" a las 54 imágenes below-the-fold.</div>
+    </div>
+    <div class="qw-item low">
+      <span class="qw-badge low">BAJA</span>
+      <div><strong>Investigar TTFB de 208ms:</strong> El más alto del grupo. Puede ser latencia del servidor de Brasil. Considerar CDN con edge nodes en São Paulo o Rio de Janeiro para reducir latencia para usuarios brasileños.</div>
+    </div>
+  </div>
+
+  <!-- =============================== COMPARATIVA =============================== -->
+  <div class="country-panel" id="panel-comp">
+    <div class="comparison-section">
+      <div style="padding:20px 24px;background:white;border-radius:12px;border:1px solid var(--gray-200);margin-bottom:24px;">
+        <h2 style="font-size:18px;font-weight:700;margin-bottom:4px;">Tabla Comparativa — Todos los sitios</h2>
+        <p style="font-size:13px;color:var(--gray-400);">Scores por categoría y promedio general. Verde 80+, Amarillo 50-79, Rojo &lt;50.</p>
+      </div>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Categoría / Sitio</th>
+            <th>🇨🇱 buk.cl</th>
+            <th>🇨🇴 buk.co</th>
+            <th>🇵🇪 buk.pe</th>
+            <th>🇲🇽 buk.mx</th>
+            <th>🇧🇷 buk.com.br</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🔍 SEO</td>
+            <td><span class="score-cell score-green">85</span></td>
+            <td><span class="score-cell score-green">82</span></td>
+            <td><span class="score-cell score-green">80</span></td>
+            <td><span class="score-cell score-green">83</span></td>
+            <td><span class="score-cell score-green">82</span></td>
+          </tr>
+          <tr>
+            <td>🗂️ Schema Markup</td>
+            <td><span class="score-cell score-yellow">72</span></td>
+            <td><span class="score-cell score-red">55</span></td>
+            <td><span class="score-cell score-yellow">70</span></td>
+            <td><span class="score-cell score-red">50</span></td>
+            <td><span class="score-cell score-yellow">65</span></td>
+          </tr>
+          <tr>
+            <td>⚡ Performance Web</td>
+            <td><span class="score-cell score-yellow">72</span></td>
+            <td><span class="score-cell score-yellow">65</span></td>
+            <td><span class="score-cell score-yellow">62</span></td>
+            <td><span class="score-cell score-yellow">60</span></td>
+            <td><span class="score-cell score-yellow">68</span></td>
+          </tr>
+          <tr>
+            <td>♿ Accesibilidad</td>
+            <td><span class="score-cell score-green">80</span></td>
+            <td><span class="score-cell score-yellow">62</span></td>
+            <td><span class="score-cell score-yellow">72</span></td>
+            <td><span class="score-cell score-red">52</span></td>
+            <td><span class="score-cell score-yellow">58</span></td>
+          </tr>
+          <tr>
+            <td>✅ Best Practices</td>
+            <td><span class="score-cell score-yellow">68</span></td>
+            <td><span class="score-cell score-yellow">65</span></td>
+            <td><span class="score-cell score-red">45</span></td>
+            <td><span class="score-cell score-yellow">60</span></td>
+            <td><span class="score-cell score-yellow">72</span></td>
+          </tr>
+          <tr style="background:var(--gray-50);">
+            <td><strong>Promedio General</strong></td>
+            <td><strong><span class="score-cell score-yellow">75</span></strong></td>
+            <td><strong><span class="score-cell score-yellow">66</span></strong></td>
+            <td><strong><span class="score-cell score-yellow">66</span></strong></td>
+            <td><strong><span class="score-cell score-yellow">61</span></strong></td>
+            <td><strong><span class="score-cell score-yellow">69</span></strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:32px;">
+        <div class="section-title">📊 Comparativa de métricas de performance</div>
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>Métrica</th>
+              <th>🇨🇱 buk.cl</th>
+              <th>🇨🇴 buk.co</th>
+              <th>🇵🇪 buk.pe</th>
+              <th>🇲🇽 buk.mx</th>
+              <th>🇧🇷 buk.com.br</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>TTFB</td><td class="val-good">85ms</td><td class="val-warn">155ms</td><td class="val-warn">139ms</td><td class="val-warn">110ms</td><td class="val-warn">208ms</td></tr>
+            <tr><td>DOMContentLoaded</td><td class="val-good">774ms</td><td class="val-good">682ms</td><td class="val-bad">1,938ms</td><td class="val-bad">1,713ms</td><td class="val-good">762ms</td></tr>
+            <tr><td>Load Complete</td><td class="val-warn">3,169ms</td><td class="val-good">2,966ms</td><td class="val-bad">4,083ms</td><td class="val-warn">3,462ms</td><td class="val-good">2,740ms</td></tr>
+            <tr><td>Transferencia total</td><td class="val-warn">1.61MB</td><td class="val-warn">1.32MB</td><td class="val-warn">1.44MB</td><td class="val-warn">1.23MB</td><td class="val-good">1.01MB</td></tr>
+            <tr><td>Total recursos</td><td class="val-warn">250+</td><td class="val-warn">250+</td><td class="val-warn">250+</td><td class="val-warn">250+</td><td class="val-good">185</td></tr>
+            <tr><td>Imágenes totales</td><td class="val-bad">304</td><td class="val-warn">115</td><td class="val-warn">160</td><td class="val-warn">107</td><td class="val-good">87</td></tr>
+            <tr><td>Alt text coverage</td><td class="val-good">97%</td><td class="val-bad">57%</td><td class="val-good">90%</td><td class="val-bad">48%</td><td class="val-bad">54%</td></tr>
+            <tr><td>Lazy loading</td><td class="val-good">65%</td><td class="val-bad">38%</td><td class="val-good">60%</td><td class="val-bad">26%</td><td class="val-bad">38%</td></tr>
+            <tr><td>Schemas</td><td>2 ✓</td><td>3 (1 error)</td><td>2 ✓</td><td>2 (1 error)</td><td>4 (3 dup.)</td></tr>
+            <tr><td>Errores consola</td><td class="val-warn">5</td><td class="val-warn">4</td><td class="val-bad">13</td><td class="val-warn">5</td><td class="val-good">2</td></tr>
+            <tr><td>ARIA landmarks</td><td class="val-good">70</td><td class="val-warn">48</td><td class="val-good">73</td><td class="val-bad">27</td><td class="val-warn">32</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div class="detail-card">
+          <div class="detail-card-header">🏆 Issues comunes a todos los sitios</div>
+          <div class="detail-card-body">
+            <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>Sin schema Organization ni WebSite en ningún sitio</strong> — impide sitelinks y searchbox en todos los mercados</div></div>
+            <div class="issue-item"><span class="issue-icon">🔴</span><div><strong>Sin robots meta tag explícito en ningún sitio</strong></div></div>
+            <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>CORS errors en GTM server-side</strong> en todos los sitios — pérdida de datos analíticos generalizada</div></div>
+            <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Bajo lazy loading generalizado</strong> — solo Chile y Perú superan el 60%</div></div>
+            <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>250+ recursos en todos (excepto BR)</strong> — los sitios tienen demasiadas requests paralelas</div></div>
+            <div class="issue-item"><span class="issue-icon">🟡</span><div><strong>Unexpected token '&lt;' en 4 de 5 sitios</strong> — recurso externo devolviendo HTML en lugar de JS</div></div>
+          </div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-card-header">🎯 Recomendaciones globales para el equipo</div>
+          <div class="detail-card-body">
+            <div class="issue-item"><span class="issue-icon">1️⃣</span><div><strong>Crear un schema template centralizado</strong> en HubSpot con Organization + WebSite para todos los países. Esfuerzo único, impacto en 5 mercados.</div></div>
+            <div class="issue-item"><span class="issue-icon">2️⃣</span><div><strong>Estandarizar política de alt texts</strong> en el equipo de contenido — todos los módulos nuevos deben incluir alt obligatorio</div></div>
+            <div class="issue-item"><span class="issue-icon">3️⃣</span><div><strong>Auditar configuración CORS del GTM server-side</strong> de forma centralizada — es el mismo error en múltiples países</div></div>
+            <div class="issue-item"><span class="issue-icon">4️⃣</span><div><strong>Corregir el TypeError de addEventListener</strong> en los templates globales de HubSpot (afecta CL y PE)</div></div>
+            <div class="issue-item"><span class="issue-icon">5️⃣</span><div><strong>Establecer un proceso de QA técnico</strong> previo a deploy que incluya: validación schema, lint de JS y test de CORS</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<div class="page-footer">
+  Auditoría realizada con Playwright MCP · DOM API · Performance Timing API · Datos recopilados el 25/03/2026<br>
+  Nota: LCP, CLS y FID requieren Lighthouse o CrUX para medición precisa. Este análisis usa métricas disponibles vía Browser APIs.
+</div>
+
+<script>
+  function getScoreClass(score) {
+    if (score >= 80) return 'score-green';
+    if (score >= 50) return 'score-yellow';
+    return 'score-red';
+  }
+  function getScoreColor(score) {
+    if (score >= 80) return '#22c55e';
+    if (score >= 50) return '#f59e0b';
+    return '#ef4444';
+  }
+
+  // Color overview scores
+  const scores = { cl: 75, co: 66, pe: 66, mx: 61, br: 69 };
+  Object.entries(scores).forEach(([key, val]) => {
+    const el = document.getElementById('score-' + key + '-avg');
+    if (el) {
+      el.style.color = getScoreColor(val);
+    }
+  });
+
+  function showTab(country) {
+    // Hide all panels
+    document.querySelectorAll('.country-panel').forEach(p => p.classList.remove('active'));
+    // Deactivate all nav tabs
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    // Deactivate overview cards
+    document.querySelectorAll('.overview-card').forEach(c => c.classList.remove('active'));
+
+    // Show selected panel
+    const panel = document.getElementById('panel-' + country);
+    if (panel) panel.classList.add('active');
+
+    // Activate nav tab
+    const navtab = document.getElementById('navtab-' + country);
+    if (navtab) navtab.classList.add('active');
+
+    // Activate overview card
+    const tabcard = document.getElementById('tab-' + country);
+    if (tabcard) tabcard.classList.add('active');
+  }
+
+  // Initialize first tab
+  showTab('cl');
+</script>
+</body>
+</html>
