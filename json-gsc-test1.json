@@ -1,0 +1,54 @@
+{
+  "produto": [
+    "https://www.buk.com.br/produtos",
+    "https://www.buk.com.br/produtos/beneficios",
+    "https://www.buk.com.br/produtos/beneficios/gestao-de-beneficios",
+    "https://www.buk.com.br/produtos/buk-ai",
+    "https://www.buk.com.br/produtos/desenvolvimento-organizacional",
+    "https://www.buk.com.br/produtos/desenvolvimento-organizacional/comunicacao-interna-e-reconhecimento",
+    "https://www.buk.com.br/produtos/desenvolvimento-organizacional/gestao-de-desempenho",
+    "https://www.buk.com.br/produtos/desenvolvimento-organizacional/pesquisa-de-clima-organizacional",
+    "https://www.buk.com.br/produtos/desenvolvimento-organizacional/recrutamento-e-selecao",
+    "https://www.buk.com.br/produtos/desenvolvimento-organizacional/treinamentos-corporativos",
+    "https://www.buk.com.br/produtos/gestao",
+    "https://www.buk.com.br/produtos/gestao/assinatura-eletronica-e-gestao-de-documentos",
+    "https://www.buk.com.br/produtos/gestao/canal-de-denuncia-trabalhista",
+    "https://www.buk.com.br/produtos/gestao/gestao-de-ativos",
+    "https://www.buk.com.br/produtos/gestao/onboarding",
+    "https://www.buk.com.br/produtos/gestao/servicos-ao-colaborador",
+    "https://www.buk.com.br/produtos/gestao/sistema-de-folha-de-pagamento",
+    "https://www.buk.com.br/produtos/plataforma-de-rh",
+    "https://www.buk.com.br/produtos/plataforma-de-rrhh/estrutura-organizacional",
+    "https://www.buk.com.br/produtos/plataforma-de-rrhh/portal-do-colaborador",
+    "https://www.buk.com.br/produtos/plataforma-de-rrhh/relatorios",
+    "https://www.buk.com.br/produtos/plataforma-de-rrhh/usuarios-e-perfis",
+    "https://www.buk.com.br/produtos/plataforma-de-rrhh/workflows",
+    "https://www.buk.com.br/produtos/sistema-de-gestao-de-pessoas"
+  ],
+  "calculadoras": [
+    "https://www.buk.com.br/recursos/calculadoras",
+    "https://www.buk.com.br/recursos/calculadoras/calculadora-de-ferias",
+    "https://www.buk.com.br/recursos/calculadoras/calculadora-de-turnover",
+    "https://www.buk.com.br/recursos/calculadoras/calculadora-horas-extras",
+    "https://www.buk.com.br/recursos/calculadoras/calculadora-salario-liquido"
+  ],
+  "recursos": [
+    "https://www.buk.com.br/recursos",
+    "https://www.buk.com.br/recursos/app"
+  ],
+  "outros": [
+    "https://www.buk.com.br/",
+    "https://www.buk.com.br/agendamento-de-reuniao-agradecimento",
+    "https://www.buk.com.br/fale-conosco",
+    "https://www.buk.com.br/guia-salario-clt",
+    "https://www.buk.com.br/melhores-avaliacoes-de-desempenho",
+    "https://www.buk.com.br/obrigado-calculadora",
+    "https://www.buk.com.br/obrigado-contato-pillar",
+    "https://www.buk.com.br/precos",
+    "https://www.buk.com.br/quem-somos",
+    "https://www.buk.com.br/quem-somos/clientes",
+    "https://www.buk.com.br/quem-somos/experiencia",
+    "https://www.buk.com.br/quem-somos/parceiros",
+    "https://www.buk.com.br/tudo-o-que-voce-precisa-saber-sobre-onboarding"
+  ]
+}
