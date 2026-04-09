@@ -1,0 +1,712 @@
+[
+  {
+    "id": "2026-04-08 17:40",
+    "countries": {
+      "Chile": {
+        "urls": [
+          {
+            "url": "https://www.buk.cl/",
+            "metrics": {
+              "performanceScore": 59,
+              "fcp": 1737,
+              "lcp": 3021,
+              "tbt": 2794,
+              "cls": 0.0147,
+              "speedIndex": 5973
+            }
+          },
+          {
+            "url": "https://www.buk.cl/blog/como-se-calcula-la-gratificacion-legal",
+            "metrics": {
+              "performanceScore": 54,
+              "fcp": 2443,
+              "lcp": 3838,
+              "tbt": 1605,
+              "cls": 0.0481,
+              "speedIndex": 5137
+            }
+          },
+          {
+            "url": "https://www.buk.cl/blog/como-se-calcula-un-finiquito",
+            "metrics": {
+              "performanceScore": 51,
+              "fcp": 2833,
+              "lcp": 4456,
+              "tbt": 1538,
+              "cls": 0.0329,
+              "speedIndex": 4797
+            }
+          },
+          {
+            "url": "https://www.buk.cl/productos/administracion/control-de-asistencia",
+            "metrics": {
+              "performanceScore": 40,
+              "fcp": 2613,
+              "lcp": 6170,
+              "tbt": 2614,
+              "cls": 0.001,
+              "speedIndex": 6563
+            }
+          },
+          {
+            "url": "https://www.buk.cl/blog/5-errores-comunes-en-el-pago-de-remuneraciones",
+            "metrics": {
+              "performanceScore": 52,
+              "fcp": 2513,
+              "lcp": 4689,
+              "tbt": 1553,
+              "cls": 0.0362,
+              "speedIndex": 4420
+            }
+          },
+          {
+            "url": "https://www.buk.cl/blog/todo-lo-que-debes-saber-de-las-vacaciones",
+            "metrics": {
+              "performanceScore": 49,
+              "fcp": 2806,
+              "lcp": 4737,
+              "tbt": 1395,
+              "cls": 0.0855,
+              "speedIndex": 4824
+            }
+          },
+          {
+            "url": "https://www.buk.cl/manual-de-compensaciones-y-beneficios",
+            "metrics": {
+              "performanceScore": 62,
+              "fcp": 1804,
+              "lcp": 3818,
+              "tbt": 1415,
+              "cls": 0.0015,
+              "speedIndex": 3284
+            }
+          },
+          {
+            "url": "https://www.buk.cl/blog/liquidaciones-de-sueldo-como-calcular-el-sueldo-liquido-y-bruto",
+            "metrics": {
+              "performanceScore": 49,
+              "fcp": 2965,
+              "lcp": 4716,
+              "tbt": 1518,
+              "cls": 0.0362,
+              "speedIndex": 4989
+            }
+          },
+          {
+            "url": "https://www.buk.cl/productos/administracion/software-de-remuneraciones",
+            "metrics": {
+              "performanceScore": 35,
+              "fcp": 1936,
+              "lcp": 7237,
+              "tbt": 3659,
+              "cls": 0.0442,
+              "speedIndex": 8472
+            }
+          },
+          {
+            "url": "https://www.buk.cl/blog/todo-lo-que-debes-saber-sobre-el-aguinaldo",
+            "metrics": {
+              "performanceScore": 52,
+              "fcp": 2657,
+              "lcp": 4367,
+              "tbt": 1618,
+              "cls": 0.0477,
+              "speedIndex": 4422
+            }
+          },
+          {
+            "url": "https://www.buk.cl/blog/como-hacer-una-liquidacion-de-sueldo-paso-a-paso",
+            "metrics": {
+              "performanceScore": 54,
+              "fcp": 2518,
+              "lcp": 4139,
+              "tbt": 1373,
+              "cls": 0.0462,
+              "speedIndex": 4955
+            }
+          },
+          {
+            "url": "https://www.buk.cl/blog/como-calcular-el-sueldo-imponible",
+            "metrics": {
+              "performanceScore": 49,
+              "fcp": 2923,
+              "lcp": 4924,
+              "tbt": 1295,
+              "cls": 0.065,
+              "speedIndex": 4887
+            }
+          },
+          {
+            "url": "https://www.buk.cl/blog/nueva-ley-de-teletrabajo-cuáles-son-las-cláusulas-que-debe-contener-el-anexo-de-contrato",
+            "metrics": {
+              "performanceScore": 45,
+              "fcp": 3371,
+              "lcp": 4804,
+              "tbt": 1731,
+              "cls": 0.0541,
+              "speedIndex": 5272
+            }
+          },
+          {
+            "url": "https://www.buk.cl/blog/los-cambios-en-leyes-laborales-en-chile-de-cara-al-2024",
+            "metrics": {
+              "performanceScore": 52,
+              "fcp": 2506,
+              "lcp": 4439,
+              "tbt": 1532,
+              "cls": 0.0657,
+              "speedIndex": 4662
+            }
+          },
+          {
+            "url": "https://www.buk.cl/guia-evaluacion-de-desempeno",
+            "metrics": {
+              "performanceScore": 55,
+              "fcp": 1873,
+              "lcp": 8239,
+              "tbt": 1270,
+              "cls": 0.0517,
+              "speedIndex": 3096
+            }
+          }
+        ],
+        "average": {
+          "performanceScore": 51,
+          "fcp": 2500,
+          "lcp": 4906,
+          "tbt": 1794,
+          "cls": 0.042,
+          "speedIndex": 5050
+        }
+      },
+      "Perú": {
+        "urls": [
+          {
+            "url": "https://www.buk.pe/",
+            "metrics": {
+              "performanceScore": 40,
+              "fcp": 3048,
+              "lcp": 5101,
+              "tbt": 3074,
+              "cls": 0.0134,
+              "speedIndex": 7965
+            }
+          },
+          {
+            "url": "https://www.buk.pe/productos/administracion/sistema-de-planillas",
+            "metrics": {
+              "performanceScore": 40,
+              "fcp": 1898,
+              "lcp": 9400,
+              "tbt": 2935,
+              "cls": 0.0196,
+              "speedIndex": 6578
+            }
+          },
+          {
+            "url": "https://www.buk.pe/blog/aprende-a-calcular-los-descansos-medicos-y-subsidios",
+            "metrics": {
+              "performanceScore": 50,
+              "fcp": 2435,
+              "lcp": 4666,
+              "tbt": 2102,
+              "cls": 0.003,
+              "speedIndex": 4636
+            }
+          },
+          {
+            "url": "https://www.buk.pe/blog/como-calcular-la-remuneracion-hacer-una-boleta-de-pago-en-4-simples-pasos",
+            "metrics": {
+              "performanceScore": 57,
+              "fcp": 2393,
+              "lcp": 3595,
+              "tbt": 2069,
+              "cls": 0.0335,
+              "speedIndex": 4225
+            }
+          },
+          {
+            "url": "https://www.buk.pe/blog/aprende-a-calcular-la-remuneracion-vacacional",
+            "metrics": {
+              "performanceScore": 58,
+              "fcp": 2273,
+              "lcp": 3476,
+              "tbt": 2192,
+              "cls": 0.0345,
+              "speedIndex": 4340
+            }
+          },
+          {
+            "url": "https://www.buk.pe/blog/como-calcular-el-pago-de-la-cts",
+            "metrics": {
+              "performanceScore": 48,
+              "fcp": 2756,
+              "lcp": 4513,
+              "tbt": 2362,
+              "cls": 0.0343,
+              "speedIndex": 4678
+            }
+          },
+          {
+            "url": "https://www.buk.pe/manual-de-planillas-de-remuneraciones",
+            "metrics": {
+              "performanceScore": 55,
+              "fcp": 2187,
+              "lcp": 3917,
+              "tbt": 2103,
+              "cls": 0.0589,
+              "speedIndex": 4272
+            }
+          },
+          {
+            "url": "https://www.buk.pe/blog/cuales-son-los-conceptos-no-remunerativos-que-puedes-brindar",
+            "metrics": {
+              "performanceScore": 57,
+              "fcp": 1898,
+              "lcp": 3572,
+              "tbt": 2001,
+              "cls": 0.0689,
+              "speedIndex": 4832
+            }
+          },
+          {
+            "url": "https://www.buk.pe/blog/buk-el-sistema-de-planillas-que-estabas-buscando",
+            "metrics": {
+              "performanceScore": 54,
+              "fcp": 1939,
+              "lcp": 4285,
+              "tbt": 2047,
+              "cls": 0.0033,
+              "speedIndex": 4176
+            }
+          },
+          {
+            "url": "https://www.buk.pe/blog/remuneraciones-que-sabes-sobre-ellas",
+            "metrics": {
+              "performanceScore": 56,
+              "fcp": 1923,
+              "lcp": 3917,
+              "tbt": 2028,
+              "cls": 0.0226,
+              "speedIndex": 4800
+            }
+          },
+          {
+            "url": "https://www.buk.pe/blog/gratificaciones-como-calcularlas",
+            "metrics": {
+              "performanceScore": 54,
+              "fcp": 1915,
+              "lcp": 4216,
+              "tbt": 1806,
+              "cls": 0.0024,
+              "speedIndex": 4636
+            }
+          },
+          {
+            "url": "https://www.buk.pe/soluciones/firma-electronica-y-gestion-de-documentos",
+            "metrics": {
+              "performanceScore": 45,
+              "fcp": 2223,
+              "lcp": 4843,
+              "tbt": 3444,
+              "cls": 0.0246,
+              "speedIndex": 7612
+            }
+          },
+          {
+            "url": "https://www.buk.pe/blog/buk-un-sistema-integral-de-rrhh-con-tecnologia-de-punta",
+            "metrics": {
+              "performanceScore": 53,
+              "fcp": 1928,
+              "lcp": 4204,
+              "tbt": 2220,
+              "cls": 0.0327,
+              "speedIndex": 4813
+            }
+          },
+          {
+            "url": "https://www.buk.pe/blog/por-que-usar-un-sistema-de-planillas",
+            "metrics": {
+              "performanceScore": 51,
+              "fcp": 2271,
+              "lcp": 3942,
+              "tbt": 2497,
+              "cls": 0.0332,
+              "speedIndex": 6175
+            }
+          },
+          {
+            "url": "https://www.buk.pe/blog/como-hacer-el-calculo-de-horas-extras-por-sobretiempo",
+            "metrics": {
+              "performanceScore": 57,
+              "fcp": 1915,
+              "lcp": 3740,
+              "tbt": 2472,
+              "cls": 0.0346,
+              "speedIndex": 4320
+            }
+          }
+        ],
+        "average": {
+          "performanceScore": 52,
+          "fcp": 2200,
+          "lcp": 4492,
+          "tbt": 2357,
+          "cls": 0.028,
+          "speedIndex": 5204
+        }
+      },
+      "Colombia": {
+        "urls": [
+          {
+            "url": "https://www.buk.co/",
+            "metrics": {
+              "performanceScore": 40,
+              "fcp": 2936,
+              "lcp": 5102,
+              "tbt": 3874,
+              "cls": 0.0077,
+              "speedIndex": 8414
+            }
+          },
+          {
+            "url": "https://www.buk.co/blog/calculo-vacaciones-formula",
+            "metrics": {
+              "performanceScore": 53,
+              "fcp": 1925,
+              "lcp": 4021,
+              "tbt": 2512,
+              "cls": 0.003,
+              "speedIndex": 5557
+            }
+          },
+          {
+            "url": "https://www.buk.co/productos/administracion/software-de-nomina",
+            "metrics": {
+              "performanceScore": 49,
+              "fcp": 1894,
+              "lcp": 3876,
+              "tbt": 3504,
+              "cls": 0.0586,
+              "speedIndex": 6597
+            }
+          },
+          {
+            "url": "https://www.buk.co/blog/cotizante-liquidacion-pila",
+            "metrics": {
+              "performanceScore": 54,
+              "fcp": 1903,
+              "lcp": 3954,
+              "tbt": 2555,
+              "cls": 0.0613,
+              "speedIndex": 4701
+            }
+          },
+          {
+            "url": "https://www.buk.co/blog/que-son-las-prestaciones-sociales-y-como-calcularlas",
+            "metrics": {
+              "performanceScore": 55,
+              "fcp": 1912,
+              "lcp": 3921,
+              "tbt": 2520,
+              "cls": 0.0043,
+              "speedIndex": 4320
+            }
+          },
+          {
+            "url": "https://www.buk.co/blog/como-se-define-el-pago-de-vacaciones-en-colombia",
+            "metrics": {
+              "performanceScore": 51,
+              "fcp": 1908,
+              "lcp": 4024,
+              "tbt": 2350,
+              "cls": 0.1109,
+              "speedIndex": 4329
+            }
+          },
+          {
+            "url": "https://www.buk.co/blog/ingreso-base-cotizacion",
+            "metrics": {
+              "performanceScore": 51,
+              "fcp": 1954,
+              "lcp": 4372,
+              "tbt": 2646,
+              "cls": 0.0421,
+              "speedIndex": 4812
+            }
+          },
+          {
+            "url": "https://www.buk.co/sistema-de-gestion-de-recursos-humanos",
+            "metrics": {
+              "performanceScore": 57,
+              "fcp": 1822,
+              "lcp": 3731,
+              "tbt": 2481,
+              "cls": 0.0562,
+              "speedIndex": 4169
+            }
+          },
+          {
+            "url": "https://www.buk.co/blog/porque-tener-un-plan-de-beneficios-laborales",
+            "metrics": {
+              "performanceScore": 50,
+              "fcp": 1970,
+              "lcp": 4580,
+              "tbt": 2531,
+              "cls": 0.0818,
+              "speedIndex": 4321
+            }
+          },
+          {
+            "url": "https://www.buk.co/desempeno",
+            "metrics": {
+              "performanceScore": 37,
+              "fcp": 2198,
+              "lcp": 7660,
+              "tbt": 4101,
+              "cls": 0.0134,
+              "speedIndex": 9288
+            }
+          },
+          {
+            "url": "https://www.buk.co/blog/que-es-comite-paritario-de-seguridad-y-salud-en-trabajo",
+            "metrics": {
+              "performanceScore": 54,
+              "fcp": 1920,
+              "lcp": 4167,
+              "tbt": 2368,
+              "cls": 0.0032,
+              "speedIndex": 4567
+            }
+          },
+          {
+            "url": "https://www.buk.co/soluciones/beneficios-laborales",
+            "metrics": {
+              "performanceScore": 45,
+              "fcp": 2355,
+              "lcp": 4703,
+              "tbt": 2563,
+              "cls": 0.0643,
+              "speedIndex": 6731
+            }
+          },
+          {
+            "url": "https://www.buk.co/guia-evaluacion-de-desempeno",
+            "metrics": {
+              "performanceScore": 60,
+              "fcp": 1938,
+              "lcp": 3291,
+              "tbt": 2266,
+              "cls": 0.0562,
+              "speedIndex": 3968
+            }
+          },
+          {
+            "url": "https://www.buk.co/blog/los-valores-corporativos-que-guian-a-buk",
+            "metrics": {
+              "performanceScore": 54,
+              "fcp": 1917,
+              "lcp": 3963,
+              "tbt": 2653,
+              "cls": 0.0688,
+              "speedIndex": 4585
+            }
+          },
+          {
+            "url": "https://www.buk.co/blog/el-hunting-en-reclutamiento-y-seleccion",
+            "metrics": {
+              "performanceScore": 55,
+              "fcp": 1917,
+              "lcp": 3723,
+              "tbt": 2473,
+              "cls": 0.0775,
+              "speedIndex": 4822
+            }
+          }
+        ],
+        "average": {
+          "performanceScore": 51,
+          "fcp": 2031,
+          "lcp": 4339,
+          "tbt": 2760,
+          "cls": 0.0473,
+          "speedIndex": 5412
+        }
+      },
+      "México": {
+        "urls": [
+          {
+            "url": "https://www.buk.mx/",
+            "metrics": {
+              "performanceScore": 50,
+              "fcp": 2080,
+              "lcp": 3980,
+              "tbt": 2594,
+              "cls": 0.0001,
+              "speedIndex": 7703
+            }
+          },
+          {
+            "url": "https://www.buk.mx/blog/nom-035-como-implementarla-en-6-pasos",
+            "metrics": {
+              "performanceScore": 45,
+              "fcp": 2554,
+              "lcp": 4286,
+              "tbt": 2314,
+              "cls": 0.0942,
+              "speedIndex": 6657
+            }
+          },
+          {
+            "url": "https://www.buk.mx/blog/reto-reloj-checador-en-el-home-office",
+            "metrics": {
+              "performanceScore": 46,
+              "fcp": 2565,
+              "lcp": 4711,
+              "tbt": 2040,
+              "cls": 0.0654,
+              "speedIndex": 5556
+            }
+          },
+          {
+            "url": "https://www.buk.mx/blog/que-es-el-dnc-y-para-que-sirve",
+            "metrics": {
+              "performanceScore": 49,
+              "fcp": 2512,
+              "lcp": 4451,
+              "tbt": 2085,
+              "cls": 0.0037,
+              "speedIndex": 5484
+            }
+          },
+          {
+            "url": "https://www.buk.mx/blog/cuales-son-las-etapas-del-proceso-de-induccion-laboral",
+            "metrics": {
+              "performanceScore": 51,
+              "fcp": 2508,
+              "lcp": 4247,
+              "tbt": 1924,
+              "cls": 0.0494,
+              "speedIndex": 4784
+            }
+          },
+          {
+            "url": "https://www.buk.mx/blog/prima-de-antiguedad-que-es-y-como-se-paga",
+            "metrics": {
+              "performanceScore": 45,
+              "fcp": 2965,
+              "lcp": 5056,
+              "tbt": 1936,
+              "cls": 0.0347,
+              "speedIndex": 5185
+            }
+          },
+          {
+            "url": "https://www.buk.mx/soluciones/reclutamiento-y-seleccion",
+            "metrics": {
+              "performanceScore": 48,
+              "fcp": 2371,
+              "lcp": 4364,
+              "tbt": 2790,
+              "cls": 0.0096,
+              "speedIndex": 5864
+            }
+          },
+          {
+            "url": "https://www.buk.cl/blog/ejemplos-de-politicas-recursos-humanos",
+            "metrics": {
+              "performanceScore": 57,
+              "fcp": 2585,
+              "lcp": 3219,
+              "tbt": 1694,
+              "cls": 0.0505,
+              "speedIndex": 5861
+            }
+          },
+          {
+            "url": "https://www.buk.mx/blog/que-es-el-dnc-y-para-que-sirve",
+            "metrics": {
+              "performanceScore": 48,
+              "fcp": 2726,
+              "lcp": 4686,
+              "tbt": 1992,
+              "cls": 0.0037,
+              "speedIndex": 5206
+            }
+          },
+          {
+            "url": "https://www.buk.mx/blog/tablas-de-isr-2024-para-sueldos-y-salarios",
+            "metrics": {
+              "performanceScore": 46,
+              "fcp": 2482,
+              "lcp": 4932,
+              "tbt": 2194,
+              "cls": 0.0835,
+              "speedIndex": 4837
+            }
+          },
+          {
+            "url": "https://www.buk.mx/soluciones/control-de-asistencia",
+            "metrics": {
+              "performanceScore": 34,
+              "fcp": 2377,
+              "lcp": 45408,
+              "tbt": 3534,
+              "cls": 0.019,
+              "speedIndex": 9427
+            }
+          },
+          {
+            "url": "https://www.buk.mx/blog/salario-base-de-cotizacion-que-es-y-como-calcularlo",
+            "metrics": {
+              "performanceScore": 44,
+              "fcp": 2665,
+              "lcp": 5058,
+              "tbt": 2114,
+              "cls": 0.0898,
+              "speedIndex": 5621
+            }
+          },
+          {
+            "url": "https://www.buk.mx/blog/prima-de-antiguedad-que-es-y-como-se-paga",
+            "metrics": {
+              "performanceScore": 47,
+              "fcp": 2821,
+              "lcp": 4834,
+              "tbt": 1848,
+              "cls": 0.0351,
+              "speedIndex": 5294
+            }
+          },
+          {
+            "url": "https://www.buk.mx/soluciones/software-de-nomina",
+            "metrics": {
+              "performanceScore": 33,
+              "fcp": 2459,
+              "lcp": 8892,
+              "tbt": 3117,
+              "cls": 0.0618,
+              "speedIndex": 9664
+            }
+          }
+        ],
+        "average": {
+          "performanceScore": 46,
+          "fcp": 2548,
+          "lcp": 7723,
+          "tbt": 2298,
+          "cls": 0.0429,
+          "speedIndex": 6225
+        }
+      }
+    },
+    "generalAverage": {
+      "performanceScore": 50,
+      "fcp": 2316,
+      "lcp": 5325,
+      "tbt": 2302,
+      "cls": 0.04,
+      "speedIndex": 5460
+    }
+  }
+]
