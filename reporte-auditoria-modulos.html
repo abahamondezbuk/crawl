@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Report - BUK-SITE_2023 Theme Modules</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* === BUK Design Tokens (estilos-base/variables.css) === */
+    :root {
+      --color-blue-buk: #2F4DAA;
+      --color-blue-buk-2: #203b9c;
+      --color-blue-ia: #2962F5;
+      --color-green-ia: #72C480;
+      --color-yellow-buk: #FBBF3D;
+      --color-orange-buk: #F59121;
+      --color-dark-blue: #2B3C6A;
+      --color-middle-blue-1: #2F6FC2;
+      --color-middle-blue-2: #73A0DB;
+      --color-light-blue: #D9E3FC;
+      --color-grey-buk: #7D7D7D;
+      --color-white: #fff;
+      --color-error: #F54721;
+      --wb-font-color-1: #1A2441;
+      --wb-font-color-2: #A1A2AA;
+      --wb-bg-modules: #E7EEFF;
+      --font-family-body: 'Inter', sans-serif;
+      --font-family-title: 'Source Sans Pro', sans-serif;
+      --bg-cta-1: linear-gradient(0deg, #F8A12A 0%, #FBBF3D 100%);
+      --bg-cta-1-hover: linear-gradient(178.56deg, #F59121 1.23%, #CE5816 151.61%);
+      --bg-cta-2-hover: linear-gradient(180deg, #2F4DAA 0%, #2E4176 100%);
+      --bg-gradient-modules-to-white: linear-gradient(180deg, #E7EEFF 0%, #FFF 100%);
+      --bg-gradient-blue-light: linear-gradient(180deg, #2F4DAA 31.84%, #2E6DC8 169.73%);
+      --radius-btn: 69px;
+      --radius-16: 16px;
+      --radius-32: 32px;
+      --box-shadow-1: 0px 2px 9px 0px rgba(0, 0, 0, 0.10);
+      --box-shadow-3: 1px 2px 9.1px 2px rgba(43, 60, 106, 0.12);
+    }
+
+    /* === Base (estilos-base/main.css) === */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-family-body);
+      color: var(--wb-font-color-1);
+      background: var(--bg-gradient-modules-to-white);
+      min-width: 320px;
+      line-height: 1.3;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; vertical-align: middle; }
+    h1, h2, h3, h4, h5, h6 { font-family: var(--font-family-title); line-height: 1; }
+    h1, h2, h3, h5 { color: var(--color-blue-buk); }
+    h4, h6 { color: var(--wb-font-color-1); }
+    h1 { font-size: 3rem; font-weight: 900; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.5rem; }
+    p { font-size: 1.125rem; line-height: 1.3; }
+    ul { list-style: none; list-style-position: inside; }
+
+    .boxer { width: 90%; margin: 0 auto; max-width: 1200px; }
+
+    /* === Report layout === */
+    .report-header {
+      background: var(--bg-cta-2-hover);
+      color: var(--color-white);
+      padding: 56px 0 48px;
+    }
+    .report-header h1 { font-size: 2.5rem; font-weight: 900; margin-bottom: 8px; color: var(--color-white); }
+    .report-header p { opacity: 0.8; font-size: 0.875rem; font-family: var(--font-family-body); }
+
+    .report-body { padding: 40px 0 60px; }
+
+    /* Stats cards */
+    .stats-grid {
+      display: flex; flex-wrap: wrap; gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .stat-card {
+      flex: 1; min-width: 180px;
+      background: var(--color-white);
+      border-radius: var(--radius-16);
+      padding: 24px;
+      box-shadow: var(--box-shadow-1);
+      text-align: center;
+    }
+    .stat-card .number {
+      font-family: var(--font-family-title);
+      font-size: 2.5rem;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-card .label {
+      font-size: 0.75rem;
+      color: var(--wb-font-color-2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+    .stat-card.blue .number { color: var(--color-blue-buk); }
+    .stat-card.green .number { color: var(--color-green-ia); }
+    .stat-card.red .number { color: var(--color-error); }
+    .stat-card.orange .number { color: var(--color-orange-buk); }
+
+    /* Section cards */
+    .section {
+      background: var(--color-white);
+      border-radius: var(--radius-16);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--box-shadow-3);
+    }
+    .section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-blue-buk);
+      margin-bottom: 6px;
+    }
+    .section .subtitle {
+      color: var(--wb-font-color-2);
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+    }
+    thead th {
+      background: var(--wb-bg-modules);
+      color: var(--color-dark-blue);
+      font-family: var(--font-family-title);
+      font-weight: 700;
+      padding: 10px 12px;
+      text-align: left;
+      position: sticky;
+      top: 0;
+      white-space: nowrap;
+      font-size: 0.875rem;
+    }
+    tbody td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--color-light-blue);
+      vertical-align: top;
+    }
+    tbody tr:hover { background: #F0F4FF; }
+    .path-cell { color: var(--color-grey-buk); font-size: 0.75rem; word-break: break-all; }
+    code {
+      background: var(--wb-bg-modules);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      word-break: break-all;
+      color: var(--color-dark-blue);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: var(--radius-btn);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      font-family: var(--font-family-title);
+      white-space: nowrap;
+    }
+    .badge-sm {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: var(--radius-btn);
+      font-size: 0.625rem;
+      font-weight: 600;
+      font-family: var(--font-family-title);
+      margin-left: 4px;
+      white-space: nowrap;
+    }
+    .cat-sinuso { background: #FECDD3; color: #9F1239; }
+    .cat-test { background: #FED7AA; color: #9A3412; }
+    .cat-backup { background: #FDE68A; color: #92400E; }
+    .cat-unreferenced { background: var(--color-light-blue); color: var(--color-blue-buk); }
+    .cat-ok { background: #D1FAE5; color: #065F46; }
+
+    .rec { font-weight: 700; font-size: 0.75rem; font-family: var(--font-family-title); }
+    .rec-eliminar { color: var(--color-error); }
+    .rec-revisar { color: var(--color-orange-buk); }
+    .rec-conservar { color: var(--color-green-ia); }
+
+    /* Filter controls */
+    .controls {
+      display: flex; gap: 0.75rem; flex-wrap: wrap;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
+    .controls input {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.563rem 1rem;
+      border: 1px solid var(--color-light-blue);
+      border-radius: var(--radius-btn);
+      font-size: 0.875rem;
+      font-family: var(--font-family-body);
+      color: var(--wb-font-color-1);
+      outline: none;
+      transition: .3s;
+    }
+    .controls input:focus { border-color: var(--color-blue-buk); box-shadow: 0 0 0 3px rgba(47,77,170,0.12); }
+    .controls select {
+      padding: 0.563rem 1rem;
+      border: 1px solid var(--color-light-blue);
+      border-radius: var(--radius-btn);
+      font-size: 0.875rem;
+      font-family: var(--font-family-body);
+      background: var(--color-white);
+      color: var(--wb-font-color-1);
+      cursor: pointer;
+      outline: none;
+      transition: .3s;
+    }
+    .controls select:focus { border-color: var(--color-blue-buk); }
+    .controls .count-label {
+      font-size: 0.75rem;
+      color: var(--wb-font-color-2);
+      margin-left: auto;
+      font-weight: 600;
+    }
+
+    /* Summary boxes */
+    .summary-grid {
+      display: flex; flex-wrap: wrap; gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .summary-box {
+      flex: 1; min-width: 220px;
+      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius-16);
+      border-left: 4px solid;
+      box-shadow: var(--box-shadow-1);
+    }
+    .summary-box.sinuso { background: #FFF1F2; border-color: var(--color-error); }
+    .summary-box.test { background: #FFF7ED; border-color: var(--color-orange-buk); }
+    .summary-box.backup { background: #FFFBEB; border-color: var(--color-yellow-buk); }
+    .summary-box.unreferenced { background: #EFF6FF; border-color: var(--color-middle-blue-1); }
+    .summary-box h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--wb-font-color-1);
+    }
+    .summary-box .count {
+      font-size: 2rem;
+      font-weight: 900;
+      font-family: var(--font-family-title);
+      color: var(--color-blue-buk);
+    }
+    .summary-box p { font-size: 0.8125rem; color: var(--color-grey-buk); line-height: 1.4; }
+
+    .footer-note {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--wb-font-color-2);
+      font-size: 0.75rem;
+    }
+
+    /* Notes section */
+    .notes-list {
+      font-size: 0.875rem;
+      line-height: 2;
+      padding-left: 1.25rem;
+      list-style: disc;
+      list-style-position: outside;
+    }
+    .notes-list li { color: var(--wb-font-color-1); }
+    .notes-list strong { color: var(--color-dark-blue); }
+
+    @media (max-width: 768px) {
+      .report-header h1 { font-size: 1.75rem; }
+      .stats-grid { gap: 0.75rem; }
+      .stat-card { min-width: 140px; padding: 16px; }
+      .stat-card .number { font-size: 2rem; }
+      .section { padding: 1.25rem; }
+      .summary-box { min-width: 100%; }
+    }
+
+    @media print {
+      body { background: white; }
+      .controls { display: none; }
+      .section { box-shadow: none; border: 1px solid var(--color-light-blue); }
+      .report-header { background: var(--color-blue-buk); -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="report-header">
+    <div class="boxer">
+      <h1>Audit Report: BUK-SITE_2023</h1>
+      <p>Analisis de referencias cruzadas entre modulos y templates &bull; Generado el 09-04-2026 &bull; Cuenta: front-digital-pruebas (47812023)</p>
+    </div>
+  </div>
+
+  <div class="report-body">
+  <div class="boxer">
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="number">766</div>
+      <div class="label">Modulos totales</div>
+    </div>
+    <div class="stat-card green">
+      <div class="number">651</div>
+      <div class="label">Referenciados</div>
+    </div>
+    <div class="stat-card red">
+      <div class="number">115</div>
+      <div class="label">Sin referencias</div>
+    </div>
+    <div class="stat-card orange">
+      <div class="number">34</div>
+      <div class="label">Grupos duplicados</div>
+    </div>
+  </div>
+
+  <!-- Breakdown -->
+  <div class="summary-grid">
+    <div class="summary-box sinuso">
+      <div class="count">12</div>
+      <h3>Carpeta sin-uso</h3>
+      <p>Modulos ya marcados como sin uso por el equipo</p>
+    </div>
+    <div class="summary-box test">
+      <div class="count">10</div>
+      <h3>Test / Experimento</h3>
+      <p>Modulos de prueba, test o experimento sin referencia</p>
+    </div>
+    <div class="summary-box backup">
+      <div class="count">14</div>
+      <h3>Backup / Respaldo</h3>
+      <p>Copias de seguridad, versiones antiguas, respaldos</p>
+    </div>
+    <div class="summary-box unreferenced">
+      <div class="count">79</div>
+      <h3>Sin referencia (regular)</h3>
+      <p>Modulos activos no referenciados en ningun template</p>
+    </div>
+  </div>
+
+  <!-- Unreferenced Modules Table -->
+  <div class="section">
+    <h2>Modulos sin referencias en templates</h2>
+    <p class="subtitle">Modulos que no aparecen referenciados en ninguno de los 773 templates, Global-Partials o Global-Bases del theme</p>
+
+    <div class="controls">
+      <input type="text" id="searchUnref" placeholder="Buscar por nombre o ruta..." oninput="filterTable('unreferenced-table', this.value, document.getElementById('filterCat').value)">
+      <select id="filterCat" onchange="filterTable('unreferenced-table', document.getElementById('searchUnref').value, this.value)">
+        <option value="">Todas las categorias</option>
+        <option value="Sin uso">Sin uso</option>
+        <option value="Test / Experimento">Test / Experimento</option>
+        <option value="Backup / Respaldo">Backup / Respaldo</option>
+        <option value="Sin referencias">Sin referencias (regular)</option>
+      </select>
+      <span class="count-label" id="countUnref">115 modulos</span>
+    </div>
+
+    <div class="table-wrap">
+      <table id="unreferenced-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre del modulo</th>
+            <th>Ubicacion</th>
+            <th>Categoria</th>
+            <th>Recomendacion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+    <td>1</td>
+    <td>video-centrado-ui_kit</td>
+    <td class="path-cell">2023-Landings/Generic</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>2</td>
+    <td>banner-topTalent</td>
+    <td class="path-cell">2023-Landings/TopTalent</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>3</td>
+    <td>multiples-videos</td>
+    <td class="path-cell">2023-Landings/TopTalent</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>4</td>
+    <td>Linktree-cta</td>
+    <td class="path-cell">2023-Landings/linktree</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>5</td>
+    <td>conoce-inteligente-PE</td>
+    <td class="path-cell">2023-Landings/video-demo</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>6</td>
+    <td>filtro-desplegable-conoce</td>
+    <td class="path-cell">2023-Landings/video-demo</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>7</td>
+    <td>wistia-modal-prueba-bukplay</td>
+    <td class="path-cell">Buk-play</td>
+    <td><span class="badge cat-test">Test / Experimento</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>8</td>
+    <td>calc-costos-cl25-v1</td>
+    <td class="path-cell">Calculadoras-Buk/CL</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>9</td>
+    <td>Calc-tiendaCursos-co copiaSeguridad</td>
+    <td class="path-cell">Calculadoras-Buk/CO</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>10</td>
+    <td>calc-remuneraciones24-CO</td>
+    <td class="path-cell">Calculadoras-Buk/CO</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>11</td>
+    <td>Calc-tiendaCursos-mx</td>
+    <td class="path-cell">Calculadoras-Buk/MX</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>12</td>
+    <td>Calc-tiendaCursos-mx-v2</td>
+    <td class="path-cell">Calculadoras-Buk/MX</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>13</td>
+    <td>Calc-tiendaCursos-pe</td>
+    <td class="path-cell">Calculadoras-Buk/PE</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>14</td>
+    <td>Calc-tiendaCursos-pe-v2</td>
+    <td class="path-cell">Calculadoras-Buk/PE</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>15</td>
+    <td>ejemplo-elementos</td>
+    <td class="path-cell">Calculadoras-Buk/PE</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>16</td>
+    <td>calc-remuneraciones-CO-exp</td>
+    <td class="path-cell">Calculadoras-Buk</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>17</td>
+    <td>calculadora-gratificaciones-pe</td>
+    <td class="path-cell">Calculadoras-Buk</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>18</td>
+    <td>calc-finiquito-liquidacion-MX</td>
+    <td class="path-cell">Calculadoras-Buk/pruebas-respaldos</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>19</td>
+    <td>calc-precios-PE-backup-original</td>
+    <td class="path-cell">Calculadoras-Buk/pruebas-respaldos</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>20</td>
+    <td>caracteristicas-clientes</td>
+    <td class="path-cell">Clientes</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>21</td>
+    <td>ComentariosFB-Finiquito-CL</td>
+    <td class="path-cell">ComentariosFB</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>22</td>
+    <td>ComentariosFB-Finiquito-MX</td>
+    <td class="path-cell">ComentariosFB</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>23</td>
+    <td>ComentariosFB-PTU</td>
+    <td class="path-cell">ComentariosFB</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>24</td>
+    <td>ComentariosFB-Vacaciones-PE</td>
+    <td class="path-cell">ComentariosFB</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>25</td>
+    <td>ComentariosFB-aginaldo-MX</td>
+    <td class="path-cell">ComentariosFB</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>26</td>
+    <td>ComentariosFB-laboral-CO</td>
+    <td class="path-cell">ComentariosFB</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>27</td>
+    <td>banner-video-wistia</td>
+    <td class="path-cell">Generics/Banners</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>28</td>
+    <td>Beneficios</td>
+    <td class="path-cell">Generics</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>29</td>
+    <td>CO-modulo-duo</td>
+    <td class="path-cell">Generics</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>30</td>
+    <td>Contenedor-form-progresivo</td>
+    <td class="path-cell">Generics</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>31</td>
+    <td>modal-video-universal-wistia</td>
+    <td class="path-cell">Generics/Modals</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>32</td>
+    <td>Testimonials-grid</td>
+    <td class="path-cell">Generics/Testimonios</td>
+    <td><span class="badge cat-test">Test / Experimento</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>33</td>
+    <td>Testimonio_estatico</td>
+    <td class="path-cell">Generics/Testimonios</td>
+    <td><span class="badge cat-test">Test / Experimento</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>34</td>
+    <td>Testimonios-carrusel_V2</td>
+    <td class="path-cell">Generics/Testimonios</td>
+    <td><span class="badge cat-test">Test / Experimento</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>35</td>
+    <td>Testimonios-estatico-flex</td>
+    <td class="path-cell">Generics/Testimonios</td>
+    <td><span class="badge cat-test">Test / Experimento</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>36</td>
+    <td>elemento_administrable</td>
+    <td class="path-cell">Generics</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>37</td>
+    <td>features-soluciones</td>
+    <td class="path-cell">Generics</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>38</td>
+    <td>funcionalidades-soluciones-flex-carrusel</td>
+    <td class="path-cell">Generics</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>39</td>
+    <td>galeria-mas-funcionalidades</td>
+    <td class="path-cell">Generics</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>40</td>
+    <td>logos-carrusel-autoplay</td>
+    <td class="path-cell">Generics/logos-movimiento</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>41</td>
+    <td>prueba-form-personalizado</td>
+    <td class="path-cell">Generics</td>
+    <td><span class="badge cat-test">Test / Experimento</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>42</td>
+    <td>soluciones-funciones-old</td>
+    <td class="path-cell">Generics</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>43</td>
+    <td>Pilares</td>
+    <td class="path-cell">Home</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>44</td>
+    <td>ebook-cta</td>
+    <td class="path-cell">Home</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>45</td>
+    <td>logos-clientes-autoplay-test</td>
+    <td class="path-cell">Home</td>
+    <td><span class="badge cat-test">Test / Experimento</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>46</td>
+    <td>Quieres-ser-bukerPracticante</td>
+    <td class="path-cell">Nosotros</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>47</td>
+    <td>Se-parte</td>
+    <td class="path-cell">Nosotros</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>48</td>
+    <td>banner-sence</td>
+    <td class="path-cell">Nosotros</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>49</td>
+    <td>mosaico limpio</td>
+    <td class="path-cell">Plataforma</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>50</td>
+    <td>Buk-calculadora</td>
+    <td class="path-cell">Precios/calculadoras-sin-uso</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>51</td>
+    <td>calc-precios-2024-CL-respaldo11-24</td>
+    <td class="path-cell">Precios/calculadoras-sin-uso</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>52</td>
+    <td>calc-precios-24-CL</td>
+    <td class="path-cell">Precios/calculadoras-sin-uso</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>53</td>
+    <td>calc-precios-CO EXPERIMENTO</td>
+    <td class="path-cell">Precios/calculadoras-sin-uso</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>54</td>
+    <td>calc-precios-CO-respaldo2310</td>
+    <td class="path-cell">Precios/calculadoras-sin-uso</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>55</td>
+    <td>calc-precios-PE EXPERIMENTO</td>
+    <td class="path-cell">Precios/calculadoras-sin-uso</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>56</td>
+    <td>calc-precios-PE-pro</td>
+    <td class="path-cell">Precios/calculadoras-sin-uso</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>57</td>
+    <td>calc-precios-old-PE</td>
+    <td class="path-cell">Precios/calculadoras-sin-uso</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>58</td>
+    <td>test-elige-plan-24</td>
+    <td class="path-cell">Precios/calculadoras-sin-uso</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>59</td>
+    <td>elige-plan-24</td>
+    <td class="path-cell">Precios</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>60</td>
+    <td>Prueba membresia</td>
+    <td class="path-cell">Prueba membresia</td>
+    <td><span class="badge cat-test">Test / Experimento</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>61</td>
+    <td>contenido-prensa-hdb</td>
+    <td class="path-cell">Recursos-prensa</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>62</td>
+    <td>Buk Play</td>
+    <td class="path-cell">Soluciones/Capacitaciones</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>63</td>
+    <td>Calculadora-tiendaCursos-2024</td>
+    <td class="path-cell">Soluciones/Capacitaciones</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>64</td>
+    <td>Calculadora-tiendaCursos-2024-v2</td>
+    <td class="path-cell">Soluciones/Capacitaciones</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>65</td>
+    <td>zigzag-carrusel__Adicionales</td>
+    <td class="path-cell">Soluciones/Capacitaciones</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>66</td>
+    <td>zigzag-carrusel__Plataforma</td>
+    <td class="path-cell">Soluciones/Capacitaciones</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>67</td>
+    <td>descarga-app</td>
+    <td class="path-cell">Soluciones/adelantos</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>68</td>
+    <td>estadisticas-pagos</td>
+    <td class="path-cell">Soluciones/adelantos</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>69</td>
+    <td>desplegable-packs-beneficios-24</td>
+    <td class="path-cell">Soluciones/beneficios</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>70</td>
+    <td>packs-4-col</td>
+    <td class="path-cell">Soluciones/complementos/planes-de-beneficios</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>71</td>
+    <td>texto-img-button</td>
+    <td class="path-cell">Soluciones/soluciones-intermedia</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>72</td>
+    <td>banner-admin</td>
+    <td class="path-cell">administracion</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>73</td>
+    <td>banner-h1-search</td>
+    <td class="path-cell">blog/componentes</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>74</td>
+    <td>suscripcion-blog-finanzas-normal</td>
+    <td class="path-cell">blog/componentes/suscripcion</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>75</td>
+    <td>suscripcion-blog-rrhh-normal</td>
+    <td class="path-cell">blog/componentes/suscripcion</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>76</td>
+    <td>test-resultados-busqueda</td>
+    <td class="path-cell">blog2/blog-prueba</td>
+    <td><span class="badge cat-test">Test / Experimento</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>77</td>
+    <td>articulo-relacionado</td>
+    <td class="path-cell">blog2/post</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>78</td>
+    <td>blog_comments-br</td>
+    <td class="path-cell">blog2/post</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>79</td>
+    <td>siguenos-blog-antiguo</td>
+    <td class="path-cell">blog2/sidebar/CO</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>80</td>
+    <td>siguenos-blog-antiguo</td>
+    <td class="path-cell">blog2/sidebar/MX</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>81</td>
+    <td>siguenos-blog-antiguo</td>
+    <td class="path-cell">blog2/sidebar/PE</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>82</td>
+    <td>banner-contacto</td>
+    <td class="path-cell">contacto-usuarios</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>83</td>
+    <td>banner-contacto-version-b</td>
+    <td class="path-cell">contacto-usuarios</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>84</td>
+    <td>tengo-buk</td>
+    <td class="path-cell">contacto-usuarios</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>85</td>
+    <td>graficas</td>
+    <td class="path-cell">mercado-laboral</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>86</td>
+    <td>graficas-varias-depurar-luego</td>
+    <td class="path-cell">mercado-laboral</td>
+    <td><span class="badge cat-backup">Backup / Respaldo</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>87</td>
+    <td>graficas-version-inicial</td>
+    <td class="path-cell">mercado-laboral</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>88</td>
+    <td>variacion-con-contrato-prueba</td>
+    <td class="path-cell">mercado-laboral</td>
+    <td><span class="badge cat-test">Test / Experimento</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>89</td>
+    <td>Mapa</td>
+    <td class="path-cell">practicantes</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>90</td>
+    <td>Premios-practicantes</td>
+    <td class="path-cell">practicantes</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>91</td>
+    <td>acordeon</td>
+    <td class="path-cell">privacidad</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>92</td>
+    <td>descargar-politicas-nota</td>
+    <td class="path-cell">privacidad</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>93</td>
+    <td>Banner-centrado-sinIMG</td>
+    <td class="path-cell">recursos-calculadoras</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>94</td>
+    <td>contenido-descargables</td>
+    <td class="path-cell">recursos-descargables</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>95</td>
+    <td>suscripcion-estudios</td>
+    <td class="path-cell">recursos</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>96</td>
+    <td>Tarjetas blogs por etiquetas</td>
+    <td class="path-cell">sin-uso</td>
+    <td><span class="badge cat-sinuso">Sin uso</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>97</td>
+    <td>banner-admin-CL</td>
+    <td class="path-cell">sin-uso</td>
+    <td><span class="badge cat-sinuso">Sin uso</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>98</td>
+    <td>banner-static-2buttons</td>
+    <td class="path-cell">sin-uso</td>
+    <td><span class="badge cat-sinuso">Sin uso</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>99</td>
+    <td>banner-static-gif</td>
+    <td class="path-cell">sin-uso</td>
+    <td><span class="badge cat-sinuso">Sin uso</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>100</td>
+    <td>banner-video-preview</td>
+    <td class="path-cell">sin-uso</td>
+    <td><span class="badge cat-sinuso">Sin uso</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>101</td>
+    <td>bloque-calcu-beneficios</td>
+    <td class="path-cell">sin-uso</td>
+    <td><span class="badge cat-sinuso">Sin uso</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>102</td>
+    <td>calc-hrs-extras-CO</td>
+    <td class="path-cell">sin-uso</td>
+    <td><span class="badge cat-sinuso">Sin uso</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>103</td>
+    <td>calc-precios-MX</td>
+    <td class="path-cell">sin-uso</td>
+    <td><span class="badge cat-sinuso">Sin uso</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>104</td>
+    <td>calc-precios-PE pruebas nuevo PDF</td>
+    <td class="path-cell">sin-uso</td>
+    <td><span class="badge cat-sinuso">Sin uso</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>105</td>
+    <td>newsletter-blog-v2</td>
+    <td class="path-cell">sin-uso</td>
+    <td><span class="badge cat-sinuso">Sin uso</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>106</td>
+    <td>zigzag-carrusel-v1</td>
+    <td class="path-cell">sin-uso</td>
+    <td><span class="badge cat-sinuso">Sin uso</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>107</td>
+    <td>zigzag-carrusel-v2</td>
+    <td class="path-cell">sin-uso</td>
+    <td><span class="badge cat-sinuso">Sin uso</span></td>
+    <td><span class="rec rec-eliminar">Eliminar</span></td>
+  </tr>
+<tr>
+    <td>108</td>
+    <td>card-two-columns</td>
+    <td class="path-cell">test</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>109</td>
+    <td>duo-perfecto</td>
+    <td class="path-cell">test</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>110</td>
+    <td>generador-claude</td>
+    <td class="path-cell">test</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>111</td>
+    <td>metrica-modulo</td>
+    <td class="path-cell">test</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>112</td>
+    <td>nombre-del-modulo</td>
+    <td class="path-cell">test</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>113</td>
+    <td>slider-home</td>
+    <td class="path-cell">test</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>114</td>
+    <td>tab-soluciones</td>
+    <td class="path-cell">test</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+<tr>
+    <td>115</td>
+    <td>tipos-de-elementos</td>
+    <td class="path-cell">test</td>
+    <td><span class="badge cat-unreferenced">Sin referencias</span></td>
+    <td><span class="rec rec-revisar">Revisar</span></td>
+  </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Exact Duplicates -->
+  <div class="section">
+    <h2>Modulos duplicados (mismo nombre exacto)</h2>
+    <p class="subtitle">Modulos con el mismo nombre que existen en diferentes carpetas del theme. Podrian ser el mismo componente duplicado.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Ubicaciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+    <td>1</td>
+    <td><strong>agenda-llamada-cta</strong></td>
+    <td>5</td>
+    <td><code>blog2/sidebar/BR/agenda-llamada-cta</code><br><code>blog2/sidebar/CL/agenda-llamada-cta</code><br><code>blog2/sidebar/CO/agenda-llamada-cta</code><br><code>blog2/sidebar/MX/agenda-llamada-cta</code><br><code>blog2/sidebar/PE/agenda-llamada-cta</code></td>
+  </tr>
+<tr>
+    <td>2</td>
+    <td><strong>alert-cuenta-regresiva</strong></td>
+    <td>2</td>
+    <td><code>2023-Landings/Generic/alert-cuenta-regresiva</code><br><code>2023-Landings/eventos/alert-cuenta-regresiva</code></td>
+  </tr>
+<tr>
+    <td>3</td>
+    <td><strong>aplicacion</strong></td>
+    <td>2</td>
+    <td><code>App/aplicacion</code><br><code>Soluciones/adelantos/aplicacion</code></td>
+  </tr>
+<tr>
+    <td>4</td>
+    <td><strong>calc-precios-mx</strong></td>
+    <td>2</td>
+    <td><code>Precios/calc-precios-MX</code><br><code>sin-uso/calc-precios-MX</code></td>
+  </tr>
+<tr>
+    <td>5</td>
+    <td><strong>certificados</strong></td>
+    <td>2</td>
+    <td><code>2023-Landings/AO-pago/certificados</code><br><code>Home/certificados</code></td>
+  </tr>
+<tr>
+    <td>6</td>
+    <td><strong>cifras</strong></td>
+    <td>2</td>
+    <td><code>Clientes/cifras</code><br><code>Soluciones/complementos/vales-despensa/cifras</code></td>
+  </tr>
+<tr>
+    <td>7</td>
+    <td><strong>formulario</strong></td>
+    <td>2</td>
+    <td><code>2023-Landings/Generic/Formulario</code><br><code>2023-Landings/TopTalent/Formulario</code></td>
+  </tr>
+<tr>
+    <td>8</td>
+    <td><strong>newsletter-blog</strong></td>
+    <td>5</td>
+    <td><code>blog2/sidebar/BR/newsletter-blog</code><br><code>blog2/sidebar/CL/newsletter-blog</code><br><code>blog2/sidebar/CO/newsletter-blog</code><br><code>blog2/sidebar/MX/newsletter-blog</code><br><code>blog2/sidebar/PE/newsletter-blog</code></td>
+  </tr>
+<tr>
+    <td>9</td>
+    <td><strong>pagination-blog</strong></td>
+    <td>2</td>
+    <td><code>blog/componentes/pagination-blog</code><br><code>blog2/list/pagination-blog</code></td>
+  </tr>
+<tr>
+    <td>10</td>
+    <td><strong>reconocimientos</strong></td>
+    <td>2</td>
+    <td><code>Nosotros/reconocimientos</code><br><code>practicantes/reconocimientos</code></td>
+  </tr>
+<tr>
+    <td>11</td>
+    <td><strong>siguenos-blog</strong></td>
+    <td>5</td>
+    <td><code>blog2/sidebar/BR/siguenos-blog</code><br><code>blog2/sidebar/CL/siguenos-blog</code><br><code>blog2/sidebar/CO/siguenos-blog</code><br><code>blog2/sidebar/MX/siguenos-blog</code><br><code>blog2/sidebar/PE/siguenos-blog</code></td>
+  </tr>
+<tr>
+    <td>12</td>
+    <td><strong>siguenos-blog-antiguo</strong></td>
+    <td>3</td>
+    <td><code>blog2/sidebar/CO/siguenos-blog-antiguo</code><br><code>blog2/sidebar/MX/siguenos-blog-antiguo</code><br><code>blog2/sidebar/PE/siguenos-blog-antiguo</code></td>
+  </tr>
+<tr>
+    <td>13</td>
+    <td><strong>tab-soluciones</strong></td>
+    <td>2</td>
+    <td><code>Home/tab-soluciones</code><br><code>test/tab-soluciones</code></td>
+  </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Variant Groups -->
+  <div class="section">
+    <h2>Grupos de variantes (nombres similares)</h2>
+    <p class="subtitle">Modulos con nombres base similares que difieren en sufijos de pais (CL/CO/MX/PE/BR), version (v2/v3) o variante (experimento/test/respaldo). Evaluar si se pueden consolidar.</p>
+
+    <div class="controls">
+      <input type="text" id="searchVariants" placeholder="Buscar grupo..." oninput="filterVariantTable(this.value)">
+    </div>
+
+    <div class="table-wrap">
+      <table id="variants-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre base</th>
+            <th>Variantes</th>
+            <th>Modulos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+    <td>1</td>
+    <td><strong>agenda-llamada-cta</strong></td>
+    <td>5</td>
+    <td><code>blog2/sidebar/BR/agenda-llamada-cta</code><br><code>blog2/sidebar/CL/agenda-llamada-cta</code><br><code>blog2/sidebar/CO/agenda-llamada-cta</code><br><code>blog2/sidebar/MX/agenda-llamada-cta</code><br><code>blog2/sidebar/PE/agenda-llamada-cta</code></td>
+  </tr>
+<tr>
+    <td>2</td>
+    <td><strong>banner-admin</strong></td>
+    <td>5</td>
+    <td><code>administracion/banner-admin</code> <span class="badge-sm cat-unreferenced">Sin referencias</span><br><code>administracion/banner-admin-CO</code><br><code>administracion/banner-admin-MX</code><br><code>administracion/banner-admin-PE</code><br><code>sin-uso/banner-admin-CL</code> <span class="badge-sm cat-sinuso">Sin uso</span></td>
+  </tr>
+<tr>
+    <td>3</td>
+    <td><strong>banner-admin-comp</strong></td>
+    <td>4</td>
+    <td><code>administracion/banner-admin-comp</code><br><code>administracion/banner-admin-comp-CL</code><br><code>administracion/banner-admin-comp-CO</code><br><code>administracion/banner-admin-comp-PE</code></td>
+  </tr>
+<tr>
+    <td>4</td>
+    <td><strong>banner-beneficios</strong></td>
+    <td>4</td>
+    <td><code>beneficios-general/banner-beneficios-CL</code><br><code>beneficios-general/banner-beneficios-CO</code><br><code>beneficios-general/banner-beneficios-MX</code><br><code>beneficios-general/banner-beneficios-PE</code></td>
+  </tr>
+<tr>
+    <td>5</td>
+    <td><strong>banner-blog-list</strong></td>
+    <td>5</td>
+    <td><code>blog2/list/banner/banner-blog-list-br</code><br><code>blog2/list/banner/banner-blog-list-cl</code><br><code>blog2/list/banner/banner-blog-list-co</code><br><code>blog2/list/banner/banner-blog-list-mx</code><br><code>blog2/list/banner/banner-blog-list-pe</code></td>
+  </tr>
+<tr>
+    <td>6</td>
+    <td><strong>calc-precios</strong></td>
+    <td>8</td>
+    <td><code>Precios/calc-precios-2025-CL</code><br><code>Precios/calc-precios-MX</code><br><code>Precios/calculadoras-sin-uso/calc-precios-24-CL</code> <span class="badge-sm cat-backup">Backup / Respaldo</span><br><code>Precios/calculadoras-sin-uso/calc-precios-CL</code><br><code>sin-uso/calc-precios-2024-CL</code><br><code>sin-uso/calc-precios-CO</code><br><code>sin-uso/calc-precios-MX</code> <span class="badge-sm cat-sinuso">Sin uso</span><br><code>sin-uso/calc-precios-PE</code></td>
+  </tr>
+<tr>
+    <td>7</td>
+    <td><strong>calc-precios-co</strong></td>
+    <td>3</td>
+    <td><code>Precios/Pruebas/calc-precios-CO-test</code><br><code>Precios/calc-precios-CO-2025</code><br><code>Precios/calculadoras-sin-uso/calc-precios-CO EXPERIMENTO</code> <span class="badge-sm cat-backup">Backup / Respaldo</span></td>
+  </tr>
+<tr>
+    <td>8</td>
+    <td><strong>calc-precios-pe</strong></td>
+    <td>4</td>
+    <td><code>Precios/Pruebas/calc-precios-PE-test</code><br><code>Precios/calc-precios-PE-2025</code><br><code>Precios/calculadoras-sin-uso/calc-precios-PE EXPERIMENTO</code> <span class="badge-sm cat-backup">Backup / Respaldo</span><br><code>Precios/calculadoras-sin-uso/calc-precios-PE-respaldo</code></td>
+  </tr>
+<tr>
+    <td>9</td>
+    <td><strong>calc-tiendacursos</strong></td>
+    <td>4</td>
+    <td><code>Calculadoras-Buk/CL/Calc-tiendaCursos-cl</code><br><code>Calculadoras-Buk/CO/Calc-tiendaCursos-co</code><br><code>Calculadoras-Buk/MX/Calc-tiendaCursos-mx</code> <span class="badge-sm cat-unreferenced">Sin referencias</span><br><code>Calculadoras-Buk/PE/Calc-tiendaCursos-pe</code> <span class="badge-sm cat-unreferenced">Sin referencias</span></td>
+  </tr>
+<tr>
+    <td>10</td>
+    <td><strong>calc-vacaciones</strong></td>
+    <td>3</td>
+    <td><code>Calculadoras-Buk/Calc-vacaciones-PE</code><br><code>Calculadoras-Buk/calc-vacaciones-CO</code><br><code>Calculadoras-Buk/calc-vacaciones-experimento-CO</code></td>
+  </tr>
+<tr>
+    <td>11</td>
+    <td><strong>calculadora-cts</strong></td>
+    <td>3</td>
+    <td><code>Calculadoras-Buk/calculadora-cts-PE</code><br><code>Calculadoras-Buk/calculadora-cts-experimento-PE</code><br><code>Calculadoras-Buk/calculadora-cts-versionB-PE</code></td>
+  </tr>
+<tr>
+    <td>12</td>
+    <td><strong>filtro-desplegable</strong></td>
+    <td>3</td>
+    <td><code>partners/filtro-desplegable</code><br><code>partners/filtro-desplegable-25</code><br><code>partners/filtro-desplegable-25-v2</code></td>
+  </tr>
+<tr>
+    <td>13</td>
+    <td><strong>graficos</strong></td>
+    <td>4</td>
+    <td><code>Buk-numbers/graficos-CL</code><br><code>Buk-numbers/graficos-CO</code><br><code>Buk-numbers/graficos-MX</code><br><code>Buk-numbers/graficos-PE</code></td>
+  </tr>
+<tr>
+    <td>14</td>
+    <td><strong>newsletter-blog</strong></td>
+    <td>6</td>
+    <td><code>blog2/sidebar/BR/newsletter-blog</code><br><code>blog2/sidebar/CL/newsletter-blog</code><br><code>blog2/sidebar/CO/newsletter-blog</code><br><code>blog2/sidebar/MX/newsletter-blog</code><br><code>blog2/sidebar/PE/newsletter-blog</code><br><code>sin-uso/newsletter-blog-v2</code> <span class="badge-sm cat-sinuso">Sin uso</span></td>
+  </tr>
+<tr>
+    <td>15</td>
+    <td><strong>reconocimientos</strong></td>
+    <td>4</td>
+    <td><code>Nosotros/reconocimientos</code><br><code>Nosotros/reconocimientos-2024</code><br><code>Nosotros/reconocimientos-2025</code><br><code>practicantes/reconocimientos</code></td>
+  </tr>
+<tr>
+    <td>16</td>
+    <td><strong>siguenos-blog</strong></td>
+    <td>5</td>
+    <td><code>blog2/sidebar/BR/siguenos-blog</code><br><code>blog2/sidebar/CL/siguenos-blog</code><br><code>blog2/sidebar/CO/siguenos-blog</code><br><code>blog2/sidebar/MX/siguenos-blog</code><br><code>blog2/sidebar/PE/siguenos-blog</code></td>
+  </tr>
+<tr>
+    <td>17</td>
+    <td><strong>siguenos-blog-antiguo</strong></td>
+    <td>3</td>
+    <td><code>blog2/sidebar/CO/siguenos-blog-antiguo</code> <span class="badge-sm cat-unreferenced">Sin referencias</span><br><code>blog2/sidebar/MX/siguenos-blog-antiguo</code> <span class="badge-sm cat-unreferenced">Sin referencias</span><br><code>blog2/sidebar/PE/siguenos-blog-antiguo</code> <span class="badge-sm cat-unreferenced">Sin referencias</span></td>
+  </tr>
+<tr>
+    <td>18</td>
+    <td><strong>tabla-de-contenido-post</strong></td>
+    <td>5</td>
+    <td><code>blog2/post/BR/tabla-de-contenido-post-BR</code><br><code>blog2/post/CL/tabla-de-contenido-post-CL</code><br><code>blog2/post/CO/tabla-de-contenido-post-CO</code><br><code>blog2/post/MX/tabla-de-contenido-post-MX</code><br><code>blog2/post/PE/tabla-de-contenido-post-PE</code></td>
+  </tr>
+<tr>
+    <td>19</td>
+    <td><strong>tarjetero-carrusel</strong></td>
+    <td>3</td>
+    <td><code>2023-Landings/Generic/tarjetero-carrusel-v2</code><br><code>2023-Landings/Generic/tarjetero-carrusel-v3</code><br><code>Soluciones/beneficios/tarjetero-carrusel</code></td>
+  </tr>
+<tr>
+    <td>20</td>
+    <td><strong>txt-enriquecido</strong></td>
+    <td>4</td>
+    <td><code>2023-Landings/video-demo/Txt-enriquecido</code><br><code>2023-Landings/video-demo/Txt-enriquecido-CO</code><br><code>2023-Landings/video-demo/Txt-enriquecido-MX</code><br><code>2023-Landings/video-demo/Txt-enriquecido-PE</code></td>
+  </tr>
+<tr>
+    <td>21</td>
+    <td><strong>video-wistia-demo</strong></td>
+    <td>3</td>
+    <td><code>2023-Landings/video-demo/video-wistia-demo-CO</code><br><code>2023-Landings/video-demo/video-wistia-demo-MX</code><br><code>2023-Landings/video-demo/video-wistia-demo-PE</code></td>
+  </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="section">
+    <h2>Notas del analisis</h2>
+    <ul class="notes-list">
+      <li><strong>Fuente de datos:</strong> Inventario de modulos via HubSpot MCP Developer Server + archivos descargados de Templates, Global-Partials y Global-Bases</li>
+      <li><strong>Metodo:</strong> Se extrajeron 770 rutas unicas de modulos referenciados en 773 archivos HTML mediante busqueda de patron <code>path="/BUK-SITE_2023/Modules/..."</code></li>
+      <li><strong>Limitaciones:</strong> No se pudo descargar el codigo fuente de los modulos (directorio Modules demasiado grande para <code>hs cms fetch</code>), por lo que la deteccion de duplicados se basa unicamente en nombres, no en comparacion de codigo</li>
+      <li><strong>Carpetas no listadas:</strong> "Pillar research", "Pruebas y experimentos" y "programa referidos" no pudieron ser listadas por el CLI (error con espacios en nombres). Sus modulos podrian no estar incluidos.</li>
+      <li><strong>Globals Components:</strong> Modulos globales (header, footer, etc.) no estan incluidos en esta auditoria ya que son componentes del sistema</li>
+      <li><strong>"Sin referencias" no significa "sin uso":</strong> Algunos modulos podrian estar referenciados en paginas drag-and-drop, HubDB, o mediante inclusion dinamica que este analisis no detecta</li>
+    </ul>
+  </div>
+
+  <div class="footer-note">
+    Reporte generado automaticamente por Claude Code &bull; Theme: BUK-SITE_2023 &bull; 09-04-2026
+  </div>
+
+  </div><!-- .boxer -->
+  </div><!-- .report-body -->
+
+<script>
+function filterTable(tableId, search, category) {
+  const table = document.getElementById(tableId);
+  const rows = table.querySelectorAll('tbody tr');
+  let visible = 0;
+  const searchLower = (search || '').toLowerCase();
+
+  rows.forEach((row, i) => {
+    const name = row.cells[1].textContent.toLowerCase();
+    const path = row.cells[2].textContent.toLowerCase();
+    const cat = row.cells[3].textContent.trim();
+
+    const matchesSearch = !searchLower || name.includes(searchLower) || path.includes(searchLower);
+    const matchesCat = !category || cat === category;
+
+    if (matchesSearch && matchesCat) {
+      row.style.display = '';
+      visible++;
+      row.cells[0].textContent = visible;
+    } else {
+      row.style.display = 'none';
+    }
+  });
+
+  document.getElementById('countUnref').textContent = visible + ' modulos';
+}
+
+function filterVariantTable(search) {
+  const table = document.getElementById('variants-table');
+  const rows = table.querySelectorAll('tbody tr');
+  const searchLower = (search || '').toLowerCase();
+
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(searchLower) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
