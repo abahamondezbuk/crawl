@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Report — buk.co — 2026-04-16</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --green: #22c55e;
+      --yellow: #f59e0b;
+      --red: #ef4444;
+      --bg: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-alt: #283548;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --radius: 12px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+    }
+    .container { max-width: 960px; margin: 0 auto; padding: 32px 20px; }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 48px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+    .header h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+    .header .url { color: var(--text-muted); font-size: 14px; word-break: break-all; }
+    .header .date { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+
+    /* Score */
+    .score-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .score-circle {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      font-weight: 900;
+      position: relative;
+    }
+    .score-circle .label { font-size: 14px; font-weight: 500; opacity: .7; }
+    .score-green { background: rgba(34,197,94,.15); border: 4px solid var(--green); color: var(--green); }
+    .score-yellow { background: rgba(245,158,11,.15); border: 4px solid var(--yellow); color: var(--yellow); }
+    .score-orange { background: rgba(249,115,22,.15); border: 4px solid #f97316; color: #f97316; }
+    .score-red { background: rgba(239,68,68,.15); border: 4px solid var(--red); color: var(--red); }
+
+    .progress-bar {
+      width: 100%;
+      max-width: 400px;
+      height: 10px;
+      background: var(--bg-card);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .progress-fill { height: 100%; border-radius: 5px; transition: width .5s; }
+
+    .score-summary {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .score-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .pill-pass { background: rgba(34,197,94,.15); color: var(--green); }
+    .pill-warn { background: rgba(245,158,11,.15); color: var(--yellow); }
+    .pill-fail { background: rgba(239,68,68,.15); color: var(--red); }
+
+    /* Sections */
+    .section {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .section-header h2 { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+    .section-header .mini-score {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 16px;
+      background: var(--bg-card-alt);
+    }
+    .section-body { padding: 0; }
+
+    /* Check items */
+    .check-item {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 12px;
+      padding: 16px 24px;
+      border-bottom: 1px solid rgba(51,65,85,.5);
+      align-items: start;
+    }
+    .check-item:last-child { border-bottom: none; }
+    .check-icon { font-size: 18px; text-align: center; padding-top: 2px; }
+    .check-content {}
+    .check-title { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+    .check-detail { font-size: 13px; color: var(--text-muted); }
+    .check-value {
+      display: inline-block;
+      background: var(--bg-card-alt);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      margin-top: 4px;
+      word-break: break-all;
+    }
+    .check-rec {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--yellow);
+      font-style: italic;
+    }
+
+    /* Alerts */
+    .alert-section {
+      background: rgba(239,68,68,.08);
+      border: 1px solid rgba(239,68,68,.3);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .alert-section.success {
+      background: rgba(34,197,94,.08);
+      border-color: rgba(34,197,94,.3);
+    }
+    .alert-section h2 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .alert-item {
+      padding: 8px 0;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(239,68,68,.15);
+    }
+    .alert-item:last-child { border-bottom: none; }
+
+    /* Preview image section */
+    .preview-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .preview-section h2 { font-size: 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; justify-content: center; }
+    .preview-img {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 12px 0;
+    }
+    .preview-url { font-size: 12px; color: var(--text-muted); word-break: break-all; }
+
+    /* Recommendations */
+    .rec-list { list-style: none; counter-reset: rec; }
+    .rec-list li {
+      counter-increment: rec;
+      padding: 12px 16px 12px 48px;
+      position: relative;
+      border-bottom: 1px solid rgba(51,65,85,.5);
+      font-size: 14px;
+    }
+    .rec-list li:last-child { border-bottom: none; }
+    .rec-list li::before {
+      content: counter(rec);
+      position: absolute;
+      left: 16px;
+      top: 12px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .rec-list li.critical::before { background: var(--red); color: #fff; }
+    .rec-list li.warning::before { background: var(--yellow); color: #000; }
+    .rec-how { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .header { padding: 32px 16px; }
+      .header h1 { font-size: 22px; }
+      .score-circle { width: 120px; height: 120px; font-size: 42px; }
+      .score-summary { gap: 12px; }
+      .check-item { padding: 12px 16px; }
+      .section-header { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>QA Web Audit Report</h1>
+    <div class="url">https://www.buk.co/recursos/calculadora/calculadora-de-retenciones</div>
+    <div class="date">2026-04-16 &mdash; Auditor&iacute;a automatizada con Playwright</div>
+  </div>
+
+  <div class="container">
+
+    <!-- ==================== SCORE ==================== -->
+    <div class="score-section">
+      <div class="score-circle score-yellow">
+        74
+        <span class="label">/ 100</span>
+      </div>
+      <div style="font-size:16px;font-weight:700;color:var(--yellow);">&#128993; Bueno, con oportunidades</div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:74%;background:var(--yellow);"></div>
+      </div>
+      <div class="score-summary">
+        <span class="score-pill pill-pass">&#9989; 23 PASS</span>
+        <span class="score-pill pill-warn">&#9888;&#65039; 5 WARN</span>
+        <span class="score-pill pill-fail">&#10060; 3 FAIL</span>
+      </div>
+      <div style="font-size:13px;color:var(--text-muted);">31 checks evaluados en total</div>
+    </div>
+
+    <!-- ==================== ALERTAS CR&Iacute;TICAS ==================== -->
+    <div class="alert-section">
+      <h2>&#128680; Alertas Cr&iacute;ticas</h2>
+      <div class="alert-item">
+        <strong>&#10060; Jerarqu&iacute;a de headings rota</strong> &mdash; Se saltan niveles: H3&rarr;H5, H2&rarr;H5. Afecta accesibilidad y rastreo de motores de b&uacute;squeda.
+      </div>
+      <div class="alert-item">
+        <strong>&#10060; 3 im&aacute;genes sin atributo alt</strong> &mdash; Afecta accesibilidad para lectores de pantalla y SEO de im&aacute;genes.
+      </div>
+      <div class="alert-item">
+        <strong>&#10060; 1 bot&oacute;n sin texto ni aria-label</strong> &mdash; Usuarios de tecnolog&iacute;a asistiva no pueden interactuar con este bot&oacute;n.
+      </div>
+    </div>
+
+    <!-- ==================== PREVIEW IMAGE ==================== -->
+    <div class="preview-section">
+      <h2>&#128247; Imagen Destacada para Previews</h2>
+      <p style="color:var(--green);font-weight:600;margin-bottom:12px;">&#9989; La p&aacute;gina tiene imagen para previews sociales</p>
+      <img class="preview-img" src="https://www.buk.co/hubfs/buk-destacada-1.webp" alt="OG Image Preview" onerror="this.style.display='none'">
+      <div class="preview-url">og:image: https://www.buk.co/hubfs/buk-destacada-1.webp</div>
+      <div class="preview-url">twitter:image: https://www.buk.co/hubfs/buk-destacada-1.webp</div>
+    </div>
+
+    <!-- ==================== BLOQUE 1: HTML & ESTRUCTURA ==================== -->
+    <div class="section">
+      <div class="section-header">
+        <h2>&#128450; HTML &amp; Estructura</h2>
+        <span class="mini-score">7 / 8 checks</span>
+      </div>
+      <div class="section-body">
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">DOCTYPE html</div>
+            <div class="check-detail">DOCTYPE presente y v&aacute;lido.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Atributo lang en &lt;html&gt;</div>
+            <div class="check-detail">Valor: <span class="check-value">es-co</span></div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Meta charset</div>
+            <div class="check-detail">Presente en el &lt;head&gt;.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">H1 &uacute;nico</div>
+            <div class="check-detail">1 H1 encontrado: <span class="check-value">Calculadora de Retenci&oacute;n en la Fuente 2026</span></div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#10060;</div>
+          <div class="check-content">
+            <div class="check-title">Jerarqu&iacute;a de headings</div>
+            <div class="check-detail">Se saltan niveles en la estructura de encabezados.</div>
+            <div class="check-value">H3 &rarr; H5 &nbsp;|&nbsp; H2 &rarr; H5</div>
+            <div class="check-rec">Corregir la jerarqu&iacute;a para que sea secuencial (H1&rarr;H2&rarr;H3). Afecta accesibilidad y crawling.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Etiquetas sem&aacute;nticas</div>
+            <div class="check-detail">
+              &lt;main&gt; &#9989; &nbsp;
+              &lt;nav&gt; &#9989; &nbsp;
+              &lt;header&gt; &#9989; &nbsp;
+              &lt;footer&gt; &#9989;
+            </div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Inputs con label</div>
+            <div class="check-detail">20 inputs encontrados, todos con label asociado.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Favicon</div>
+            <div class="check-detail">Presente.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== BLOQUE 2: SEO ON-PAGE ==================== -->
+    <div class="section">
+      <div class="section-header">
+        <h2>&#128270; SEO On-Page</h2>
+        <span class="mini-score">9 / 9 checks</span>
+      </div>
+      <div class="section-body">
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">&lt;title&gt;</div>
+            <div class="check-detail">48 caracteres (rango ideal: 10-60)</div>
+            <div class="check-value">Calculadora de retenci&oacute;n en la fuente 2026 | Buk</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Meta description</div>
+            <div class="check-detail">155 caracteres (rango ideal: 50-160)</div>
+            <div class="check-value">Calcula la retenci&oacute;n en la fuente para salarios, honorarios y servicios con tarifas DIAN 2026. Gratis, al instante y actualizado para empresas colombianas.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">URL limpia</div>
+            <div class="check-detail">Min&uacute;sculas &#9989; &nbsp; Sin underscores &#9989; &nbsp; Sin par&aacute;metros &#9989;</div>
+            <div class="check-value">https://www.buk.co/recursos/calculadora/calculadora-de-retenciones</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Canonical</div>
+            <div class="check-value">https://www.buk.co/recursos/calculadora/calculadora-de-retenciones</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Open Graph tags</div>
+            <div class="check-detail">
+              og:title &#9989; &nbsp; og:description &#9989; &nbsp; og:image &#9989; &nbsp; og:url &#9989;
+            </div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Twitter Card tags</div>
+            <div class="check-detail">
+              twitter:card &#9989; &nbsp; twitter:title &#9989; &nbsp; twitter:description &#9989; &nbsp; twitter:image &#9989;
+            </div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Imagen para previews sociales</div>
+            <div class="check-value">https://www.buk.co/hubfs/buk-destacada-1.webp</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Meta robots</div>
+            <div class="check-detail">No definido (default: index, follow). La p&aacute;gina es indexable.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Schema Markup (JSON-LD)</div>
+            <div class="check-detail">Encontrado: <span class="check-value">FAQPage</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== BLOQUE 3: PERFORMANCE ==================== -->
+    <div class="section">
+      <div class="section-header">
+        <h2>&#9889; Performance B&aacute;sico</h2>
+        <span class="mini-score">3 / 6 checks</span>
+      </div>
+      <div class="section-body">
+        <div class="check-item">
+          <div class="check-icon">&#9888;&#65039;</div>
+          <div class="check-content">
+            <div class="check-title">LCP Candidate &mdash; fetchpriority</div>
+            <div class="check-detail">La imagen LCP candidata (592&times;530px) no tiene <code>fetchpriority="high"</code>.</div>
+            <div class="check-value">https://www.buk.co/hubfs/Hero-retenciones-CO.webp</div>
+            <div class="check-rec">Agregar fetchpriority="high" a esta imagen para mejorar LCP.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9888;&#65039;</div>
+          <div class="check-content">
+            <div class="check-title">Lazy loading incorrecto en viewport</div>
+            <div class="check-detail">Se encontraron <strong>54 im&aacute;genes con loading="lazy"</strong> en los primeros 1000px del viewport. Muchas corresponden al header/nav.</div>
+            <div class="check-rec">Remover loading="lazy" de im&aacute;genes visibles en el viewport inicial (above the fold). El lazy loading en estas im&aacute;genes retrasa su carga.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9888;&#65039;</div>
+          <div class="check-content">
+            <div class="check-title">Im&aacute;genes sin width/height</div>
+            <div class="check-detail">10 de 28 im&aacute;genes de contenido no tienen ambos atributos width y height expl&iacute;citos.</div>
+            <div class="check-rec">Agregar width y height a las im&aacute;genes para evitar layout shifts (CLS).</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Formato de im&aacute;genes</div>
+            <div class="check-detail">Las im&aacute;genes del viewport usan formatos SVG y WebP. No se detect&oacute; JPG/PNG legacy.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Scripts bloqueantes</div>
+            <div class="check-detail">0 scripts bloqueantes en el &lt;head&gt; (de 47 scripts totales). Todos usan defer o async.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Fuentes &mdash; preconnect</div>
+            <div class="check-detail">Preconnect configurado para fonts.googleapis.com y fonts.gstatic.com.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== BLOQUE 4: ACCESIBILIDAD ==================== -->
+    <div class="section">
+      <div class="section-header">
+        <h2>&#9855; Accesibilidad B&aacute;sica</h2>
+        <span class="mini-score">2 / 5 checks</span>
+      </div>
+      <div class="section-body">
+        <div class="check-item">
+          <div class="check-icon">&#10060;</div>
+          <div class="check-content">
+            <div class="check-title">Im&aacute;genes sin alt</div>
+            <div class="check-detail">3 de 116 im&aacute;genes no tienen atributo alt descriptivo.</div>
+            <div class="check-value">Colombia.svg, play.svg, tracking pixel (bing.com)</div>
+            <div class="check-rec">Agregar alt descriptivo a im&aacute;genes de contenido. Para im&aacute;genes decorativas, usar alt="" con role="presentation".</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9888;&#65039;</div>
+          <div class="check-content">
+            <div class="check-title">Contraste de colores</div>
+            <div class="check-detail">No verificable por Playwright autom&aacute;ticamente.</div>
+            <div class="check-rec">Verificar manualmente con https://webaim.org/resources/contrastchecker</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9888;&#65039;</div>
+          <div class="check-content">
+            <div class="check-title">Links sin texto descriptivo</div>
+            <div class="check-detail">4 links con texto gen&eacute;rico &ldquo;Ver m&aacute;s&rdquo; encontrados.</div>
+            <div class="check-value">Apuntan a: calculadora-aportes, calculadora-prestaciones, calculadora-liquidacion, calculadora-vacaciones</div>
+            <div class="check-rec">Reemplazar &ldquo;Ver m&aacute;s&rdquo; por texto descriptivo como &ldquo;Ver calculadora de aportes&rdquo; para mejorar accesibilidad y SEO.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#10060;</div>
+          <div class="check-content">
+            <div class="check-title">Botones sin texto ni aria-label</div>
+            <div class="check-detail">1 de 40 botones no tiene texto visible ni aria-label.</div>
+            <div class="check-rec">Agregar aria-label descriptivo al bot&oacute;n para que sea accesible.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Inputs con type definido</div>
+            <div class="check-detail">24 inputs encontrados, todos con atributo type.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== BLOQUE 5: SEGURIDAD ==================== -->
+    <div class="section">
+      <div class="section-header">
+        <h2>&#128274; Seguridad B&aacute;sica</h2>
+        <span class="mini-score">2 / 3 checks</span>
+      </div>
+      <div class="section-body">
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">HTTPS</div>
+            <div class="check-detail">La p&aacute;gina carga sobre HTTPS.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#10060;</div>
+          <div class="check-content">
+            <div class="check-title">Links externos sin rel="noopener"</div>
+            <div class="check-detail">27 de 31 links externos no tienen rel="noopener" o rel="noopener noreferrer".</div>
+            <div class="check-value">Incluye links a: hubspot.com, buk.cl, buk.pe, buk.mx, buk.com.br</div>
+            <div class="check-rec">Agregar rel="noopener noreferrer" a todos los links con target="_blank" que apunten a dominios externos.</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Contenido mixto (HTTP/HTTPS)</div>
+            <div class="check-detail">No se detect&oacute; contenido mixto. Todos los recursos cargan sobre HTTPS.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== BLOQUE 6: RESPONSIVE ==================== -->
+    <div class="section">
+      <div class="section-header">
+        <h2>&#128241; Responsive B&aacute;sico</h2>
+        <span class="mini-score">2 / 2 checks</span>
+      </div>
+      <div class="section-body">
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Meta viewport</div>
+            <div class="check-value">width=device-width, initial-scale=1</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-icon">&#9989;</div>
+          <div class="check-content">
+            <div class="check-title">Sin scroll horizontal en mobile (375px)</div>
+            <div class="check-detail">Body scroll width: 360px &le; Viewport: 375px. No hay desbordamiento.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== RECOMENDACIONES PRIORIZADAS ==================== -->
+    <div class="section">
+      <div class="section-header">
+        <h2>&#128204; Recomendaciones Priorizadas</h2>
+      </div>
+      <div class="section-body">
+        <ol class="rec-list">
+          <li class="critical">
+            <strong>Corregir jerarqu&iacute;a de headings</strong>
+            <div class="rec-how">Los saltos H3&rarr;H5 y H2&rarr;H5 afectan la accesibilidad y el rastreo SEO. Reemplazar H5 por el nivel correspondiente (H4 despu&eacute;s de H3, H3 despu&eacute;s de H2).</div>
+          </li>
+          <li class="critical">
+            <strong>Agregar alt a 3 im&aacute;genes sin descripci&oacute;n</strong>
+            <div class="rec-how">Las im&aacute;genes Colombia.svg y play.svg necesitan un alt descriptivo. El tracking pixel de Bing debe tener alt="" con role="presentation".</div>
+          </li>
+          <li class="critical">
+            <strong>Agregar texto o aria-label al bot&oacute;n sin identificar</strong>
+            <div class="rec-how">Inspeccionar el bot&oacute;n sin texto y agregar aria-label descriptivo (ej: aria-label="Abrir men&uacute;").</div>
+          </li>
+          <li class="critical">
+            <strong>Agregar rel="noopener noreferrer" a links externos</strong>
+            <div class="rec-how">27 links externos no tienen esta protecci&oacute;n. Agregar rel="noopener noreferrer" especialmente a los que usan target="_blank" para prevenir tab-napping.</div>
+          </li>
+          <li class="warning">
+            <strong>Agregar fetchpriority="high" a la imagen LCP</strong>
+            <div class="rec-how">La imagen hero (Hero-retenciones-CO.webp) es el LCP candidate. Agregar fetchpriority="high" y remover loading="lazy" si lo tiene.</div>
+          </li>
+          <li class="warning">
+            <strong>Remover loading="lazy" de im&aacute;genes above-the-fold</strong>
+            <div class="rec-how">54 im&aacute;genes en los primeros 1000px tienen lazy loading. Las im&aacute;genes del header, logo y hero no deber&iacute;an tener loading="lazy".</div>
+          </li>
+          <li class="warning">
+            <strong>Agregar width/height a im&aacute;genes de contenido</strong>
+            <div class="rec-how">10 im&aacute;genes no tienen dimensiones expl&iacute;citas, lo que causa layout shifts (CLS). Agregar width y height HTML nativos.</div>
+          </li>
+          <li class="warning">
+            <strong>Mejorar textos de enlaces</strong>
+            <div class="rec-how">4 links dicen &ldquo;Ver m&aacute;s&rdquo;. Reemplazar por textos descriptivos como &ldquo;Ver calculadora de prestaciones sociales&rdquo;.</div>
+          </li>
+          <li class="warning">
+            <strong>Verificar contraste de colores manualmente</strong>
+            <div class="rec-how">Usar https://webaim.org/resources/contrastchecker para validar que textos cumplen WCAG 2.1 AA (ratio m&iacute;nimo 4.5:1).</div>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:12px;">
+      Reporte generado autom&aacute;ticamente con Playwright MCP &mdash; 2026-04-16
+    </div>
+
+  </div>
+
+</body>
+</html>
