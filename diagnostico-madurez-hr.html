@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnóstico de Madurez HR | ¿En qué nivel está la gestión de personas de tu empresa? | Buk</title>
+  <meta name="description" content="Quiz gratuito de 3 minutos: evalúa el nivel de madurez de la gestión de personas en tu empresa, descubre tus brechas y los módulos Buk que pueden cerrarlas.">
+  <meta property="og:title" content="Diagnóstico de Madurez HR — Descubre en qué nivel está tu empresa">
+  <meta property="og:description" content="10 preguntas, resultado inmediato. Score de 0 a 100 + mapa de brechas personalizado con soluciones Buk.">
+  <meta property="og:type" content="website">
+  <meta name="robots" content="index, follow">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-blue-buk: #2F4DAA;
+      --color-blue-buk-2: #203b9c;
+      --color-dark-blue: #2B3C6A;
+      --color-middle-blue-1: #2F6FC2;
+      --color-middle-blue-2: #73A0DB;
+      --color-light-blue: #D9E3FC;
+      --color-yellow-buk: #FBBF3D;
+      --color-orange-buk: #F59121;
+      --color-grey-buk: #7D7D7D;
+      --color-white: #fff;
+      --color-error: #F54721;
+      --color-success: #27AE60;
+      --wb-font-color-1: #1A2441;
+      --wb-font-color-2: #A1A2AA;
+      --wb-bg-modules: #E7EEFF;
+      --font-family-body: 'Inter', sans-serif;
+      --font-family-title: 'Source Sans Pro', sans-serif;
+      --bg-cta-1: linear-gradient(0deg, #F8A12A 0%, #FBBF3D 100%);
+      --bg-cta-1-hover: linear-gradient(178.56deg, #F59121 1.23%, #CE5816 151.61%);
+      --bg-cta-2-hover: linear-gradient(180deg, #2F4DAA 0%, #2E4176 100%);
+      --bg-gradient-blue-light: linear-gradient(180deg, #2F4DAA 31.84%, #2E6DC8 169.73%);
+      --bg-gradient-modules-to-white: linear-gradient(180deg, #E7EEFF 0%, #FFF 100%);
+      --radius-btn: 69px;
+      --radius-16: 16px;
+      --radius-32: 32px;
+      --box-shadow-1: 0px 2px 9px 0px rgba(0,0,0,0.10);
+      --box-shadow-2: 0px 0px 18px 4px rgba(43,60,106,0.24);
+      --box-shadow-3: 1px 2px 9.1px 2px rgba(43,60,106,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-family-body);
+      color: var(--wb-font-color-1);
+      background: var(--color-white);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+
+    /* ─── HEADER ─────────────────────────────────────────────── */
+    #site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-light-blue);
+      transition: box-shadow 0.3s ease;
+    }
+    #site-header.scrolled { box-shadow: var(--box-shadow-1); }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+    .header-center {
+      font-family: var(--font-family-title);
+      font-weight: 600;
+      color: var(--color-blue-buk);
+      font-size: 1rem;
+    }
+    @media (max-width: 767px) { .header-center { display: none; } }
+
+    /* ─── BUTTONS ─────────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-cta-1);
+      color: var(--color-white);
+      border: none;
+      border-radius: var(--radius-btn);
+      font-family: var(--font-family-title);
+      font-weight: 600;
+      font-size: 1.25rem;
+      padding: 14px 32px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.15s ease;
+      line-height: 1;
+    }
+    .btn-primary:hover { background: var(--bg-cta-1-hover); transform: translateY(-1px); }
+    .btn-primary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-primary.sm { font-size: 1rem; padding: 10px 24px; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--color-blue-buk);
+      border: 2px solid var(--color-blue-buk);
+      border-radius: var(--radius-btn);
+      font-family: var(--font-family-title);
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 12px 28px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+      line-height: 1;
+    }
+    .btn-secondary:hover { background: var(--color-blue-buk); color: var(--color-white); transform: translateY(-1px); }
+    .btn-secondary.sm { font-size: 0.9rem; padding: 8px 18px; }
+    .btn-secondary.white {
+      border-color: rgba(255,255,255,0.8);
+      color: var(--color-white);
+    }
+    .btn-secondary.white:hover { background: rgba(255,255,255,0.15); }
+
+    /* ─── BADGE ─────────────────────────────────────────────── */
+    .badge {
+      display: inline-block;
+      background: var(--color-light-blue);
+      color: var(--color-blue-buk);
+      border-radius: var(--radius-btn);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 4px 14px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       ESTADO 1 — PANTALLA DE INICIO
+    ═══════════════════════════════════════════════════════════ */
+    #screen-intro {
+      padding: 80px 0 60px;
+      background: var(--color-white);
+    }
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 55% 45%;
+      gap: 60px;
+      align-items: center;
+    }
+    @media (max-width: 900px) {
+      .intro-grid { grid-template-columns: 1fr; gap: 40px; }
+      .intro-visual { order: -1; max-width: 380px; margin: 0 auto; }
+    }
+    .intro-text { display: flex; flex-direction: column; gap: 20px; }
+    .intro-text h1 {
+      font-family: var(--font-family-title);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      color: var(--color-blue-buk);
+      line-height: 1.2;
+    }
+    .intro-text p { font-size: 1.1rem; color: var(--wb-font-color-1); }
+    .checklist { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .checklist li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .checklist li svg { flex-shrink: 0; }
+    .intro-visual { width: 100%; }
+    .social-proof {
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid var(--color-light-blue);
+      text-align: center;
+    }
+    .social-proof p {
+      font-size: 0.95rem;
+      color: var(--color-grey-buk);
+      margin-bottom: 16px;
+    }
+    .logos-text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .logos-text span {
+      font-family: var(--font-family-title);
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--wb-font-color-2);
+      letter-spacing: 0.02em;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       ESTADO 2 — QUIZ
+    ═══════════════════════════════════════════════════════════ */
+    #screen-quiz {
+      display: none;
+      padding: 40px 0 80px;
+      background: var(--wb-bg-modules);
+      min-height: calc(100vh - 68px);
+    }
+
+    /* Progress bar */
+    .progress-wrap {
+      max-width: 680px;
+      margin: 0 auto 32px;
+      padding: 0 5%;
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .progress-label { font-size: 0.875rem; color: var(--color-grey-buk); font-weight: 500; }
+    .progress-bar-track {
+      height: 6px;
+      background: rgba(47,77,170,0.15);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--color-blue-buk);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* Question card */
+    .quiz-card {
+      background: var(--color-white);
+      border-radius: var(--radius-16);
+      box-shadow: var(--box-shadow-1);
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    .quiz-card.fading { opacity: 0; }
+
+    .q-category {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-middle-blue-1);
+      margin-bottom: 4px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .q-number {
+      font-family: var(--font-family-title);
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--color-light-blue);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .q-text {
+      font-family: var(--font-family-title);
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: var(--color-blue-buk);
+      margin-bottom: 28px;
+      line-height: 1.35;
+    }
+
+    /* Options */
+    .options-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .option-card {
+      border: 2px solid #E0E7F4;
+      border-radius: var(--radius-16);
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      user-select: none;
+    }
+    .option-card:hover {
+      border-color: var(--color-blue-buk);
+      background: #F4F7FF;
+    }
+    .option-card.selected {
+      border-color: var(--color-blue-buk);
+      background: var(--color-light-blue);
+    }
+    .option-text { font-size: 0.975rem; font-weight: 500; line-height: 1.4; flex: 1; }
+    .option-check {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #CBD5E8;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .option-card.selected .option-check {
+      background: var(--color-blue-buk);
+      border-color: var(--color-blue-buk);
+      color: white;
+    }
+
+    /* Navigation */
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .quiz-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--color-grey-buk);
+      margin-top: 20px;
+    }
+    @media (max-width: 600px) {
+      .quiz-card { padding: 24px 20px; }
+      .quiz-nav { flex-direction: column-reverse; }
+      .quiz-nav .btn-primary, .quiz-nav .btn-secondary { width: 100%; justify-content: center; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       ESTADO 3 — RESULTADOS
+    ═══════════════════════════════════════════════════════════ */
+    #screen-results { display: none; }
+
+    /* 4.1 — Hero de resultados */
+    .results-hero {
+      background: var(--bg-gradient-blue-light);
+      padding: 60px 0 80px;
+      text-align: center;
+      color: white;
+    }
+    .results-hero .badge {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      margin-bottom: 16px;
+    }
+    .results-hero h1 {
+      font-family: var(--font-family-title);
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      font-weight: 400;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+    .score-number {
+      font-family: var(--font-family-title);
+      font-size: clamp(72px, 12vw, 96px);
+      font-weight: 900;
+      color: var(--color-yellow-buk);
+      line-height: 1;
+      display: block;
+    }
+    .score-suffix {
+      font-family: var(--font-family-title);
+      font-size: 2rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+    }
+    .nivel-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: 99px;
+      font-family: var(--font-family-title);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      margin: 16px 0;
+    }
+    .results-hero .nivel-desc {
+      max-width: 560px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    /* 4.2 — Barra de nivel */
+    .level-bar-section {
+      background: var(--color-white);
+      padding: 48px 0;
+    }
+    .level-bar-wrap { max-width: 800px; margin: 0 auto; padding: 0 5%; }
+    .level-bar-track {
+      position: relative;
+      height: 14px;
+      border-radius: 99px;
+      overflow: visible;
+      margin: 20px 0 10px;
+      display: flex;
+    }
+    .level-zone { height: 100%; }
+    .level-zone:first-child { border-radius: 99px 0 0 99px; }
+    .level-zone:last-child { border-radius: 0 99px 99px 0; }
+    .level-bar-pin {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 26px;
+      height: 26px;
+      background: white;
+      border-radius: 50%;
+      border: 4px solid var(--color-blue-buk);
+      box-shadow: var(--box-shadow-2);
+      transition: left 1s ease 0.5s;
+      z-index: 2;
+    }
+    .level-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+    .level-labels span { font-size: 0.72rem; color: var(--color-grey-buk); font-weight: 500; text-align: center; flex: 1; }
+    .percentil-text {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.95rem;
+      color: var(--color-grey-buk);
+    }
+    .percentil-text strong { color: var(--color-blue-buk); }
+
+    /* 4.3 — Resumen por categoría */
+    .category-summary {
+      background: var(--wb-bg-modules);
+      padding: 60px 0;
+    }
+    .section-title {
+      font-family: var(--font-family-title);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      color: var(--color-blue-buk);
+      margin-bottom: 8px;
+    }
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--color-grey-buk);
+      margin-bottom: 36px;
+    }
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 640px) { .category-grid { grid-template-columns: 1fr; } }
+
+    .category-card {
+      background: white;
+      border-radius: var(--radius-16);
+      padding: 20px 24px;
+      box-shadow: var(--box-shadow-1);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .cat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .cat-name { font-weight: 600; font-size: 0.95rem; }
+    .cat-score { font-family: var(--font-family-title); font-weight: 700; font-size: 1rem; white-space: nowrap; }
+    .mini-bar-track {
+      height: 6px;
+      background: #EEF1FA;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .mini-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.8s ease;
+    }
+    .cat-status {
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 99px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      align-self: flex-start;
+    }
+    .status-ok { background: #E8F8EF; color: #27AE60; }
+    .status-warn { background: #FFF5E0; color: #F59121; }
+    .status-crit { background: #FFEAE6; color: #F54721; }
+
+    /* 4.4 — Mapa de brechas */
+    .gap-map {
+      background: white;
+      padding: 60px 0;
+    }
+    .gap-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .gap-card {
+      background: white;
+      border: 1px solid #E0E7F4;
+      border-radius: var(--radius-16);
+      padding: 28px 32px;
+      box-shadow: var(--box-shadow-3);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.4s ease forwards;
+    }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .gap-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .gap-category-label {
+      font-family: var(--font-family-title);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--color-blue-buk);
+    }
+    .urgency-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .urgency-critical { background: #FFEAE6; color: #F54721; }
+    .urgency-warn { background: #FFF5E0; color: #F59121; }
+    .gap-section { margin-bottom: 14px; }
+    .gap-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--wb-font-color-2);
+      margin-bottom: 4px;
+    }
+    .gap-text { font-size: 0.9375rem; color: var(--wb-font-color-1); line-height: 1.5; }
+    .gap-divider { border: none; border-top: 1px solid #EEF1FA; margin: 16px 0; }
+    .gap-modulo-name { font-weight: 700; color: var(--color-blue-buk); }
+    .gap-card-footer { margin-top: 20px; }
+
+    /* 4.5 — CTA Block */
+    .cta-block {
+      background: var(--bg-gradient-blue-light);
+      padding: 80px 0;
+      text-align: center;
+      color: white;
+    }
+    .cta-block h2 {
+      font-family: var(--font-family-title);
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: white;
+      max-width: 700px;
+      margin: 0 auto 16px;
+      line-height: 1.25;
+    }
+    .cta-block p {
+      font-size: 1.05rem;
+      opacity: 0.9;
+      max-width: 580px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .cta-note {
+      font-size: 0.75rem;
+      opacity: 0.65;
+    }
+
+    /* 4.6 — Reset */
+    .reset-area {
+      text-align: center;
+      padding: 32px 0 48px;
+      background: white;
+    }
+
+    /* ─── FAQ ─────────────────────────────────────────────────── */
+    .faq-section {
+      background: var(--color-white);
+      padding: 60px 0;
+      border-top: 1px solid var(--color-light-blue);
+    }
+    .faq-list { max-width: 780px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid #EEF1FA; }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 20px 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-family: var(--font-family-body);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--wb-font-color-1);
+      transition: color 0.2s;
+    }
+    .faq-question:hover { color: var(--color-blue-buk); }
+    .faq-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--color-light-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-blue-buk);
+      transition: transform 0.3s ease, background 0.2s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); background: var(--color-blue-buk); color: white; }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .faq-answer-inner {
+      padding: 0 0 20px;
+      font-size: 0.95rem;
+      color: var(--color-grey-buk);
+      line-height: 1.7;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      background: white;
+      border-top: 1px solid var(--color-light-blue);
+      padding: 28px 0;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--color-grey-buk);
+      line-height: 1.9;
+    }
+    footer a { color: var(--color-blue-buk); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ─── MISC ─────────────────────────────────────────────────── */
+    .hidden { display: none !important; }
+    .text-center { text-align: center; }
+    .mt-16 { margin-top: 16px; }
+    .mt-32 { margin-top: 32px; }
+
+    /* Empty state for perfect score */
+    .perfect-score {
+      text-align: center;
+      padding: 48px 24px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .perfect-score .big-emoji { font-size: 4rem; margin-bottom: 16px; display: block; }
+    .perfect-score h3 {
+      font-family: var(--font-family-title);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-blue-buk);
+      margin-bottom: 8px;
+    }
+    .perfect-score p { color: var(--color-grey-buk); font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     HEADER
+════════════════════════════════════════════════ -->
+<header id="site-header">
+  <div class="header-inner">
+    <a href="https://www.buk.cl" target="_blank">
+      <img src="https://www.buk.cl/hubfs/logo-buk.svg" height="36" alt="Buk">
+    </a>
+    <span class="header-center">Diagnóstico de Madurez HR</span>
+    <a href="https://www.buk.cl/demo" target="_blank" class="btn-primary sm">Solicitar demo</a>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     ESTADO 1 — PANTALLA DE INICIO
+════════════════════════════════════════════════ -->
+<div id="screen-intro">
+  <section class="container">
+    <div class="intro-grid">
+      <!-- Columna izquierda: texto -->
+      <div class="intro-text">
+        <div>
+          <span class="badge">Herramienta gratuita · 3 minutos</span>
+        </div>
+        <h1>Descubre el nivel de madurez de la gestión de personas en tu empresa</h1>
+        <p>Responde 10 preguntas sobre tus procesos actuales y obtén un diagnóstico personalizado con las brechas de tu área de RRHH y las soluciones que pueden ayudarte a cerrarlas.</p>
+        <ul class="checklist">
+          <li>
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="11" fill="#2F4DAA"/><path d="M6 11.5l3.5 3.5 6.5-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Score de madurez de 0 a 100
+          </li>
+          <li>
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="11" fill="#2F4DAA"/><path d="M6 11.5l3.5 3.5 6.5-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Mapa de brechas por área de gestión
+          </li>
+          <li>
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="11" fill="#2F4DAA"/><path d="M6 11.5l3.5 3.5 6.5-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Módulos Buk recomendados según tu realidad
+          </li>
+        </ul>
+        <div>
+          <button class="btn-primary" onclick="iniciarQuiz()">Comenzar diagnóstico →</button>
+        </div>
+      </div>
+
+      <!-- Columna derecha: SVG ilustración -->
+      <div class="intro-visual">
+        <svg viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:420px;">
+          <!-- Fondo decorativo -->
+          <ellipse cx="210" cy="340" rx="180" ry="28" fill="#D9E3FC" opacity="0.5"/>
+          <!-- Escalón 1 (base) -->
+          <rect x="40" y="260" width="100" height="80" rx="12" fill="#D9E3FC"/>
+          <!-- Escalón 2 -->
+          <rect x="160" y="200" width="100" height="140" rx="12" fill="#73A0DB"/>
+          <!-- Escalón 3 (top) -->
+          <rect x="280" y="140" width="100" height="200" rx="12" fill="#2F4DAA"/>
+          <!-- Persona 1 (escalón base) -->
+          <circle cx="90" cy="235" r="16" fill="#2F6FC2"/>
+          <path d="M74 270 Q90 258 106 270" stroke="#2F6FC2" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- Persona 2 (escalón medio) -->
+          <circle cx="210" cy="172" r="16" fill="#FBBF3D"/>
+          <path d="M194 207 Q210 195 226 207" stroke="#FBBF3D" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- Persona 3 (escalón top) -->
+          <circle cx="330" cy="112" r="18" fill="#ffffff"/>
+          <path d="M313 149 Q330 136 347 149" stroke="#ffffff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <!-- Estrella arriba -->
+          <path d="M330 78 L334 89 L346 89 L337 96 L340 108 L330 101 L320 108 L323 96 L314 89 L326 89 Z" fill="#FBBF3D"/>
+          <!-- Flecha de crecimiento -->
+          <path d="M48 310 L160 248 L280 188 L380 128" stroke="#2F4DAA" stroke-width="2.5" stroke-dasharray="6 4" stroke-linecap="round" opacity="0.35"/>
+          <!-- Íconos flotantes -->
+          <!-- Doc icon -->
+          <rect x="22" y="160" width="48" height="56" rx="8" fill="white" filter="url(#shadow1)"/>
+          <path d="M31 178 h30 M31 188 h30 M31 198 h20" stroke="#2F4DAA" stroke-width="2" stroke-linecap="round"/>
+          <path d="M55 160 l15 14 h-15 z" fill="#D9E3FC"/>
+          <!-- Chart icon -->
+          <rect x="350" y="56" width="52" height="52" rx="12" fill="white" filter="url(#shadow1)"/>
+          <rect x="360" y="82" width="8" height="16" rx="2" fill="#2F6FC2"/>
+          <rect x="372" y="74" width="8" height="24" rx="2" fill="#2F4DAA"/>
+          <rect x="384" y="68" width="8" height="30" rx="2" fill="#FBBF3D"/>
+          <!-- People icon -->
+          <rect x="345" y="220" width="52" height="48" rx="10" fill="white" filter="url(#shadow1)"/>
+          <circle cx="364" cy="237" r="8" fill="#D9E3FC"/>
+          <path d="M355 256 Q364 249 373 256" stroke="#2F6FC2" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="378" cy="234" r="6" fill="#FBBF3D"/>
+          <path d="M371 254 Q378 248 385 254" stroke="#F59121" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <defs>
+            <filter id="shadow1" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.1"/>
+            </filter>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Social proof -->
+    <div class="social-proof">
+      <p>Más de 3.000 empresas en Chile ya confían en Buk para gestionar a su equipo</p>
+      <div class="logos-text">
+        <span>La Araucana</span>
+        <span>Caffarena</span>
+        <span>Lounge</span>
+        <span>Kia</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     ESTADO 2 — QUIZ
+════════════════════════════════════════════════ -->
+<div id="screen-quiz">
+  <!-- Progress bar -->
+  <div class="progress-wrap">
+    <div class="progress-header">
+      <span class="progress-label" id="progress-text">Pregunta 1 de 10</span>
+      <span class="progress-label" id="progress-pct">0%</span>
+    </div>
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- Card de pregunta — se renderiza dinámicamente -->
+  <div class="container" style="padding-top:0">
+    <div class="quiz-card" id="quiz-card">
+      <!-- Contenido inyectado por JS -->
+    </div>
+    <p class="quiz-note">Tus respuestas no se almacenan ni se comparten. El diagnóstico es instantáneo.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     ESTADO 3 — RESULTADOS
+════════════════════════════════════════════════ -->
+<div id="screen-results">
+
+  <!-- 4.1 Hero -->
+  <div class="results-hero">
+    <div class="container">
+      <div class="badge" id="res-badge">Tu diagnóstico está listo</div>
+      <h1>El nivel de madurez HR de tu empresa es:</h1>
+      <div>
+        <span class="score-number" id="score-display">0</span>
+        <span class="score-suffix">/100</span>
+      </div>
+      <div id="nivel-badge-wrap"></div>
+      <p class="nivel-desc" id="nivel-desc"></p>
+    </div>
+  </div>
+
+  <!-- 4.2 Barra de nivel -->
+  <div class="level-bar-section">
+    <div class="level-bar-wrap">
+      <div style="text-align:center;margin-bottom:8px">
+        <span style="font-size:.875rem;color:var(--color-grey-buk);font-weight:500">Tu posición en el espectro de madurez HR</span>
+      </div>
+      <div class="level-bar-track" id="level-bar-track">
+        <!-- 5 zonas: 0-24, 25-49, 50-74, 75-89, 90-100 -->
+        <div class="level-zone" style="width:25%; background:#F54721; border-radius:99px 0 0 99px"></div>
+        <div class="level-zone" style="width:25%; background:#F59121"></div>
+        <div class="level-zone" style="width:25%; background:#2F6FC2"></div>
+        <div class="level-zone" style="width:15%; background:#2F4DAA"></div>
+        <div class="level-zone" style="width:10%; background:#27AE60; border-radius:0 99px 99px 0"></div>
+        <div class="level-bar-pin" id="level-pin" style="left:0%"></div>
+      </div>
+      <div class="level-labels">
+        <span>Inicial<br>0–24</span>
+        <span>En desarrollo<br>25–49</span>
+        <span>Intermedio<br>50–74</span>
+        <span>Avanzado<br>75–89</span>
+        <span>Estratégico<br>90–100</span>
+      </div>
+      <p class="percentil-text" id="percentil-text"></p>
+    </div>
+  </div>
+
+  <!-- 4.3 Resumen por categoría -->
+  <div class="category-summary">
+    <div class="container">
+      <h2 class="section-title">Tu resultado por área</h2>
+      <p class="section-subtitle">Puntuación obtenida en cada una de las 10 áreas evaluadas</p>
+      <div class="category-grid" id="category-grid">
+        <!-- Inyectado por JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 4.4 Mapa de brechas -->
+  <div class="gap-map">
+    <div class="container">
+      <h2 class="section-title" id="gap-title">Brechas identificadas y cómo Buk puede cerrarlas</h2>
+      <p class="section-subtitle" id="gap-subtitle">Basado en tus respuestas, estos son los módulos que más impacto tendrían en tu empresa</p>
+      <div class="gap-list" id="gap-list">
+        <!-- Inyectado por JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 4.5 CTA -->
+  <div class="cta-block">
+    <div class="container">
+      <h2 id="cta-title">Título del CTA</h2>
+      <p id="cta-subtitle">Subtítulo del CTA</p>
+      <div class="cta-buttons">
+        <a href="https://www.buk.cl/demo" target="_blank" class="btn-primary" id="cta-btn-primary">Quiero digitalizar mi RRHH →</a>
+        <a href="https://www.buk.cl/recursos/video-demo" target="_blank" class="btn-secondary white">Ver un demo del producto</a>
+      </div>
+      <p class="cta-note">Sin compromiso · El especialista conocerá tu diagnóstico antes de la reunión</p>
+    </div>
+  </div>
+
+  <!-- 4.6 Reset -->
+  <div class="reset-area">
+    <button class="btn-secondary sm" onclick="resetDiagnostico()">← Hacer el diagnóstico nuevamente</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN 5 — FAQ
+════════════════════════════════════════════════ -->
+<section class="faq-section">
+  <div class="container">
+    <h2 class="section-title text-center" style="margin-bottom:32px">Preguntas frecuentes sobre este diagnóstico</h2>
+    <div class="faq-list" id="faq-list">
+      <!-- Inyectado por JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <p>© 2025 Buk SpA. Todos los derechos reservados.</p>
+    <p>Este diagnóstico es una herramienta educativa. Los resultados son orientativos.</p>
+    <p>
+      <a href="https://www.buk.cl/privacidad" target="_blank">Política de privacidad</a>
+      &nbsp;·&nbsp;
+      <a href="https://www.buk.cl/terminos" target="_blank">Términos de uso</a>
+    </p>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════ -->
+<script>
+// ─── DATOS: PREGUNTAS ───────────────────────────────────────────────────────
+// Cada pregunta tiene categoría, texto, 3 opciones y su módulo asociado.
+// Los puntajes son 0, 5 y 10 (opción A, B, C respectivamente).
+const PREGUNTAS = [
+  {
+    id: 1,
+    categoria: "📋 Administración de personas",
+    texto: "¿Cómo gestionas actualmente los contratos y documentos laborales de tus colaboradores?",
+    opciones: [
+      { texto: "En papel físico o archivos en carpetas locales / pendrive", puntaje: 0 },
+      { texto: "En archivos digitales (PDF, Google Drive, email), pero sin firma electrónica", puntaje: 5 },
+      { texto: "Con firma electrónica y carpetas digitales centralizadas por colaborador", puntaje: 10 }
+    ],
+    modulo: "documentos",
+    resumenOpciones: [
+      "Gestionas documentos en papel físico o carpetas locales.",
+      "Usas archivos digitales pero sin firma electrónica centralizada.",
+      "Tienes firma electrónica y carpetas digitales centralizadas."
+    ]
+  },
+  {
+    id: 2,
+    categoria: "💰 Remuneraciones",
+    texto: "¿Cómo procesas el pago de sueldos mensualmente?",
+    opciones: [
+      { texto: "Calculamos todo en Excel o de forma manual, con verificación uno a uno", puntaje: 0 },
+      { texto: "Usamos software, pero aún hacemos ajustes manuales frecuentes", puntaje: 5 },
+      { texto: "Está automatizado: el sistema calcula haberes, descuentos y leyes sociales sin intervención manual", puntaje: 10 }
+    ],
+    modulo: "remuneraciones",
+    resumenOpciones: [
+      "Calculas sueldos manualmente en Excel.",
+      "Usas software pero con ajustes manuales frecuentes.",
+      "Tienes cálculo automatizado de sueldos y leyes sociales."
+    ]
+  },
+  {
+    id: 3,
+    categoria: "⏱ Control de asistencia",
+    texto: "¿Cómo controlas la asistencia y jornada laboral de tus colaboradores?",
+    opciones: [
+      { texto: "Planillas manuales, libros físicos o registro en papel", puntaje: 0 },
+      { texto: "Reloj control o sistema digital, pero no está integrado con remuneraciones", puntaje: 5 },
+      { texto: "Sistema digital integrado: la asistencia alimenta automáticamente el cálculo de sueldos", puntaje: 10 }
+    ],
+    modulo: "asistencia",
+    resumenOpciones: [
+      "Controlas asistencia con planillas manuales o papel.",
+      "Tienes control digital pero no integrado con remuneraciones.",
+      "Tienes sistema integrado donde asistencia alimenta sueldos."
+    ]
+  },
+  {
+    id: 4,
+    categoria: "🎯 Gestión del desempeño",
+    texto: "¿Cómo evalúas el desempeño y fijas objetivos para tu equipo?",
+    opciones: [
+      { texto: "No tenemos un proceso formal de evaluación de desempeño", puntaje: 0 },
+      { texto: "Hacemos evaluaciones anuales, pero de forma manual o en Excel", puntaje: 5 },
+      { texto: "Tenemos ciclos de evaluación y OKRs/metas gestionados desde una plataforma", puntaje: 10 }
+    ],
+    modulo: "desempeno",
+    resumenOpciones: [
+      "No tienes proceso formal de evaluación de desempeño.",
+      "Haces evaluaciones anuales de forma manual o en Excel.",
+      "Gestionas evaluaciones y OKRs desde una plataforma."
+    ]
+  },
+  {
+    id: 5,
+    categoria: "🔍 Reclutamiento y selección",
+    texto: "¿Cómo gestionas los procesos de reclutamiento cuando necesitas contratar?",
+    opciones: [
+      { texto: "Por email y hojas de cálculo, sin sistema centralizado", puntaje: 0 },
+      { texto: "Publicamos en portales, pero el seguimiento de candidatos lo hacemos manualmente", puntaje: 5 },
+      { texto: "Tenemos un ATS o módulo de selección que centraliza postulantes, etapas y evaluaciones", puntaje: 10 }
+    ],
+    modulo: "seleccion",
+    resumenOpciones: [
+      "Gestionas reclutamiento por email y hojas de cálculo.",
+      "Publicas en portales pero el seguimiento es manual.",
+      "Tienes un ATS que centraliza todo el proceso de selección."
+    ]
+  },
+  {
+    id: 6,
+    categoria: "🌡 Clima y engagement",
+    texto: "¿Cómo mides el clima laboral y el nivel de compromiso de tus colaboradores?",
+    opciones: [
+      { texto: "No medimos el clima de forma estructurada", puntaje: 0 },
+      { texto: "Hacemos encuestas ocasionales, pero informales o en formularios genéricos", puntaje: 5 },
+      { texto: "Tenemos encuestas periódicas con indicadores de eNPS y clima, con reportes automáticos", puntaje: 10 }
+    ],
+    modulo: "clima",
+    resumenOpciones: [
+      "No mides el clima laboral de forma estructurada.",
+      "Haces encuestas ocasionales e informales.",
+      "Tienes encuestas periódicas con eNPS y reportes automáticos."
+    ]
+  },
+  {
+    id: 7,
+    categoria: "📚 Capacitación y desarrollo",
+    texto: "¿Cómo gestionas la capacitación y el desarrollo profesional de tu equipo?",
+    opciones: [
+      { texto: "No tenemos un plan formal de capacitación", puntaje: 0 },
+      { texto: "Gestionamos capacitaciones, pero sin plataforma: coordinación por email y Excel", puntaje: 5 },
+      { texto: "Tenemos una plataforma o LMS que centraliza cursos, avances y cumplimiento SENCE", puntaje: 10 }
+    ],
+    modulo: "capacitacion",
+    resumenOpciones: [
+      "No tienes plan formal de capacitación.",
+      "Gestionas capacitaciones por email y Excel.",
+      "Tienes LMS con cursos, avances y cumplimiento SENCE."
+    ]
+  },
+  {
+    id: 8,
+    categoria: "💳 Beneficios y bienestar",
+    texto: "¿Cómo administras los beneficios y el bienestar financiero de tus colaboradores?",
+    opciones: [
+      { texto: "Los beneficios se gestionan manualmente, sin sistema centralizado", puntaje: 0 },
+      { texto: "Tenemos algunos beneficios, pero la gestión es parcialmente manual", puntaje: 5 },
+      { texto: "Los colaboradores acceden a sus beneficios y adelantos de sueldo desde una app o portal propio", puntaje: 10 }
+    ],
+    modulo: "beneficios",
+    resumenOpciones: [
+      "Gestionas beneficios de forma manual sin sistema.",
+      "Tienes beneficios con gestión parcialmente manual.",
+      "Los colaboradores acceden a beneficios desde una app."
+    ]
+  },
+  {
+    id: 9,
+    categoria: "📊 Reportería y datos de personas",
+    texto: "¿Cómo accedes a datos e indicadores clave de tu área de personas (rotación, headcount, ausentismo)?",
+    opciones: [
+      { texto: "Construimos reportes manuales en Excel cada vez que los necesitamos", puntaje: 0 },
+      { texto: "Tenemos algunos reportes, pero no en tiempo real ni desde una sola fuente", puntaje: 5 },
+      { texto: "Tenemos dashboards y reportería automatizada con datos en tiempo real", puntaje: 10 }
+    ],
+    modulo: "reporteria",
+    resumenOpciones: [
+      "Construyes reportes manualmente en Excel cuando los necesitas.",
+      "Tienes reportes pero no en tiempo real ni unificados.",
+      "Tienes dashboards automatizados con datos en tiempo real."
+    ]
+  },
+  {
+    id: 10,
+    categoria: "🤝 Experiencia del colaborador",
+    texto: "¿Cómo interactúan tus colaboradores con el área de RRHH para solicitudes y trámites?",
+    opciones: [
+      { texto: "Todo se pide en persona, por email o WhatsApp al área de RRHH", puntaje: 0 },
+      { texto: "Tenemos algunos formularios digitales, pero el proceso sigue requiriendo gestión manual", puntaje: 5 },
+      { texto: "Los colaboradores tienen un portal self-service donde gestionan sus solicitudes, documentos y datos", puntaje: 10 }
+    ],
+    modulo: "portal",
+    resumenOpciones: [
+      "Los colaboradores piden todo en persona, email o WhatsApp.",
+      "Tienes formularios digitales pero con gestión manual aún.",
+      "Tienes portal self-service para solicitudes y documentos."
+    ]
+  }
+];
+
+// ─── DATOS: MÓDULOS BUK ─────────────────────────────────────────────────────
+const MODULOS_BUK = {
+  "documentos": {
+    nombre: "Gestión Documental y Firma Electrónica",
+    url: "https://www.buk.cl/productos/gestion-documental",
+    descripcion: "Centraliza contratos, anexos y documentos laborales con firma electrónica con validez legal ante la Dirección del Trabajo.",
+    impacto: "Sin firma electrónica ni repositorio centralizado, cada trámite documental implica imprimir, escanear y gestionar archivos físicos. Las empresas medianas pierden entre 6–10 horas mensuales en gestión documental manual, con riesgo de pérdida o desactualización de contratos clave."
+  },
+  "remuneraciones": {
+    nombre: "Remuneraciones",
+    url: "https://www.buk.cl/productos/remuneraciones",
+    descripcion: "Automatiza el cálculo de sueldos, haberes, descuentos, gratificaciones y leyes sociales. Genera liquidaciones y pagos en un clic.",
+    impacto: "El cálculo manual de sueldos genera hasta 3–5 errores mensuales promedio en equipos medianos, con un costo de reproceso de 4–6 horas del área de RRHH y riesgo de multas por errores en declaración de leyes sociales."
+  },
+  "asistencia": {
+    nombre: "Asistencia",
+    url: "https://www.buk.cl/productos/asistencia",
+    descripcion: "Controla jornadas, turnos y horas extras desde cualquier dispositivo, integrado directamente con remuneraciones.",
+    impacto: "Sin integración entre asistencia y remuneraciones, el área de RRHH debe ingresar datos manualmente entre sistemas, lo que duplica el trabajo y genera errores frecuentes en el cálculo de horas extras y descuentos por inasistencia."
+  },
+  "desempeno": {
+    nombre: "Gestión del Desempeño",
+    url: "https://www.buk.cl/productos/gestion-del-desempeno",
+    descripcion: "Gestiona evaluaciones de desempeño, OKRs y feedback continuo para desarrollar el talento de tu equipo.",
+    impacto: "Sin evaluaciones estructuradas, la toma de decisiones de promoción, ajuste de sueldo o desvinculación carece de respaldo objetivo. Esto aumenta el riesgo de conflictos laborales y dificulta retener al talento clave."
+  },
+  "seleccion": {
+    nombre: "Reclutamiento y Selección",
+    url: "https://www.buk.cl/productos/reclutamiento-y-seleccion",
+    descripcion: "Centraliza postulantes, automatiza etapas y evalúa candidatos desde una sola plataforma integrada con onboarding.",
+    impacto: "Gestionar candidatos por email y planillas genera pérdida de postulantes en el proceso, tiempos de contratación 2–3x más largos y una experiencia candidato deficiente que afecta la marca empleadora."
+  },
+  "clima": {
+    nombre: "Encuestas de Clima y Engagement",
+    url: "https://www.buk.cl/productos/encuestas",
+    descripcion: "Mide el clima laboral y eNPS con encuestas periódicas, obtén reportes automáticos y detecta problemas antes de que generen rotación.",
+    impacto: "Sin datos de clima, los problemas de engagement se detectan cuando ya generaron rotación. El costo de reemplazar un colaborador puede ser equivalente a 6–9 meses de su sueldo entre reclutamiento, onboarding y curva de aprendizaje."
+  },
+  "capacitacion": {
+    nombre: "Capacitación (LMS)",
+    url: "https://www.buk.cl/productos/capacitacion",
+    descripcion: "Gestiona planes de capacitación, cursos internos y cumplimiento SENCE desde una plataforma integrada al perfil de cada colaborador.",
+    impacto: "Sin plataforma de capacitación, las empresas pierden beneficios tributarios SENCE por falta de registro, y el desarrollo de los colaboradores queda a la informalidad, reduciendo la retención y la productividad del equipo."
+  },
+  "beneficios": {
+    nombre: "Beneficios y Bienestar Financiero",
+    url: "https://www.buk.cl/productos/beneficios",
+    descripcion: "Centraliza beneficios corporativos y permite a los colaboradores solicitar adelantos de sueldo desde una app, reduciendo el estrés financiero.",
+    impacto: "Los beneficios gestionados manualmente generan inequidad percibida y mayor carga administrativa. El estrés financiero de los colaboradores es uno de los principales factores de distracción y ausentismo en el trabajo."
+  },
+  "reporteria": {
+    nombre: "Reportería y Analytics",
+    url: "https://www.buk.cl/productos/reporteria",
+    descripcion: "Accede a dashboards y reportes en tiempo real de headcount, rotación, ausentismo y más, sin necesidad de construirlos en Excel.",
+    impacto: "Sin datos en tiempo real, las decisiones sobre personas se toman con información desactualizada. Construir un reporte de rotación o headcount desde cero puede tomar entre 4–8 horas en equipos sin plataforma centralizada."
+  },
+  "portal": {
+    nombre: "Portal del Colaborador",
+    url: "https://www.buk.cl/productos/portal-del-colaborador",
+    descripcion: "Permite que tus colaboradores gestionen sus propias solicitudes, descarguen documentos y actualicen sus datos desde cualquier dispositivo.",
+    impacto: "Sin portal self-service, el área de RRHH atiende cientos de solicitudes simples (liquidaciones, certificados, vacaciones) que podrían ser gestionadas por los propios colaboradores. Esto resta foco estratégico al equipo de personas."
+  }
+};
+
+// ─── DATOS: NIVELES ─────────────────────────────────────────────────────────
+const NIVELES = [
+  {
+    min: 0, max: 24,
+    etiqueta: "Inicial",
+    emoji: "🌱",
+    color: "#F54721",
+    descripcion: "Tu gestión de personas opera principalmente de forma manual y reactiva. Hay una gran oportunidad de digitalización que puede ahorrarte tiempo y reducir errores.",
+    mensaje_cta: "hay mucho por automatizar"
+  },
+  {
+    min: 25, max: 49,
+    etiqueta: "En desarrollo",
+    emoji: "🔧",
+    color: "#F59121",
+    descripcion: "Ya tienes algunos procesos digitalizados, pero aún hay islas de información y procesos manuales que generan fricciones. Estás en el camino correcto.",
+    mensaje_cta: "estás a mitad de camino"
+  },
+  {
+    min: 50, max: 74,
+    etiqueta: "Intermedio",
+    emoji: "📈",
+    color: "#2F6FC2",
+    descripcion: "Tu área de personas tiene una base digital sólida. Con algunos módulos adicionales integrados podrías dar el salto a una gestión realmente estratégica.",
+    mensaje_cta: "solo te faltan algunos módulos clave"
+  },
+  {
+    min: 75, max: 89,
+    etiqueta: "Avanzado",
+    emoji: "⭐",
+    color: "#2F4DAA",
+    descripcion: "Tu gestión de personas está bien digitalizada. El siguiente paso es integrar todos tus procesos en una sola plataforma para ganar visibilidad total.",
+    mensaje_cta: "ya casi tienes todo integrado"
+  },
+  {
+    min: 90, max: 100,
+    etiqueta: "Estratégico",
+    emoji: "🚀",
+    color: "#27AE60",
+    descripcion: "¡Felicitaciones! Tu gestión de personas está al nivel de las mejores empresas del mercado. Tienes procesos digitales, datos en tiempo real y foco estratégico.",
+    mensaje_cta: "ya estás en el top del mercado"
+  }
+];
+
+// ─── DATOS: CTA MESSAGES ────────────────────────────────────────────────────
+const CTA_MESSAGES = {
+  "Inicial": {
+    titulo: "Tu empresa tiene una gran oportunidad de transformación digital",
+    subtitulo: "Con un score de {score}/100, {brechas_count} de tus 10 áreas de gestión de personas necesitan mejoras urgentes. Un especialista Buk puede mostrarte cómo digitalizar tus procesos paso a paso.",
+    boton: "Quiero digitalizar mi RRHH →"
+  },
+  "En desarrollo": {
+    titulo: "Estás a mitad del camino — los siguientes pasos son los más impactantes",
+    subtitulo: "Con {brechas_count} áreas por mejorar, el salto de {score} a 75+ puntos puede significar horas de trabajo administrativo recuperadas cada mes.",
+    boton: "Ver cómo llegar al siguiente nivel →"
+  },
+  "Intermedio": {
+    titulo: "Ya tienes la base — ahora es momento de integrar todo",
+    subtitulo: "Con {score}/100, te faltan {brechas_count} módulos clave para tener una plataforma verdaderamente integrada. Un especialista Buk puede mostrarte exactamente qué falta.",
+    boton: "Conocer los módulos que me faltan →"
+  },
+  "Avanzado": {
+    titulo: "Estás muy cerca de la gestión estratégica de personas",
+    subtitulo: "Con {score}/100 solo te separan {brechas_count} áreas del nivel estratégico. Descubre cómo cerrar esas brechas con Buk.",
+    boton: "Ver las últimas mejoras que puedo hacer →"
+  },
+  "Estratégico": {
+    titulo: "¡Felicitaciones! Tu gestión de personas está al más alto nivel",
+    subtitulo: "Con {score}/100 estás en el top del mercado. Descubre cómo Buk puede ayudarte a mantener ese estándar y potenciar aún más a tu equipo.",
+    boton: "Conocer Buk en detalle →"
+  }
+};
+
+// ─── DATOS: FAQ ─────────────────────────────────────────────────────────────
+const FAQ_DATA = [
+  {
+    q: "¿Qué mide exactamente este diagnóstico?",
+    a: "Evalúa el nivel de digitalización y madurez de los 10 procesos principales de gestión de personas: administración documental, remuneraciones, asistencia, desempeño, reclutamiento, clima, capacitación, beneficios, reportería y experiencia del colaborador. El resultado es un score de 0 a 100 que indica en qué etapa está tu empresa y qué brechas tiene respecto a las mejores prácticas del mercado."
+  },
+  {
+    q: "¿Mis respuestas se almacenan o se comparten?",
+    a: "No. Este diagnóstico funciona completamente en tu navegador. No registramos ni almacenamos tus respuestas. No te pedimos datos personales para ver el resultado. Si quieres recibir un análisis personalizado con recomendaciones específicas para tu empresa, puedes solicitar una consultoría gratuita con un especialista Buk."
+  },
+  {
+    q: "¿Qué tan preciso es el resultado?",
+    a: "El diagnóstico está diseñado para dar una orientación rápida y útil, no para ser un análisis exhaustivo. Cada pregunta aborda el estado actual de un proceso clave de RRHH. El resultado refleja el nivel promedio de digitalización de tu área según las respuestas que ingresaste. Para un análisis profundo y personalizado, un especialista Buk puede hacer un levantamiento más detallado de tus procesos."
+  },
+  {
+    q: "¿En cuánto tiempo puedo mejorar mi score con Buk?",
+    a: "Depende de la cantidad de módulos que implementes y del tamaño de tu empresa. Empresas medianas que implementan los módulos de administración y remuneraciones reportan tener procesos operativos digitalizados en 4–8 semanas. Los módulos de desarrollo (desempeño, clima, capacitación) suelen implementarse en una segunda etapa de 1 a 3 meses."
+  },
+  {
+    q: "¿Buk sirve para empresas de cualquier tamaño?",
+    a: "Sí. Buk es una plataforma modular: puedes comenzar con los módulos que más necesitas (generalmente remuneraciones y gestión documental) e ir sumando soluciones a medida que tu empresa crece. Actualmente más de 3.000 empresas en Chile de todos los tamaños usan Buk, desde startups hasta empresas con miles de colaboradores."
+  },
+  {
+    q: "¿Qué pasa si mi empresa ya usa otro software de RRHH?",
+    a: "El diagnóstico igual es útil: te permite identificar qué áreas están bien cubiertas con tu solución actual y cuáles tienen brechas. Muchas empresas usan Buk precisamente para reemplazar soluciones fragmentadas (un sistema para sueldos, otro para asistencia, otro para documentos) por una plataforma integrada."
+  }
+];
+
+// ─── ESTADO GLOBAL ──────────────────────────────────────────────────────────
+const APP_STATE = {
+  preguntaActual: 0,
+  respuestas: new Array(10).fill(null),  // índice de opción seleccionada (0, 1, 2)
+  puntajes: new Array(10).fill(0),       // 0, 5 o 10
+  scoreTotal: 0,
+  nivel: null,
+  brechas: []  // índices de preguntas con puntaje < 10
+};
+
+// ─── UTILIDADES ─────────────────────────────────────────────────────────────
+function getNivel(score) {
+  return NIVELES.find(n => score >= n.min && score <= n.max) || NIVELES[0];
+}
+
+function getPercentil(score) {
+  if (score <= 24) return 25;
+  if (score <= 49) return 45;
+  if (score <= 74) return 65;
+  if (score <= 89) return 82;
+  return 95;
+}
+
+// Posición porcentual del pin en la barra de nivel
+function scoreToBarPct(score) {
+  return Math.min(Math.max(score, 0), 100);
+}
+
+function interpolar(text, score, brechasCount) {
+  return text
+    .replace(/{score}/g, score)
+    .replace(/{brechas_count}/g, brechasCount)
+    .replace(/{nivel}/g, APP_STATE.nivel ? APP_STATE.nivel.etiqueta : '');
+}
+
+// ─── INICIAR QUIZ ────────────────────────────────────────────────────────────
+function iniciarQuiz() {
+  document.getElementById('screen-intro').style.display = 'none';
+  document.getElementById('screen-quiz').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  cargarPregunta(0);
+}
+
+// ─── CARGAR PREGUNTA ─────────────────────────────────────────────────────────
+function cargarPregunta(indice) {
+  const pregunta = PREGUNTAS[indice];
+  const total = PREGUNTAS.length;
+  const pct = Math.round((indice / total) * 100);
+
+  // Actualizar progress
+  document.getElementById('progress-text').textContent = `Pregunta ${indice + 1} de ${total}`;
+  document.getElementById('progress-pct').textContent = `${pct}%`;
+  document.getElementById('progress-fill').style.width = `${pct}%`;
+
+  // Construir HTML de la card
+  const opcionesHTML = pregunta.opciones.map((op, opIdx) => {
+    const isSelected = APP_STATE.respuestas[indice] === opIdx;
+    return `
+      <div class="option-card ${isSelected ? 'selected' : ''}"
+           onclick="seleccionarRespuesta(${indice}, ${opIdx}, ${op.puntaje})"
+           role="button" tabindex="0"
+           onkeydown="if(event.key==='Enter'||event.key===' ')seleccionarRespuesta(${indice}, ${opIdx}, ${op.puntaje})">
+        <span class="option-text">${op.texto}</span>
+        <span class="option-check">${isSelected ? '✓' : ''}</span>
+      </div>`;
+  }).join('');
+
+  const anteriorBtn = indice > 0
+    ? `<button class="btn-secondary" onclick="anterior()">← Anterior</button>`
+    : `<span></span>`;
+
+  const tieneRespuesta = APP_STATE.respuestas[indice] !== null;
+  const esUltima = indice === total - 1;
+  const nextLabel = esUltima ? 'Ver mi diagnóstico →' : 'Siguiente →';
+
+  const card = document.getElementById('quiz-card');
+  card.innerHTML = `
+    <div class="q-category">${pregunta.categoria}</div>
+    <div class="q-number">0${indice + 1}</div>
+    <h2 class="q-text">${pregunta.texto}</h2>
+    <div class="options-list">${opcionesHTML}</div>
+    <div class="quiz-nav">
+      ${anteriorBtn}
+      <button class="btn-primary" id="btn-siguiente" onclick="siguiente()" ${tieneRespuesta ? '' : 'disabled'}>
+        ${nextLabel}
+      </button>
+    </div>
+  `;
+
+  // Fade in
+  card.classList.remove('fading');
+}
+
+// ─── SELECCIONAR RESPUESTA ───────────────────────────────────────────────────
+function seleccionarRespuesta(preguntaIndice, opcionIndice, puntaje) {
+  APP_STATE.respuestas[preguntaIndice] = opcionIndice;
+  APP_STATE.puntajes[preguntaIndice] = puntaje;
+
+  // Actualizar estilos de opciones
+  const opciones = document.querySelectorAll('.option-card');
+  opciones.forEach((card, i) => {
+    card.classList.toggle('selected', i === opcionIndice);
+    card.querySelector('.option-check').textContent = i === opcionIndice ? '✓' : '';
+  });
+
+  // Habilitar botón siguiente
+  const btnSig = document.getElementById('btn-siguiente');
+  if (btnSig) btnSig.disabled = false;
+}
+
+// ─── SIGUIENTE ───────────────────────────────────────────────────────────────
+function siguiente() {
+  if (APP_STATE.respuestas[APP_STATE.preguntaActual] === null) return;
+
+  const card = document.getElementById('quiz-card');
+  card.classList.add('fading');
+
+  setTimeout(() => {
+    if (APP_STATE.preguntaActual < PREGUNTAS.length - 1) {
+      APP_STATE.preguntaActual++;
+      cargarPregunta(APP_STATE.preguntaActual);
+    } else {
+      calcularResultados();
+    }
+  }, 220);
+}
+
+// ─── ANTERIOR ────────────────────────────────────────────────────────────────
+function anterior() {
+  if (APP_STATE.preguntaActual === 0) return;
+  const card = document.getElementById('quiz-card');
+  card.classList.add('fading');
+  setTimeout(() => {
+    APP_STATE.preguntaActual--;
+    cargarPregunta(APP_STATE.preguntaActual);
+  }, 220);
+}
+
+// ─── CALCULAR RESULTADOS ─────────────────────────────────────────────────────
+function calcularResultados() {
+  // Sumar todos los puntajes
+  APP_STATE.scoreTotal = APP_STATE.puntajes.reduce((acc, p) => acc + p, 0);
+  // Determinar nivel
+  APP_STATE.nivel = getNivel(APP_STATE.scoreTotal);
+  // Identificar brechas (preguntas donde el puntaje es menor a 10)
+  APP_STATE.brechas = APP_STATE.puntajes
+    .map((p, i) => p < 10 ? i : -1)
+    .filter(i => i !== -1);
+
+  // Cambiar pantalla
+  document.getElementById('screen-quiz').style.display = 'none';
+  document.getElementById('screen-results').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  renderizarResultados();
+}
+
+// ─── RENDERIZAR RESULTADOS ───────────────────────────────────────────────────
+function renderizarResultados() {
+  const { scoreTotal, nivel, brechas, puntajes } = APP_STATE;
+
+  // Hero
+  animarNumero(document.getElementById('score-display'), scoreTotal, 1500);
+  document.getElementById('nivel-badge-wrap').innerHTML = `
+    <div class="nivel-badge" style="background:${nivel.color}20; border: 2px solid ${nivel.color}; color:white; margin: 12px auto; display:inline-flex;">
+      <span>${nivel.emoji}</span>
+      <span>${nivel.etiqueta}</span>
+    </div>`;
+  document.getElementById('nivel-desc').textContent = nivel.descripcion;
+
+  // Barra de nivel
+  const pinPct = scoreToBarPct(scoreTotal);
+  setTimeout(() => {
+    document.getElementById('level-pin').style.left = `${pinPct}%`;
+  }, 100);
+
+  // Percentil
+  const percentil = getPercentil(scoreTotal);
+  document.getElementById('percentil-text').innerHTML =
+    `Tu empresa está en el <strong>percentil ${percentil}</strong> del mercado chileno`;
+
+  // Cards de categoría
+  renderCategoryGrid(puntajes);
+
+  // Mapa de brechas
+  renderGapMap(brechas, puntajes);
+
+  // CTA
+  renderCTA(scoreTotal, nivel, brechas.length);
+
+  // FAQ
+  renderFAQ();
+}
+
+// ─── RENDER: GRID DE CATEGORÍAS ──────────────────────────────────────────────
+function renderCategoryGrid(puntajes) {
+  const grid = document.getElementById('category-grid');
+  grid.innerHTML = PREGUNTAS.map((p, i) => {
+    const pts = puntajes[i];
+    const barColor = pts === 10 ? '#27AE60' : pts === 5 ? '#F59121' : '#F54721';
+    const barWidth = pts === 10 ? '100' : pts === 5 ? '50' : '10';
+    let statusClass, statusText;
+    if (pts === 10) { statusClass = 'status-ok'; statusText = '✓ Optimizado'; }
+    else if (pts === 5) { statusClass = 'status-warn'; statusText = '⚠ Mejorable'; }
+    else { statusClass = 'status-crit'; statusText = '✗ Brecha crítica'; }
+
+    return `
+      <div class="category-card">
+        <div class="cat-header">
+          <span class="cat-name">${p.categoria}</span>
+          <span class="cat-score" style="color:${barColor}">${pts}/10</span>
+        </div>
+        <div class="mini-bar-track">
+          <div class="mini-bar-fill" style="width:${barWidth}%; background:${barColor}"></div>
+        </div>
+        <span class="cat-status ${statusClass}">${statusText}</span>
+      </div>`;
+  }).join('');
+}
+
+// ─── RENDER: MAPA DE BRECHAS ─────────────────────────────────────────────────
+function renderGapMap(brechas, puntajes) {
+  const gapList = document.getElementById('gap-list');
+
+  if (brechas.length === 0) {
+    // Score perfecto
+    gapList.innerHTML = `
+      <div class="perfect-score">
+        <span class="big-emoji">🏆</span>
+        <h3>¡Puntuación perfecta!</h3>
+        <p>Respondiste con el nivel más alto en todas las áreas. Tu gestión de personas está al máximo nivel de madurez. ¡Felicitaciones!</p>
+      </div>`;
+    document.getElementById('gap-title').textContent = '¡Sin brechas identificadas!';
+    document.getElementById('gap-subtitle').textContent = 'Tu empresa obtuvo la puntuación máxima en todas las áreas evaluadas.';
+    return;
+  }
+
+  // Ordenar brechas: primero las críticas (0 pts), luego las mejorables (5 pts)
+  const brechasOrdenadas = [...brechas].sort((a, b) => puntajes[a] - puntajes[b]);
+
+  gapList.innerHTML = brechasOrdenadas.map((idx, order) => {
+    const pregunta = PREGUNTAS[idx];
+    const pts = puntajes[idx];
+    const modulo = MODULOS_BUK[pregunta.modulo];
+    const opcionSeleccionada = APP_STATE.respuestas[idx];
+    const resumen = pregunta.resumenOpciones[opcionSeleccionada];
+    const esUrgente = pts === 0;
+    const urgencyClass = esUrgente ? 'urgency-critical' : 'urgency-warn';
+    const urgencyText = esUrgente ? '🔴 Urgente' : '🟡 Mejorable';
+    const delay = order * 0.1;
+
+    return `
+      <div class="gap-card" style="animation-delay: ${delay}s">
+        <div class="gap-card-header">
+          <span class="gap-category-label">${pregunta.categoria}</span>
+          <span class="urgency-badge ${urgencyClass}">${urgencyText}</span>
+        </div>
+        <div class="gap-section">
+          <div class="gap-label">¿Qué respondiste?</div>
+          <p class="gap-text">${resumen}</p>
+        </div>
+        <hr class="gap-divider">
+        <div class="gap-section">
+          <div class="gap-label">⚠ Impacto de no resolverlo</div>
+          <p class="gap-text">${modulo.impacto}</p>
+        </div>
+        <hr class="gap-divider">
+        <div class="gap-section">
+          <div class="gap-label">🎯 Cómo Buk lo resuelve</div>
+          <p class="gap-text"><span class="gap-modulo-name">${modulo.nombre}</span> — ${modulo.descripcion}</p>
+        </div>
+        <div class="gap-card-footer">
+          <a href="${modulo.url}" target="_blank" class="btn-secondary sm">Conocer módulo →</a>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ─── RENDER: CTA ─────────────────────────────────────────────────────────────
+function renderCTA(score, nivel, brechasCount) {
+  const msg = CTA_MESSAGES[nivel.etiqueta] || CTA_MESSAGES['Intermedio'];
+  document.getElementById('cta-title').textContent = interpolar(msg.titulo, score, brechasCount);
+  document.getElementById('cta-subtitle').textContent = interpolar(msg.subtitulo, score, brechasCount);
+  const btnPrimary = document.getElementById('cta-btn-primary');
+  btnPrimary.textContent = msg.boton;
+}
+
+// ─── RENDER: FAQ ─────────────────────────────────────────────────────────────
+function renderFAQ() {
+  const list = document.getElementById('faq-list');
+  if (list.children.length > 0) return; // ya renderizado
+  list.innerHTML = FAQ_DATA.map((item, i) => `
+    <div class="faq-item" id="faq-${i}">
+      <button class="faq-question" onclick="toggleFAQ(${i})" aria-expanded="false">
+        <span>${item.q}</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer" id="faq-answer-${i}">
+        <div class="faq-answer-inner">${item.a}</div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleFAQ(i) {
+  const item = document.getElementById(`faq-${i}`);
+  const answer = document.getElementById(`faq-answer-${i}`);
+  const isOpen = item.classList.contains('open');
+
+  // Cerrar todos
+  document.querySelectorAll('.faq-item.open').forEach(el => {
+    el.classList.remove('open');
+    el.querySelector('.faq-answer').style.maxHeight = '0';
+    el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+  });
+
+  // Abrir el seleccionado si estaba cerrado
+  if (!isOpen) {
+    item.classList.add('open');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+    item.querySelector('.faq-question').setAttribute('aria-expanded', 'true');
+  }
+}
+
+// ─── ANIMACIÓN DE NÚMERO ─────────────────────────────────────────────────────
+function animarNumero(elemento, valorFinal, duracion) {
+  const inicio = performance.now();
+  function step(ahora) {
+    const elapsed = ahora - inicio;
+    const progress = Math.min(elapsed / duracion, 1);
+    // easeOut cuadrático
+    const eased = 1 - Math.pow(1 - progress, 3);
+    elemento.textContent = Math.round(eased * valorFinal);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ─── RESET ───────────────────────────────────────────────────────────────────
+function resetDiagnostico() {
+  // Resetear estado
+  APP_STATE.preguntaActual = 0;
+  APP_STATE.respuestas = new Array(10).fill(null);
+  APP_STATE.puntajes = new Array(10).fill(0);
+  APP_STATE.scoreTotal = 0;
+  APP_STATE.nivel = null;
+  APP_STATE.brechas = [];
+
+  // Resetear pin de la barra
+  document.getElementById('level-pin').style.left = '0%';
+
+  // Cambiar pantalla
+  document.getElementById('screen-results').style.display = 'none';
+  document.getElementById('screen-intro').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── HEADER SCROLL ───────────────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const header = document.getElementById('site-header');
+  header.classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+
+// ─── INIT: renderizar FAQ al cargar ──────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  renderFAQ();
+});
+</script>
+</body>
+</html>
