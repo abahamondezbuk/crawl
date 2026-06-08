@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Costo de Rotación de Personal | Buk Chile</title>
+  <meta name="description" content="Calcula cuánto le cuesta realmente a tu empresa perder un empleado. Basado en datos de SHRM, Gallup y Evaluar LATAM 2025.">
+  <meta property="og:title" content="Calculadora de Costo de Rotación | Buk Chile">
+  <meta property="og:description" content="Calcula cuánto le cuesta realmente a tu empresa perder un empleado. Basado en datos de SHRM, Gallup y Evaluar LATAM 2025.">
+  <meta property="og:type" content="website">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-blue-buk:    #2F4DAA;
+      --color-blue-buk-2:  #203b9c;
+      --color-dark-blue:   #2B3C6A;
+      --color-mid-blue-1:  #2F6FC2;
+      --color-mid-blue-2:  #73A0DB;
+      --color-light-blue:  #D9E3FC;
+      --color-yellow:      #FBBF3D;
+      --color-orange:      #F59121;
+      --color-grey:        #7D7D7D;
+      --color-error:       #F54721;
+      --font-color-1:      #1A2441;
+      --font-color-2:      #A1A2AA;
+      --bg-modules:        #E7EEFF;
+      --font-body:         'Inter', sans-serif;
+      --font-title:        'Source Sans Pro', sans-serif;
+      --bg-cta:            linear-gradient(0deg, #F8A12A 0%, #FBBF3D 100%);
+      --bg-cta-hover:      linear-gradient(178.56deg, #F59121 1.23%, #CE5816 151.61%);
+      --bg-blue-grad:      linear-gradient(180deg, #2F4DAA 31.84%, #2E6DC8 169.73%);
+      --r-btn:             69px;
+      --r-16:              16px;
+      --shadow-1:          0px 2px 9px 0px rgba(0,0,0,0.10);
+      --shadow-2:          0px 0px 18px 4px rgba(43,60,106,0.24);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--font-color-1); background: #fff; font-size: 16px; line-height: 1.6; }
+    h1, h2, h3, h4 { font-family: var(--font-title); color: var(--color-blue-buk); }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 5%; }
+
+    /* ---- BUTTONS ---- */
+    .btn-yellow {
+      background: var(--bg-cta);
+      border: none; border-radius: var(--r-btn);
+      font-family: var(--font-title); font-weight: 600;
+      color: #fff; font-size: 1.1rem;
+      padding: 14px 36px; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block; text-decoration: none; line-height: 1.3;
+    }
+    .btn-yellow:hover { background: var(--bg-cta-hover); transform: translateY(-1px); }
+
+    .btn-outline-white {
+      background: transparent; border: 2px solid #fff; color: #fff;
+      border-radius: var(--r-btn); font-family: var(--font-title);
+      font-weight: 600; font-size: 1.1rem; padding: 12px 32px;
+      cursor: pointer; transition: background 0.2s;
+      display: inline-block; text-decoration: none;
+    }
+    .btn-outline-white:hover { background: rgba(255,255,255,0.15); }
+
+    /* ---- HEADER ---- */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: #fff; padding: 16px 0; transition: box-shadow 0.3s;
+    }
+    header.scrolled { box-shadow: var(--shadow-1); }
+    .hdr { display: flex; align-items: center; justify-content: space-between; }
+    .logo img { height: 36px; display: block; }
+
+    /* ---- HERO ---- */
+    .hero { background: var(--bg-blue-grad); padding: 72px 0 56px; }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .hero h1 { font-size: clamp(1.9rem, 3.5vw, 2.75rem); color: #fff; font-weight: 700; line-height: 1.2; margin-bottom: 18px; }
+    .hero p  { font-size: 1.1rem; color: rgba(255,255,255,0.88); line-height: 1.7; }
+    .hero-visual { display: flex; justify-content: center; }
+
+    /* ---- SECTIONS ---- */
+    .sec-white   { padding: 80px 0; background: #fff; }
+    .sec-modules { padding: 80px 0; background: var(--bg-modules); }
+    .sec-dark    { padding: 72px 0; background: var(--color-dark-blue); }
+
+    .sec-head { text-align: center; margin-bottom: 44px; }
+    .sec-head h2 { font-size: clamp(1.5rem, 2.8vw, 2.1rem); margin-bottom: 10px; font-weight: 700; }
+    .sec-head p  { font-size: 0.97rem; color: var(--color-grey); max-width: 600px; margin: 0 auto; }
+
+    /* ---- FORM CARD ---- */
+    .card { background: #fff; border-radius: var(--r-16); box-shadow: var(--shadow-1); padding: 36px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.full { grid-column: 1/-1; }
+
+    .field label {
+      font-family: var(--font-title); font-weight: 600; font-size: 0.95rem;
+      color: var(--font-color-1); display: flex; align-items: center; gap: 6px;
+    }
+    .field input[type="number"],
+    .field select {
+      border: 1.5px solid #D0D5E8; border-radius: 10px; padding: 11px 16px;
+      font-family: var(--font-body); font-size: 1rem; color: var(--font-color-1);
+      background: #fff; outline: none; transition: border-color 0.2s; width: 100%;
+      -moz-appearance: textfield;
+    }
+    .field input[type="number"]::-webkit-inner-spin-button,
+    .field input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .field input[type="number"]:focus,
+    .field select:focus { border-color: var(--color-blue-buk); }
+    .field input.err { border-color: var(--color-error); }
+
+    .hint  { font-size: 0.8rem; color: var(--color-grey); line-height: 1.4; }
+    .ferr  { font-size: 0.8rem; color: var(--color-error); display: none; }
+    .ferr.show { display: block; }
+
+    /* Salary UF */
+    .sal-wrap { position: relative; }
+    .uf-tag {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      font-size: 0.75rem; color: var(--color-grey);
+      background: #f0f3ff; border-radius: 6px; padding: 3px 8px;
+      white-space: nowrap; pointer-events: none;
+    }
+    .sal-wrap input { padding-right: 88px; }
+
+    /* Slider */
+    .slide-row { display: flex; align-items: center; gap: 12px; }
+    input[type="range"] {
+      flex: 1; -webkit-appearance: none; height: 6px;
+      border-radius: 3px; background: #D0D5E8; outline: none; cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
+      background: var(--color-blue-buk); cursor: pointer;
+      box-shadow: 0 2px 6px rgba(47,77,170,0.35);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 22px; height: 22px; border-radius: 50%; border: none;
+      background: var(--color-blue-buk); cursor: pointer;
+    }
+    .slide-num {
+      border: 1.5px solid #D0D5E8; border-radius: 8px; padding: 6px 8px;
+      width: 58px; font-size: 1rem; text-align: center;
+      font-family: var(--font-body); color: var(--font-color-1);
+      outline: none; -moz-appearance: textfield;
+    }
+    .slide-num::-webkit-inner-spin-button,
+    .slide-num::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .slide-num:focus { border-color: var(--color-blue-buk); }
+    .pct { font-size: 1rem; color: var(--color-grey); font-weight: 500; }
+
+    /* Rotation badge */
+    .rot-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 0.8rem; font-weight: 600; margin-top: 4px; width: fit-content;
+    }
+    .rot-badge.low  { background: #E6F9F0; color: #1A8A4A; }
+    .rot-badge.med  { background: #FFF8E6; color: #B07A00; }
+    .rot-badge.high { background: #FFEEEA; color: #C0350F; }
+
+    /* Tooltip */
+    .tip {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--color-light-blue); color: var(--color-blue-buk);
+      font-size: 11px; font-weight: 700; cursor: help;
+      position: relative; flex-shrink: 0;
+    }
+    .tip::after {
+      content: attr(data-tip); display: none;
+      position: absolute; bottom: calc(100% + 8px); left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-dark-blue); color: #fff;
+      font-size: 0.75rem; font-weight: 400; line-height: 1.45;
+      padding: 10px 14px; border-radius: 8px;
+      width: 240px; z-index: 20;
+      box-shadow: var(--shadow-2);
+      white-space: normal; text-align: left; font-family: var(--font-body);
+    }
+    .tip:hover::after { display: block; }
+
+    /* Calc button */
+    .btn-calc { width: 100%; padding: 18px; font-size: 1.25rem; }
+
+    /* ---- RESULTS ---- */
+    #seccion-resultados { display: none; }
+    #seccion-resultados.show { display: block; animation: fadeUp 0.5s ease; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Result hero number */
+    .result-hero {
+      background: #fff; border-radius: var(--r-16);
+      box-shadow: var(--shadow-1);
+      border-top: 5px solid var(--color-error);
+      padding: 40px; text-align: center;
+      margin-bottom: 28px;
+    }
+    .result-eyebrow {
+      font-size: 0.85rem; font-weight: 600; color: var(--color-grey);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
+    }
+    .result-amount {
+      font-family: var(--font-title);
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 700; color: var(--color-error);
+      line-height: 1.1; margin-bottom: 12px;
+    }
+    .result-meta { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 16px; }
+    .result-meta-item { text-align: center; }
+    .result-meta-item strong { display: block; font-family: var(--font-title); font-size: 1.4rem; font-weight: 700; color: var(--font-color-1); }
+    .result-meta-item span  { font-size: 0.82rem; color: var(--color-grey); }
+    .meta-divider { width: 1px; background: #E5E9F4; align-self: stretch; }
+
+    /* Per-employee stat */
+    .per-employee-card {
+      background: var(--color-light-blue);
+      border-radius: var(--r-16); padding: 24px 32px;
+      display: flex; align-items: center; gap: 20px;
+      margin-bottom: 28px; flex-wrap: wrap;
+    }
+    .per-emp-icon {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--color-blue-buk); display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .per-emp-text strong { display: block; font-family: var(--font-title); font-size: 1.5rem; font-weight: 700; color: var(--color-blue-buk); }
+    .per-emp-text span   { font-size: 0.85rem; color: var(--color-grey); }
+
+    /* Breakdown */
+    .breakdown-card { background: #fff; border-radius: var(--r-16); box-shadow: var(--shadow-1); overflow: hidden; margin-bottom: 28px; }
+    .breakdown-header {
+      padding: 20px 28px; background: var(--color-blue-buk);
+      color: #fff; font-family: var(--font-title); font-weight: 600; font-size: 1rem;
+    }
+    .breakdown-row {
+      display: flex; align-items: center; padding: 14px 28px;
+      border-bottom: 1px solid #F0F3FF; gap: 16px;
+    }
+    .breakdown-row:last-child { border-bottom: none; }
+    .breakdown-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 1rem;
+    }
+    .breakdown-info { flex: 1; }
+    .breakdown-info strong { display: block; font-size: 0.9rem; font-weight: 600; color: var(--font-color-1); }
+    .breakdown-info span  { font-size: 0.78rem; color: var(--color-grey); }
+    .breakdown-amount { font-family: var(--font-title); font-size: 1rem; font-weight: 700; color: var(--font-color-1); white-space: nowrap; }
+    .breakdown-bar-wrap { width: 80px; background: #F0F3FF; border-radius: 4px; height: 6px; flex-shrink: 0; }
+    .breakdown-bar { height: 6px; border-radius: 4px; background: var(--color-blue-buk); }
+
+    /* CTA results */
+    .cta-results {
+      background: var(--color-blue-buk); border-radius: var(--r-16);
+      padding: 40px; text-align: center;
+    }
+    .cta-results h3 { color: #fff; font-size: clamp(1.2rem, 2.5vw, 1.65rem); margin-bottom: 10px; }
+    .cta-results p  { color: rgba(255,255,255,0.85); margin: 0 auto 28px; max-width: 520px; }
+    .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* ---- METHODOLOGY ---- */
+    .formula-box {
+      background: var(--bg-modules); border-radius: var(--r-16);
+      padding: 28px; margin-bottom: 44px; border-left: 4px solid var(--color-blue-buk);
+    }
+    .formula-title { font-family: var(--font-title); font-size: 1.1rem; font-weight: 700; color: var(--color-blue-buk); margin-bottom: 8px; }
+    .formula-eq    { font-family: 'Courier New', monospace; font-size: 1rem; color: var(--color-dark-blue); font-weight: 700; letter-spacing: 0.5px; }
+    .formula-desc  { margin-top: 8px; font-size: 0.82rem; color: var(--color-grey); }
+
+    .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 44px; }
+    .comp-card { background: #fff; border-radius: var(--r-16); box-shadow: var(--shadow-1); padding: 22px; }
+    .comp-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .comp-code { font-family: var(--font-title); font-weight: 700; font-size: 0.95rem; color: var(--color-blue-buk); background: var(--color-light-blue); padding: 3px 10px; border-radius: 7px; }
+    .comp-name { font-family: var(--font-title); font-weight: 600; font-size: 0.92rem; color: var(--font-color-1); }
+    .comp-card p      { font-size: 0.82rem; color: var(--color-grey); line-height: 1.5; margin-bottom: 5px; }
+    .comp-card .cpct  { font-size: 0.8rem; font-weight: 600; color: var(--color-blue-buk); }
+    .comp-card .csrc  { font-size: 0.73rem; color: var(--font-color-2); margin-top: 3px; }
+
+    .dtable-wrap { overflow-x: auto; margin-bottom: 44px; }
+    .dtable { width: 100%; border-collapse: collapse; box-shadow: var(--shadow-1); min-width: 380px; border-radius: 12px; overflow: hidden; }
+    .dtable th { background: var(--color-blue-buk); color: #fff; font-family: var(--font-title); padding: 13px 18px; text-align: left; font-size: 0.88rem; }
+    .dtable td { padding: 11px 18px; font-size: 0.88rem; border-bottom: 1px solid #F0F3FF; }
+    .dtable tr:last-child td { border-bottom: none; }
+    .dtable tr:nth-child(even) td { background: #F7F9FF; }
+
+    .bench-card { background: var(--color-dark-blue); border-radius: var(--r-16); padding: 32px; }
+    .bench-card h3 { color: var(--color-yellow); margin-bottom: 20px; font-size: 1.1rem; }
+    .bench-item { display: flex; align-items: flex-start; gap: 12px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .bench-item:last-child { border-bottom: none; }
+    .bench-num {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      background: var(--color-yellow); display: flex; align-items: center;
+      justify-content: center; font-size: 0.72rem; font-weight: 700;
+      color: var(--color-dark-blue); margin-top: 2px;
+    }
+    .bench-item p { font-size: 0.87rem; color: rgba(255,255,255,0.88); line-height: 1.55; }
+    .bench-item p strong { color: #fff; }
+
+    /* ---- FAQ ---- */
+    .faq-list { max-width: 780px; margin: 0 auto; }
+    .faq-item { background: #fff; border-radius: var(--r-16); margin-bottom: 10px; box-shadow: var(--shadow-1); overflow: hidden; }
+    .faq-q {
+      width: 100%; text-align: left; background: none; border: none;
+      padding: 18px 24px; font-family: var(--font-title); font-size: 0.97rem;
+      font-weight: 600; color: var(--font-color-1); cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; transition: color 0.2s;
+    }
+    .faq-q:hover { color: var(--color-blue-buk); }
+    .faq-chev { font-size: 0.95rem; color: var(--color-blue-buk); flex-shrink: 0; transition: transform 0.2s; }
+    .faq-q.open .faq-chev { transform: rotate(180deg); }
+    .faq-a { display: none; padding: 0 24px 18px; font-size: 0.88rem; line-height: 1.78; color: var(--font-color-1); border-top: 1px solid #F0F3FF; padding-top: 14px; }
+    .faq-a.open { display: block; }
+
+    /* ---- CTA FINAL ---- */
+    .cta-final { text-align: center; }
+    .cta-final h2 { color: #fff; font-size: clamp(1.7rem, 3.5vw, 2.3rem); margin-bottom: 12px; }
+    .cta-final > p { color: rgba(255,255,255,0.85); font-size: 1rem; margin: 0 auto 32px; max-width: 480px; }
+    .cta-final-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+    .cta-clients { font-size: 0.83rem; color: rgba(255,255,255,0.5); }
+    .cta-clients strong { color: rgba(255,255,255,0.82); }
+
+    /* ---- FOOTER ---- */
+    footer { background: #fff; border-top: 1px solid #E5E9F4; padding: 22px 0; }
+    .footer-inner { text-align: center; }
+    .footer-inner p { font-size: 0.73rem; color: var(--color-grey); line-height: 1.6; margin-bottom: 8px; }
+    .footer-links { display: flex; gap: 14px; justify-content: center; }
+    .footer-links a { font-size: 0.73rem; color: var(--color-blue-buk); text-decoration: none; }
+    .footer-links a:hover { text-decoration: underline; }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 768px) {
+      .hdr-demo { display: none; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .form-grid { grid-template-columns: 1fr; }
+      .comp-grid  { grid-template-columns: 1fr; }
+      .cta-btns, .cta-final-btns { flex-direction: column; align-items: center; }
+      .result-meta { gap: 20px; }
+      .meta-divider { display: none; }
+      .hero { padding: 52px 0 40px; }
+      .sec-white, .sec-modules, .sec-dark { padding: 56px 0; }
+      .breakdown-row { flex-wrap: wrap; }
+      .breakdown-bar-wrap { display: none; }
+    }
+    @media (max-width: 480px) {
+      .card { padding: 20px 16px; }
+      .result-hero { padding: 28px 18px; }
+      .breakdown-row { padding: 12px 18px; }
+      .cta-results { padding: 28px 18px; }
+      .per-employee-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="site-header">
+  <div class="container">
+    <div class="hdr">
+      <a href="https://www.buk.cl" target="_blank" rel="noopener" class="logo">
+        <img src="https://www.buk.cl/hubfs/logo-buk.svg" alt="Buk" height="36">
+      </a>
+      <a href="https://www.buk.cl/demo" target="_blank" rel="noopener" class="btn-yellow hdr-demo">Solicitar demo</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <h1>¿Cuánto le cuesta a tu empresa perder un empleado?</h1>
+        <p>La indemnización es solo la punta del iceberg. Calcula el costo real de rotación de tu equipo, incluyendo reclutamiento, onboarding y productividad perdida.</p>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <svg width="280" height="256" viewBox="0 0 280 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="140" cy="128" r="108" fill="rgba(255,255,255,0.07)"/>
+          <!-- Iceberg metaphor -->
+          <!-- Visible part (tip) -->
+          <polygon points="140,28 172,88 108,88" fill="rgba(255,255,255,0.7)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+          <!-- Water line -->
+          <line x1="60" y1="100" x2="220" y2="100" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-dasharray="6 4"/>
+          <!-- Submerged (main cost) -->
+          <polygon points="108,100 172,100 198,186 82,186" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+
+          <!-- Labels -->
+          <text x="140" y="70" fill="rgba(255,255,255,0.9)" font-size="9.5" text-anchor="middle" font-family="Inter,sans-serif" font-weight="600">Indemnización</text>
+
+          <!-- Lines & labels below water -->
+          <text x="140" y="125" fill="rgba(255,255,255,0.75)" font-size="8.5" text-anchor="middle" font-family="Inter,sans-serif">Reclutamiento</text>
+          <text x="140" y="141" fill="rgba(255,255,255,0.75)" font-size="8.5" text-anchor="middle" font-family="Inter,sans-serif">Onboarding</text>
+          <text x="140" y="157" fill="rgba(255,255,255,0.75)" font-size="8.5" text-anchor="middle" font-family="Inter,sans-serif">Productividad perdida</text>
+          <text x="140" y="173" fill="rgba(255,255,255,0.75)" font-size="8.5" text-anchor="middle" font-family="Inter,sans-serif">Conocimiento institucional</text>
+
+          <!-- Brace / annotation -->
+          <line x1="204" y1="100" x2="214" y2="100" stroke="rgba(251,191,61,0.7)" stroke-width="1.5"/>
+          <line x1="214" y1="100" x2="214" y2="186" stroke="rgba(251,191,61,0.7)" stroke-width="1.5"/>
+          <line x1="204" y1="186" x2="214" y2="186" stroke="rgba(251,191,61,0.7)" stroke-width="1.5"/>
+          <text x="218" y="148" fill="rgba(251,191,61,0.9)" font-size="8" font-family="Inter,sans-serif" font-weight="700">75–80%</text>
+          <text x="218" y="158" fill="rgba(251,191,61,0.8)" font-size="7.5" font-family="Inter,sans-serif">del costo</text>
+          <text x="218" y="167" fill="rgba(251,191,61,0.8)" font-size="7.5" font-family="Inter,sans-serif">real</text>
+
+          <!-- "Oculto" label -->
+          <rect x="56" y="138" width="44" height="18" rx="9" fill="rgba(245,71,33,0.3)"/>
+          <text x="78" y="150" fill="rgba(255,255,255,0.85)" font-size="8" text-anchor="middle" font-family="Inter,sans-serif" font-weight="600">Oculto</text>
+
+          <!-- Water text -->
+          <text x="78"  y="97" fill="rgba(255,255,255,0.4)" font-size="7.5" font-family="Inter,sans-serif">Visible</text>
+          <text x="78" y="107" fill="rgba(255,255,255,0.4)" font-size="7.5" font-family="Inter,sans-serif">↑ 20–25%</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULADORA -->
+<section class="sec-white" id="calculadora">
+  <div class="container">
+    <div class="sec-head">
+      <h2>Ingresa los datos de tu empresa</h2>
+      <p>Todos los campos tienen valores por defecto basados en benchmarks de Chile. Ajústalos según tu realidad.</p>
+    </div>
+
+    <div class="card">
+      <div class="form-grid">
+
+        <!-- Empleados -->
+        <div class="field">
+          <label for="inp-emp">Total de empleados en tu empresa</label>
+          <input type="number" id="inp-emp" min="1" max="50000" value="100" step="1" autocomplete="off">
+          <span class="hint">Considera todos los colaboradores activos</span>
+          <span class="ferr" id="err-emp">Ingresa un número entre 1 y 50.000</span>
+        </div>
+
+        <!-- Salario -->
+        <div class="field">
+          <label for="inp-sal">Salario bruto promedio mensual (CLP)</label>
+          <div class="sal-wrap">
+            <input type="number" id="inp-sal" min="300000" max="10000000" value="900000" step="10000" autocomplete="off">
+            <span class="uf-tag" id="uf-tag">≈ 23,4 UF</span>
+          </div>
+          <span class="hint">Promedio de todos los cargos o del área con mayor rotación</span>
+          <span class="ferr" id="err-sal">El salario debe estar entre $300.000 y $10.000.000</span>
+        </div>
+
+        <!-- Tasa de rotación -->
+        <div class="field">
+          <label>
+            ¿Cuál es tu tasa de rotación anual?
+            <span class="tip" data-tip="Cálculo: (N° salidas / N° empleados promedio) × 100. Ej: 18 salidas en 100 empleados = 18%." aria-label="Cómo calcular">?</span>
+          </label>
+          <div class="slide-row">
+            <input type="range" id="slider-rot" min="0" max="60" value="17" step="1" aria-label="Tasa de rotación">
+            <input type="number" id="inp-rot" min="0" max="60" value="17" step="1" class="slide-num" aria-label="Valor">
+            <span class="pct">%</span>
+          </div>
+          <div id="rot-badge" class="rot-badge med">⚠ Media — En el promedio nacional</div>
+          <span class="hint">Promedio Chile: 17–18% (Estudio Evaluar LATAM 2025)</span>
+          <span class="ferr" id="err-rot">La tasa debe estar entre 0% y 60%</span>
+        </div>
+
+        <!-- Perfil de cargo -->
+        <div class="field">
+          <label for="sel-cargo">¿Qué perfil de cargo rota más?</label>
+          <select id="sel-cargo">
+            <option value="operativo">Operativo / Atención al cliente</option>
+            <option value="administrativo">Administrativo / Back office</option>
+            <option value="profesional" selected>Profesional / Técnico especializado</option>
+            <option value="jefatura">Jefatura / Mando medio</option>
+            <option value="gerencia">Gerencia / Liderazgo</option>
+          </select>
+          <span class="hint">El costo varía según el nivel de especialización (SHRM / Gallup 2025)</span>
+        </div>
+
+        <!-- Botón -->
+        <div class="field full">
+          <button class="btn-yellow btn-calc" id="btn-calc" onclick="calcular()">
+            Calcular el costo de rotación →
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTADOS -->
+<section class="sec-modules" id="seccion-resultados" aria-live="polite">
+  <div class="container">
+
+    <div class="sec-head">
+      <h2>Costo de rotación de tu empresa</h2>
+      <p id="res-desc">Estimación basada en benchmarks de la industria en Chile</p>
+    </div>
+
+    <!-- Número grande -->
+    <div class="result-hero">
+      <div class="result-eyebrow">Costo total de rotación estimado por año</div>
+      <div class="result-amount" id="res-total">CLP $0</div>
+      <div class="result-meta">
+        <div class="result-meta-item">
+          <strong id="res-rotan">0</strong>
+          <span>empleados que se van al año</span>
+        </div>
+        <div class="meta-divider"></div>
+        <div class="result-meta-item">
+          <strong id="res-sueldos">0</strong>
+          <span>sueldos mensuales promedio</span>
+        </div>
+        <div class="meta-divider"></div>
+        <div class="result-meta-item">
+          <strong id="res-pct-salario">0%</strong>
+          <span>del salario anual por persona</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Costo por persona -->
+    <div class="per-employee-card">
+      <div class="per-emp-icon" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="9" r="5" fill="white" opacity="0.9"/>
+          <path d="M4 24 Q4 17 14 17 Q24 17 24 24" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="per-emp-text">
+        <strong id="res-por-persona">CLP $0</strong>
+        <span>costo estimado por cada empleado que se va</span>
+      </div>
+    </div>
+
+    <!-- Desglose -->
+    <div class="breakdown-card">
+      <div class="breakdown-header">Desglose del costo — ¿a dónde va el dinero?</div>
+
+      <div class="breakdown-row">
+        <div class="breakdown-icon" style="background:#FFF3F0;">💼</div>
+        <div class="breakdown-info">
+          <strong>Costo de salida</strong>
+          <span>Indemnización, finiquito, vacaciones proporcionales, horas RRHH/legal</span>
+        </div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bar-salida" style="width:20%"></div></div>
+        <div class="breakdown-amount" id="bd-salida">–</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-icon" style="background:#FFF8E6;">🔍</div>
+        <div class="breakdown-info">
+          <strong>Reclutamiento</strong>
+          <span>Portales de empleo, horas de reclutadores, evaluaciones psicométricas</span>
+        </div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bar-reclu" style="width:15%"></div></div>
+        <div class="breakdown-amount" id="bd-reclu">–</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-icon" style="background:#EEF3FF;">🎓</div>
+        <div class="breakdown-info">
+          <strong>Onboarding y capacitación</strong>
+          <span>Mentor, jefe directo, capacitaciones, accesos a sistemas y materiales</span>
+        </div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bar-onboard" style="width:10%"></div></div>
+        <div class="breakdown-amount" id="bd-onboard">–</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-icon" style="background:#FFF0E6;">📉</div>
+        <div class="breakdown-info">
+          <strong>Productividad perdida</strong>
+          <span>Preaviso (–30%), vacante (60 días), curva de aprendizaje del reemplazo (–50%)</span>
+        </div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bar-prod" style="width:35%"></div></div>
+        <div class="breakdown-amount" id="bd-prod">–</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-icon" style="background:#F0FFF8;">👥</div>
+        <div class="breakdown-info">
+          <strong>Impacto en el equipo</strong>
+          <span>Horas extras de compañeros, errores por sobrecarga, proyectos postergados</span>
+        </div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bar-equipo" style="width:10%"></div></div>
+        <div class="breakdown-amount" id="bd-equipo">–</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-icon" style="background:#F5F0FF;">🧠</div>
+        <div class="breakdown-info">
+          <strong>Conocimiento institucional</strong>
+          <span>Relaciones, procesos no documentados, redes internas que se pierden</span>
+        </div>
+        <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bar-conoc" style="width:10%"></div></div>
+        <div class="breakdown-amount" id="bd-conoc">–</div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-results">
+      <h3 id="cta-titulo">Este costo es prevenible</h3>
+      <p>El 75% de la rotación voluntaria es evitable (Work Institute 2025). Habla con un especialista Buk y descubre cómo reducirla con gestión del desempeño, encuestas de clima y bienestar.</p>
+      <div class="cta-btns">
+        <a href="https://www.buk.cl/demo"     target="_blank" rel="noopener" class="btn-yellow">Hablar con un especialista →</a>
+        <a href="https://www.buk.cl/recursos" target="_blank" rel="noopener" class="btn-outline-white">Ver demo en video</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- METODOLOGÍA -->
+<section class="sec-white" id="como-calculamos">
+  <div class="container">
+    <div class="sec-head">
+      <h2>¿Cómo calculamos estos números?</h2>
+      <p>Transparencia total: aquí están los supuestos y fórmulas que usamos.</p>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-title">La fórmula principal</div>
+      <div class="formula-eq">CTR = CS + CR + CO + CPP + CCA + CCI</div>
+      <p class="formula-desc">Costo Total de Rotación = Costo de Salida + Reclutamiento + Onboarding + Productividad Perdida + Costo del equipo Afectado + Conocimiento Institucional</p>
+    </div>
+
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-head"><span class="comp-code">CS</span><span class="comp-name">Costo de Salida</span></div>
+        <p><strong>Incluye:</strong> Indemnización legal (1 mes/año, tope 11), vacaciones proporcionales, horas RRHH/legal, días de aviso.</p>
+        <p class="cpct">% usado: 15–25% del salario anual (promedio 20%)</p>
+        <p class="csrc">Fuente: Código del Trabajo Chile / Latin Human Capital 2026</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-head"><span class="comp-code">CR</span><span class="comp-name">Costo de Reclutamiento</span></div>
+        <p><strong>Incluye:</strong> Publicación en portales, horas de reclutadores, evaluaciones psicométricas, verificación de antecedentes.</p>
+        <p class="cpct">% usado: 10–20% del salario anual (promedio 15%)</p>
+        <p class="csrc">Fuente: SHRM / Latin Human Capital 2026</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-head"><span class="comp-code">CO</span><span class="comp-name">Costo de Onboarding</span></div>
+        <p><strong>Incluye:</strong> Tiempo del jefe directo, mentor, capacitaciones, accesos a sistemas y materiales.</p>
+        <p class="cpct">Estimación: 80–120 horas-hombre (promedio 10% del salario anual)</p>
+        <p class="csrc">Fuente: Latin Human Capital 2026</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-head"><span class="comp-code">CPP</span><span class="comp-name">Productividad Perdida</span></div>
+        <p><strong>Incluye:</strong> Período de preaviso (–30% prod.), días de vacante (100% costo), curva de aprendizaje (–50% por 3–6 meses).</p>
+        <p class="cpct">% usado: 20–40% del salario anual (promedio 35%)</p>
+        <p class="csrc">Fuente: Gallup / Latin Human Capital 2026</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-head"><span class="comp-code">CCA</span><span class="comp-name">Costo del Equipo Afectado</span></div>
+        <p><strong>Incluye:</strong> Horas extras de compañeros, errores por sobrecarga, proyectos postergados.</p>
+        <p class="cpct">Estimación: 10% del salario mensual × compañeros directos × período de vacancia</p>
+        <p class="csrc">Fuente: Latin Human Capital 2026</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-head"><span class="comp-code">CCI</span><span class="comp-name">Conocimiento Institucional</span></div>
+        <p><strong>Incluye:</strong> Relaciones con clientes/proveedores, procesos no documentados, redes internas.</p>
+        <p class="cpct">% usado: 15–30% del salario anual (mandos medios+), hasta 50% en gerencias</p>
+        <p class="csrc">Fuente: Latin Human Capital 2026</p>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:18px; font-size:1.15rem;">Porcentajes de costo por nivel de cargo</h3>
+    <div class="dtable-wrap">
+      <table class="dtable">
+        <thead>
+          <tr><th>Nivel de cargo</th><th>Rango de costo</th><th>Factor usado</th><th>Fuente</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Operativo / Frontline</td><td>40–50% del salario anual</td><td>45%</td><td>Gallup 2025</td></tr>
+          <tr><td>Administrativo</td><td>50–80% del salario anual</td><td>65%</td><td>SHRM</td></tr>
+          <tr><td>Profesional / Técnico</td><td>80–125% del salario anual</td><td>100%</td><td>SHRM</td></tr>
+          <tr><td>Jefatura / Mando medio</td><td>100–150% del salario anual</td><td>125%</td><td>SHRM</td></tr>
+          <tr><td>Gerencia / Liderazgo</td><td>150–213% del salario anual</td><td>175%</td><td>Gallup / Center for American Progress</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bench-card">
+      <h3>Benchmarks de rotación en Chile</h3>
+      <div class="bench-item"><span class="bench-num">1</span><p>Tasa de rotación promedio LATAM: <strong>16%</strong> (Estudio Evaluar, Feb–Sep 2025)</p></div>
+      <div class="bench-item"><span class="bench-num">2</span><p>Chile: <strong>17–18%</strong> — uno de los más altos de la región</p></div>
+      <div class="bench-item"><span class="bench-num">3</span><p>El <strong>75% de la rotación voluntaria es prevenible</strong> (Work Institute 2025)</p></div>
+      <div class="bench-item"><span class="bench-num">4</span><p>La indemnización legal representa <strong>solo el 15–25% del costo real</strong> — el resto es invisible</p></div>
+      <div class="bench-item"><span class="bench-num">5</span><p>Un colaborador de mando medio en Chile puede costar <strong>hasta USD 43.200</strong> reemplazarlo (Latin Human Capital 2026)</p></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec-modules" id="faq">
+  <div class="container">
+    <div class="sec-head">
+      <h2>Preguntas frecuentes</h2>
+    </div>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)" aria-expanded="false" aria-controls="faq-1">
+          ¿Qué es la tasa de rotación y cómo se calcula? <span class="faq-chev">▼</span>
+        </button>
+        <div class="faq-a" id="faq-1">
+          La tasa de rotación mide qué porcentaje de tu dotación abandona la empresa en un período. Se calcula: <strong>(N° de salidas / Promedio de empleados) × 100</strong>. Si tienes 100 empleados y 18 se fueron, tu tasa es 18%. En Chile el promedio es 17–18% (Estudio Evaluar LATAM 2025).
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)" aria-expanded="false" aria-controls="faq-2">
+          ¿Por qué el costo real es tan alto? ¿No es solo la indemnización? <span class="faq-chev">▼</span>
+        </button>
+        <div class="faq-a" id="faq-2">
+          La indemnización representa apenas el 15–25% del costo real. El verdadero costo incluye el tiempo de reclutamiento, las horas de onboarding del equipo, la productividad perdida mientras el puesto está vacante (45–90 días), la sobrecarga del equipo y el conocimiento institucional que se va con el empleado. Reemplazar a un profesional puede costar entre 80% y 150% de su salario anual.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)" aria-expanded="false" aria-controls="faq-3">
+          ¿Qué diferencia hay entre rotación voluntaria e involuntaria? <span class="faq-chev">▼</span>
+        </button>
+        <div class="faq-a" id="faq-3">
+          La rotación voluntaria ocurre cuando el empleado decide irse. La involuntaria es cuando la empresa toma la decisión. Para estrategias de retención, lo relevante es la rotación voluntaria no deseada: personas con buen desempeño que la empresa habría preferido conservar. La rotación por bajo desempeño no debería sumarse al análisis de retención.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)" aria-expanded="false" aria-controls="faq-4">
+          ¿Los benchmarks aplican a mi industria? <span class="faq-chev">▼</span>
+        </button>
+        <div class="faq-a" id="faq-4">
+          Los porcentajes base son promedios entre industrias. La rotación en hotelería y construcción puede superar el 40% anual, mientras que en banca y educación puede estar bajo el 8%. Ajusta manualmente la tasa de rotación al valor real de tu empresa para un resultado más preciso. La fórmula de costo seguirá siendo válida.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)" aria-expanded="false" aria-controls="faq-5">
+          ¿Qué significa "días de vacante"? <span class="faq-chev">▼</span>
+        </button>
+        <div class="faq-a" id="faq-5">
+          Es el período entre que el empleado se va y el reemplazo trabaja con plena productividad. En Chile, cubrir una posición toma 45 a 90 días (Latin Human Capital 2026). Durante ese período se genera un costo de oportunidad equivalente al salario diario del cargo. Esta calculadora asume <strong>60 días promedio</strong> como default conservador.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="tFaq(this)" aria-expanded="false" aria-controls="faq-6">
+          ¿Estos cálculos tienen respaldo científico? <span class="faq-chev">▼</span>
+        </button>
+        <div class="faq-a" id="faq-6">
+          Sí. Las fórmulas y porcentajes están basados en estudios de SHRM (Society for Human Resource Management), Gallup, el Center for American Progress, el Estudio de Rotación LATAM 2025 de Evaluar y Latin Human Capital 2026. El detalle está en la sección "¿Cómo se calcula?" de esta página.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="sec-dark">
+  <div class="container">
+    <div class="cta-final">
+      <h2>La rotación tiene solución</h2>
+      <p>Miles de empresas en Chile usan Buk para reducir su rotación con gestión del desempeño, encuestas de clima y bienestar financiero.</p>
+      <div class="cta-final-btns">
+        <a href="https://www.buk.cl/demo" target="_blank" rel="noopener" class="btn-yellow">Solicitar demo gratuita →</a>
+        <a href="https://www.buk.cl"      target="_blank" rel="noopener" class="btn-outline-white">Conocer más sobre Buk</a>
+      </div>
+      <p class="cta-clients">Empresas como <strong>La Araucana</strong>, <strong>Caffarena</strong> y <strong>Lounge</strong> ya confían en Buk</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <p>© 2025 Buk SpA. Todos los derechos reservados. | Esta calculadora es una herramienta educativa. Los resultados son estimaciones basadas en benchmarks de la industria y no constituyen asesoría financiera o laboral.</p>
+      <div class="footer-links">
+        <a href="https://www.buk.cl/privacidad" target="_blank" rel="noopener">Política de privacidad</a>
+        <a href="https://www.buk.cl/privacidad" target="_blank" rel="noopener">Términos de uso</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ============================================================
+  // SUPUESTOS — fuentes documentadas
+  // ============================================================
+  const S = {
+    valorUF: 38500,       // UF referencia
+
+    // Factores de costo por perfil (% del salario anual)
+    // Fuente: Gallup 2025 / SHRM / Center for American Progress
+    factoresCargo: {
+      operativo:      0.45,  // Rango 40–50%, usamos 45%
+      administrativo: 0.65,  // Rango 50–80%, usamos 65%
+      profesional:    1.00,  // Rango 80–125%, usamos 100%
+      jefatura:       1.25,  // Rango 100–150%, usamos 125%
+      gerencia:       1.75   // Rango 150–213%, usamos 175%
+    },
+
+    // Distribución interna del costo unitario
+    // Fuente: Gallup / SHRM / Latin Human Capital 2026
+    dist: {
+      salida:        0.20,   // CS: indemnización, finiquito, horas legales
+      reclutamiento: 0.15,   // CR: portales, reclutador, evaluaciones
+      onboarding:    0.10,   // CO: capacitaciones, accesos, mentoring
+      productividad: 0.35,   // CPP: mayor componente (preaviso + vacante + curva)
+      equipo:        0.10,   // CCA: sobrecarga del equipo
+      conocimiento:  0.10    // CCI: conocimiento institucional
+    }
+  };
+
+  // ============================================================
+  // UTILIDADES
+  // ============================================================
+  const clp = (n) =>
+    new Intl.NumberFormat('es-CL', {
+      style: 'currency', currency: 'CLP', maximumFractionDigits: 0
+    }).format(Math.round(n));
+
+  function animNum(el, target, ms = 1500) {
+    const t0 = performance.now();
+    (function tick(now) {
+      const p = Math.min((now - t0) / ms, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = clp(target * e);
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = clp(target);
+    })(t0);
+  }
+
+  // ============================================================
+  // BADGE DIAGNÓSTICO (tiempo real)
+  // ============================================================
+  function updBadge(v) {
+    const b = document.getElementById('rot-badge');
+    if (v <= 10)      { b.className = 'rot-badge low';  b.textContent = '✓ Baja — Bajo el promedio nacional'; }
+    else if (v <= 20) { b.className = 'rot-badge med';  b.textContent = '⚠ Media — En el promedio nacional'; }
+    else              { b.className = 'rot-badge high'; b.textContent = '✗ Alta — Sobre el promedio nacional'; }
+  }
+
+  // ============================================================
+  // VALIDACIÓN
+  // ============================================================
+  function validar() {
+    const emp = parseInt(document.getElementById('inp-emp').value);
+    const sal = parseFloat(document.getElementById('inp-sal').value);
+    const rot = parseFloat(document.getElementById('inp-rot').value);
+    let ok = true;
+
+    function chk(cond, inpId, errId) {
+      const i = document.getElementById(inpId), e = document.getElementById(errId);
+      if (cond) { i.classList.add('err');    e.classList.add('show');    ok = false; }
+      else       { i.classList.remove('err'); e.classList.remove('show'); }
+    }
+    chk(isNaN(emp) || emp < 1      || emp > 50000,    'inp-emp', 'err-emp');
+    chk(isNaN(sal) || sal < 300000 || sal > 10000000, 'inp-sal', 'err-sal');
+    chk(isNaN(rot) || rot < 0      || rot > 60,       'inp-rot', 'err-rot');
+    return ok;
+  }
+
+  // ============================================================
+  // CALCULAR
+  // ============================================================
+  function calcular() {
+    if (!validar()) return;
+
+    const emp    = parseInt(document.getElementById('inp-emp').value);
+    const sal    = parseFloat(document.getElementById('inp-sal').value);
+    const rotPct = parseFloat(document.getElementById('inp-rot').value);
+    const cargo  = document.getElementById('sel-cargo').value;
+
+    const rot       = rotPct / 100;
+    const factCargo = S.factoresCargo[cargo];
+    const salAnual  = sal * 12;
+    const costoUnit = salAnual * factCargo; // costo por persona que se va
+
+    // Empleados que rotan
+    const rotaN = Math.round(emp * rot);
+
+    // Desglose unitario
+    const uSalida  = costoUnit * S.dist.salida;
+    const uReclu   = costoUnit * S.dist.reclutamiento;
+    const uOnboard = costoUnit * S.dist.onboarding;
+    const uProd    = costoUnit * S.dist.productividad;
+    const uEquipo  = costoUnit * S.dist.equipo;
+    const uConoc   = costoUnit * S.dist.conocimiento;
+
+    // Totales
+    const total = costoUnit * rotaN;
+
+    const cargoLbl = {
+      operativo:'Operativo', administrativo:'Administrativo',
+      profesional:'Profesional', jefatura:'Jefatura', gerencia:'Gerencia'
+    }[cargo];
+
+    // ---- UI ----
+    document.getElementById('res-desc').textContent =
+      `${emp.toLocaleString('es-CL')} empleados · Tasa ${rotPct}% anual · Perfil: ${cargoLbl}`;
+
+    document.getElementById('res-rotan').textContent   = rotaN.toLocaleString('es-CL');
+    document.getElementById('res-sueldos').textContent = (total > 0 ? Math.round(total / sal) : 0).toLocaleString('es-CL');
+    document.getElementById('res-pct-salario').textContent = Math.round(factCargo * 100) + '%';
+    document.getElementById('res-por-persona').textContent = clp(costoUnit);
+
+    // Desglose importes
+    document.getElementById('bd-salida').textContent  = clp(uSalida  * rotaN);
+    document.getElementById('bd-reclu').textContent   = clp(uReclu   * rotaN);
+    document.getElementById('bd-onboard').textContent = clp(uOnboard * rotaN);
+    document.getElementById('bd-prod').textContent    = clp(uProd    * rotaN);
+    document.getElementById('bd-equipo').textContent  = clp(uEquipo  * rotaN);
+    document.getElementById('bd-conoc').textContent   = clp(uConoc   * rotaN);
+
+    // Barras de progreso (% visual del total)
+    function setBar(id, pct) {
+      const bar = document.getElementById(id);
+      if (bar) bar.style.width = (pct * 100) + '%';
+    }
+    setBar('bar-salida',  S.dist.salida);
+    setBar('bar-reclu',   S.dist.reclutamiento);
+    setBar('bar-onboard', S.dist.onboarding);
+    setBar('bar-prod',    S.dist.productividad);
+    setBar('bar-equipo',  S.dist.equipo);
+    setBar('bar-conoc',   S.dist.conocimiento);
+
+    // CTA título dinámico
+    document.getElementById('cta-titulo').textContent =
+      `Tu empresa pierde ${clp(total)} al año en rotación`;
+
+    // Animar número total
+    animNum(document.getElementById('res-total'), total);
+
+    // Mostrar sección
+    const sec = document.getElementById('seccion-resultados');
+    sec.classList.add('show');
+    setTimeout(() => sec.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  }
+
+  // ============================================================
+  // FAQ
+  // ============================================================
+  function tFaq(btn) {
+    const wasOpen = btn.classList.contains('open');
+    document.querySelectorAll('.faq-q').forEach(b => { b.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); });
+    document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+    if (!wasOpen) {
+      btn.classList.add('open'); btn.setAttribute('aria-expanded', 'true');
+      const id = btn.getAttribute('aria-controls');
+      if (id) document.getElementById(id).classList.add('open');
+    }
+  }
+
+  // ============================================================
+  // HEADER SHADOW
+  // ============================================================
+  window.addEventListener('scroll', () => {
+    document.getElementById('site-header').classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  // ============================================================
+  // SLIDER ↔ INPUT SYNC
+  // ============================================================
+  const slEl = document.getElementById('slider-rot');
+  const inEl = document.getElementById('inp-rot');
+
+  slEl.addEventListener('input', () => {
+    inEl.value = slEl.value; updBadge(parseFloat(slEl.value));
+  });
+  inEl.addEventListener('input', () => {
+    let v = parseFloat(inEl.value);
+    if (!isNaN(v)) { v = Math.max(0, Math.min(60, v)); slEl.value = v; updBadge(v); }
+  });
+
+  // ============================================================
+  // SALARIO → UF
+  // ============================================================
+  document.getElementById('inp-sal').addEventListener('input', () => {
+    const v = parseFloat(document.getElementById('inp-sal').value) || 0;
+    document.getElementById('uf-tag').textContent = '≈ ' + (v / S.valorUF).toFixed(1) + ' UF';
+  });
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  updBadge(17);
+</script>
+
+</body>
+</html>
