@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clarity — Beneficios Laborales · buk.cl</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+  <style>
+    /* ── Design tokens ──────────────────────────────── */
+    :root {
+      --brand:           #2f4daa;
+      --brand-mid:       #2f6fc2;
+      --brand-light:     #e7eeff;
+      --brand-dark:      #1a2441;
+      --surface-page:    #f4f7fc;
+      --surface-card:    #ffffff;
+      --text-primary:    #1a2441;
+      --text-secondary:  #2b3c6a;
+      --text-muted:      #7d7d7d;
+      --border:          #dde3f5;
+      --baseline:        #aab4d4;
+      --series-1: #2a78d6;
+      --series-2: #1baf7a;
+      --series-3: #eda100;
+      --series-4: #e34948;
+      --series-5: #4a3aa7;
+      --status-good:     #0ca30c;
+      --status-warning:  #fab219;
+      --status-serious:  #ec835a;
+      --status-critical: #d03b3b;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--surface-page);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    h1, h2, h3, h4,
+    .report-header h1, .section-title,
+    .stat-tile .tile-label, .stat-tile .tile-value,
+    .card > h3, .pa-header h3, .pa-col-title,
+    .nd-header strong, .cross-findings h4 {
+      font-family: 'Source Sans Pro', system-ui, sans-serif;
+    }
+
+    /* ── Header ─────────────────────────────────────── */
+    .report-header {
+      background: linear-gradient(135deg, #1a2441 0%, #2f4daa 100%);
+      color: #fff;
+      padding: 36px 56px 32px;
+    }
+    .report-header .eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; opacity: .7; margin-bottom: 10px;
+    }
+    .report-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+    .report-header .meta { font-size: 13px; opacity: .75; display: flex; gap: 28px; flex-wrap: wrap; align-items: center; }
+
+    /* ── Sticky nav ─────────────────────────────────── */
+    .sticky-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: #1a2441;
+      display: flex; padding: 0 56px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      overflow-x: auto;
+    }
+    .sticky-nav a {
+      color: rgba(255,255,255,.7);
+      font-size: 12px; font-weight: 600;
+      padding: 12px 16px;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color .15s, border-color .15s;
+    }
+    .sticky-nav a:hover { color: #fff; border-bottom-color: rgba(255,255,255,.5); }
+
+    /* ── Layout ─────────────────────────────────────── */
+    .container { max-width: 1120px; margin: 0 auto; padding: 44px 56px; }
+    .section { margin-bottom: 52px; }
+    .section-title {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Stat tiles ─────────────────────────────────── */
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .stat-tile {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 22px 24px 20px;
+    }
+    .stat-tile .tile-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;
+    }
+    .stat-tile .tile-value {
+      font-size: 36px; font-weight: 700; line-height: 1;
+      margin-bottom: 6px; font-variant-numeric: tabular-nums;
+    }
+    .stat-tile .tile-sub { font-size: 12px; color: var(--text-secondary); }
+    .stat-tile.ok   .tile-value { color: var(--text-primary); }
+    .stat-tile.warn .tile-value { color: var(--status-serious); }
+    .stat-tile.alert .tile-value { color: var(--status-critical); }
+
+    /* ── Engagement tiles ───────────────────────────── */
+    .engagement-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+    .eng-tile {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px 24px; text-align: center;
+    }
+    .eng-tile .e-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;
+    }
+    .eng-tile .e-value { font-size: 26px; font-weight: 700; line-height: 1; margin-bottom: 5px; }
+    .eng-tile .e-sub { font-size: 12px; color: var(--text-secondary); }
+
+    /* ── Podio ──────────────────────────────────────── */
+    .podio-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 16px; }
+    .podio-card {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px 20px;
+      border-top: 3px solid var(--series-1);
+    }
+    .podio-card:nth-child(2) { border-top-color: var(--series-2); }
+    .podio-card:nth-child(3) { border-top-color: var(--series-3); }
+    .podio-card:nth-child(4) { border-top-color: var(--series-4); }
+    .podio-badge { font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+    .podio-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; line-height: 1.25; }
+    .podio-visits { font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; }
+    .podio-bar-wrap { height: 6px; background: #f0ede8; border-radius: 3px; overflow: hidden; }
+    .podio-bar { height: 100%; border-radius: 3px; }
+    .podio-pct { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+    /* ── Card ───────────────────────────────────────── */
+    .card {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 26px 28px;
+    }
+    .card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .card h3 { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .card-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+
+    /* ── Charts ─────────────────────────────────────── */
+    .chart-wrap { position: relative; height: 260px; }
+    .chart-wrap.tall { height: 320px; }
+    .chart-wrap.sm { height: 200px; }
+
+    /* ── Legend ─────────────────────────────────────── */
+    .legend { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
+    .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text-secondary); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ── Dead-click bars ────────────────────────────── */
+    .dc-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+    }
+    .dc-row:last-child { border-bottom: none; }
+    .dc-label { width: 200px; font-size: 12px; flex-shrink: 0; }
+    .dc-bar-wrap { flex: 1; height: 10px; background: #f0ede8; border-radius: 4px; overflow: hidden; }
+    .dc-bar { height: 100%; border-radius: 4px; background: var(--status-critical); }
+    .dc-count {
+      width: 38px; text-align: right; font-size: 13px; font-weight: 700;
+      color: var(--status-critical); font-variant-numeric: tabular-nums; flex-shrink: 0;
+    }
+
+    /* ── Priority findings ──────────────────────────── */
+    .findings { display: flex; flex-direction: column; gap: 12px; }
+    .finding {
+      display: flex; align-items: flex-start; gap: 16px;
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-left-width: 4px; border-radius: 10px; padding: 16px 20px;
+    }
+    .finding.p-critical { border-left-color: var(--status-critical); }
+    .finding.p-warning  { border-left-color: var(--status-warning); }
+    .finding.p-low      { border-left-color: var(--status-good); }
+    .f-badge {
+      flex-shrink: 0; font-size: 10.5px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .06em;
+      padding: 3px 9px; border-radius: 5px; margin-top: 2px;
+    }
+    .f-badge.critical { background: #fee2e2; color: var(--status-critical); }
+    .f-badge.warning  { background: #fef3c7; color: #b45309; }
+    .f-badge.low      { background: #d1fae5; color: #065f46; }
+    .f-body h4 { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+    .f-body p  { font-size: 13px; color: var(--text-secondary); }
+
+    /* ── Notice ─────────────────────────────────────── */
+    .notice {
+      border-radius: 8px; padding: 13px 18px; font-size: 13px; margin-bottom: 20px;
+    }
+    .notice.amber { background: #fef3c7; border: 1px solid #fde68a; color: #78350f; }
+    .notice.brand { background: var(--brand-light); border: 1px solid #ddd6fe; color: var(--brand); }
+    .notice.red   { background: #fee2e2; border: 1px solid #fca5a5; color: #7f1d1d; }
+    .notice strong { font-weight: 700; }
+
+    /* ── Session cards ──────────────────────────────── */
+    .session-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .session-card {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px 20px;
+    }
+    .session-card.has-issue { border-top: 3px solid var(--status-warning); }
+    .s-page-badge {
+      display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .05em;
+      text-transform: uppercase; padding: 2px 8px; border-radius: 4px;
+      background: var(--brand-light); color: var(--brand); margin-bottom: 10px;
+    }
+    .s-id { font-size: 11px; color: var(--text-muted); margin-bottom: 12px; }
+    .s-row {
+      display: flex; justify-content: space-between; font-size: 13px;
+      padding: 5px 0; border-bottom: 1px solid var(--border);
+    }
+    .s-row:last-of-type { border-bottom: none; }
+    .s-row span:first-child { color: var(--text-secondary); }
+    .s-row span:last-child { font-weight: 600; font-variant-numeric: tabular-nums; }
+    .s-note { font-size: 12px; color: var(--text-secondary); margin-top: 10px; line-height: 1.4; padding-top: 10px; border-top: 1px solid var(--border); }
+    .s-link {
+      display: block; margin-top: 14px; text-align: center; padding: 8px;
+      background: var(--brand-light); color: var(--brand);
+      border-radius: 7px; font-size: 12px; font-weight: 700;
+      text-decoration: none; transition: background .15s;
+    }
+    .s-link:hover { background: #ddd6fe; }
+
+    /* ── Page analysis cards ────────────────────────── */
+    .pa-card {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: 10px; margin-bottom: 20px;
+      border-left: 4px solid var(--border);
+    }
+    .pa-card.pack     { border-left-color: var(--series-1); }
+    .pa-card.gestion  { border-left-color: var(--series-2); }
+    .pa-card.planes   { border-left-color: var(--series-3); }
+    .pa-card.bienestar{ border-left-color: var(--series-4); }
+    .pa-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 16px; padding: 18px 22px 14px; flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+    }
+    .pa-header-left { flex: 1; min-width: 0; }
+    .pa-header-left h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .pa-url { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+    .pa-url a { color: var(--text-muted); text-decoration: none; }
+    .pa-url a:hover { color: var(--brand); text-decoration: underline; }
+    .pa-clarity { display: flex; gap: 22px; flex-wrap: wrap; flex-shrink: 0; align-items: flex-start; }
+    .pa-kpi { text-align: right; }
+    .pa-kpi-val { font-size: 20px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+    .pa-kpi-lab { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+    .pa-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .pa-col { padding: 18px 22px 22px; }
+    .pa-col:first-child { border-right: 1px solid var(--border); }
+    .pa-col-title {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 14px;
+    }
+    .pa-bullets { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .pa-bullets li { font-size: 13px; color: var(--text-secondary); padding-left: 16px; position: relative; line-height: 1.45; }
+    .pa-bullets li::before { content: "·"; position: absolute; left: 4px; color: var(--baseline); font-weight: 700; }
+    .pa-bullets li.issue::before { content: "!"; color: var(--status-warning); font-size: 11px; top: 1px; }
+    .pa-bullets li.good::before  { content: "✓"; color: var(--status-good);    font-size: 10px; top: 1px; }
+    .pa-recs { display: flex; flex-direction: column; gap: 12px; }
+    .rec-row { display: flex; align-items: flex-start; gap: 10px; }
+    .rec-badge {
+      flex-shrink: 0; font-size: 9.5px; font-weight: 700; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 4px; margin-top: 2px; letter-spacing: .04em;
+    }
+    .rec-badge.alto  { background: #fee2e2; color: var(--status-critical); }
+    .rec-badge.medio { background: #fef3c7; color: #b45309; }
+    .rec-badge.bajo  { background: #f0fdf4; color: #065f46; }
+    .rec-text strong { display: block; font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+    .rec-text span   { font-size: 12px; color: var(--text-secondary); line-height: 1.4; display: block; }
+
+    /* ── Cross findings banner ──────────────────────── */
+    .cross-findings {
+      background: var(--brand-light); border: 1px solid #ddd6fe; border-radius: 10px;
+      padding: 18px 22px; margin-bottom: 24px;
+    }
+    .cross-findings h4 {
+      font-size: 11px; font-weight: 700; color: var(--brand);
+      letter-spacing: .09em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .cross-findings ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .cross-findings li { font-size: 13px; color: var(--brand); padding-left: 20px; position: relative; line-height: 1.4; }
+    .cross-findings li::before { content: "→"; position: absolute; left: 0; font-weight: 700; }
+
+    /* ── Pill ───────────────────────────────────────── */
+    .pill {
+      display: inline-block; font-size: 12px; font-weight: 700;
+      padding: 2px 9px; border-radius: 99px; font-variant-numeric: tabular-nums;
+    }
+    .pill.red   { background: #fee2e2; color: var(--status-critical); }
+    .pill.amber { background: #fef3c7; color: #b45309; }
+    .pill.green { background: #d1fae5; color: #065f46; }
+    .pill.blue  { background: var(--brand-light); color: var(--brand); }
+
+    /* ── Two-col grid ───────────────────────────────── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+    /* ── Scroll depth visual ───────────────────────── */
+    .scroll-viz { display: flex; flex-direction: column; gap: 12px; }
+    .scroll-row { display: flex; align-items: center; gap: 12px; }
+    .scroll-name { width: 180px; font-size: 12px; color: var(--text-secondary); flex-shrink: 0; }
+    .scroll-bar-wrap { flex: 1; height: 14px; background: #f0ede8; border-radius: 4px; overflow: hidden; position: relative; }
+    .scroll-bar { height: 100%; border-radius: 4px; position: relative; }
+    .scroll-bar::after {
+      content: attr(data-pct);
+      position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+      font-size: 10px; font-weight: 700; color: #fff;
+      white-space: nowrap;
+    }
+    .scroll-pct { width: 42px; text-align: right; font-size: 12px; font-weight: 700; color: var(--text-secondary); flex-shrink: 0; }
+
+    /* ── Footer ─────────────────────────────────────── */
+    .report-footer {
+      text-align: center; font-size: 12px; color: var(--text-muted);
+      padding: 28px 56px; border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 900px) {
+      .container { padding: 28px 20px; }
+      .report-header { padding: 24px 20px; }
+      .sticky-nav { padding: 0 20px; }
+      .stat-grid, .engagement-grid, .podio-strip { grid-template-columns: 1fr 1fr; }
+      .card-grid-2, .pa-body, .two-col, .three-col { grid-template-columns: 1fr; }
+      .session-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════ HEADER ════════════════════════════════ -->
+<div class="report-header">
+  <div class="eyebrow">Microsoft Clarity · Análisis de comportamiento de usuario</div>
+  <h1>Beneficios Laborales — Análisis de Retención y Storytelling</h1>
+  <div class="meta">
+    <span>Período: 14 Jun – 14 Jul 2026 (últimos 30 días)</span>
+    <span>864 sesiones · 4 páginas del cluster /beneficios-laborales</span>
+    <span>Generado: 14 Jul 2026</span>
+  </div>
+</div>
+
+<!-- ════════════════════════ STICKY NAV ════════════════════════════== -->
+<nav class="sticky-nav">
+  <a href="#resumen">Resumen</a>
+  <a href="#comparativa">Comparativa</a>
+  <a href="#trafico">Tráfico</a>
+  <a href="#comportamiento">Comportamiento</a>
+  <a href="#storytelling">Storytelling</a>
+  <a href="#hallazgos">Hallazgos</a>
+  <a href="#sesiones">Sesiones</a>
+</nav>
+
+<div class="container">
+
+<!-- ══════════════════ RESUMEN EJECUTIVO ══════════════════════════ -->
+<div class="section" id="resumen">
+  <div class="section-title">Resumen ejecutivo · 14 Jun – 14 Jul 2026 · Cluster /beneficios-laborales</div>
+
+  <div class="notice red" style="margin-bottom:20px">
+    <strong>Señal de alerta:</strong> 3 de las 4 páginas del cluster tienen una tasa de abandono del 100%. Los usuarios llegan y se van sin navegar a ninguna otra página del sitio — la narrativa actual no está generando continuidad en el journey.
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-tile ok">
+      <div class="tile-label">Sesiones totales</div>
+      <div class="tile-value">864</div>
+      <div class="tile-sub">4 páginas · últimos 30 días</div>
+    </div>
+    <div class="stat-tile warn">
+      <div class="tile-label">Profundidad de lectura</div>
+      <div class="tile-value">33.4%</div>
+      <div class="tile-sub">Promedio ponderado del cluster</div>
+    </div>
+    <div class="stat-tile warn">
+      <div class="tile-label">Tiempo de engagement</div>
+      <div class="tile-value">48.8s</div>
+      <div class="tile-sub">Promedio ponderado · rango 28–80s</div>
+    </div>
+    <div class="stat-tile alert">
+      <div class="tile-label">Dead clicks totales</div>
+      <div class="tile-value">35</div>
+      <div class="tile-sub">Pack de Descuentos concentra 25 (71%)</div>
+    </div>
+  </div>
+
+  <div class="engagement-grid">
+    <div class="eng-tile">
+      <div class="e-label">Página más visitada</div>
+      <div class="e-value" style="font-size:18px;margin-top:4px">Pack de Descuentos</div>
+      <div class="e-sub">503 sesiones · 58% del tráfico del cluster · 42% scroll</div>
+    </div>
+    <div class="eng-tile">
+      <div class="e-label">Única con bounce rate sano</div>
+      <div class="e-value" style="color:var(--status-good)">Gestión de Benef.</div>
+      <div class="e-sub">24.3% tasa de abandono · 50.4s engagement · perfil mid-funnel</div>
+    </div>
+    <div class="eng-tile">
+      <div class="e-label">Audiencia dominante</div>
+      <div class="e-value" style="font-size:18px;margin-top:4px">58% PC · 67.5% Orgánico</div>
+      <div class="e-sub">Perfil profesional RRHH — distinto al resto del sitio (84% mobile)</div>
+    </div>
+  </div>
+
+  <div class="podio-strip">
+    <div class="podio-card pack">
+      <div class="podio-badge">Mayor volumen</div>
+      <div class="podio-name">Pack de Descuentos</div>
+      <div class="podio-visits">503 sesiones · 58% del cluster</div>
+      <div class="podio-bar-wrap"><div class="podio-bar" style="width:42%;background:var(--series-1)"></div></div>
+      <div class="podio-pct">42% profundidad · 80s engagement · <span style="color:var(--status-critical);font-weight:700">25 dead clicks</span></div>
+    </div>
+    <div class="podio-card gestion">
+      <div class="podio-badge">Mejor conversión</div>
+      <div class="podio-name">Gestión de Beneficios</div>
+      <div class="podio-visits">103 sesiones · bounce 24.3%</div>
+      <div class="podio-bar-wrap"><div class="podio-bar" style="width:32.6%;background:var(--series-2)"></div></div>
+      <div class="podio-pct">32.6% profundidad · 50s engagement · 1 dead click</div>
+    </div>
+    <div class="podio-card planes">
+      <div class="podio-badge">Mayor riesgo UX</div>
+      <div class="podio-name">Planes de Beneficios</div>
+      <div class="podio-visits">187 sesiones · bounce 100%</div>
+      <div class="podio-bar-wrap"><div class="podio-bar" style="width:32.2%;background:var(--series-3)"></div></div>
+      <div class="podio-pct">32.2% profundidad · 28.8s engagement · 3 dead clicks</div>
+    </div>
+    <div class="podio-card bienestar">
+      <div class="podio-badge">Mayor oportunidad</div>
+      <div class="podio-name">Bienestar Financiero</div>
+      <div class="podio-visits">71 sesiones · bounce 100%</div>
+      <div class="podio-bar-wrap"><div class="podio-bar" style="width:26.9%;background:var(--series-4)"></div></div>
+      <div class="podio-pct">26.9% profundidad · 35.8s engagement · 6 dead clicks</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ COMPARATIVA DE PÁGINAS ═══════════════════ -->
+<div class="section" id="comparativa">
+  <div class="section-title">Comparativa de las 4 páginas del cluster</div>
+  <div class="two-col">
+    <div class="card">
+      <h3>Sesiones y profundidad de scroll</h3>
+      <div class="card-sub">Volumen de visitas vs % promedio de scroll</div>
+      <div class="chart-wrap tall">
+        <canvas id="chartComparativa"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Engagement y dead clicks</h3>
+      <div class="card-sub">Segundos de interacción activa vs. clics sin respuesta</div>
+      <div class="chart-wrap tall">
+        <canvas id="chartEngagement"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ TRÁFICO Y DISPOSITIVOS ═══════════════════ -->
+<div class="section" id="trafico">
+  <div class="section-title">Fuentes de tráfico y distribución de dispositivos</div>
+
+  <div class="notice brand" style="margin-bottom:20px">
+    <strong>Insight clave:</strong> El cluster de Beneficios Laborales tiene un perfil de audiencia radicalmente diferente al resto de buk.cl (84% mobile). Aquí el 58% de las visitas viene desde PC y el 67.5% desde búsqueda orgánica — señal clara de que el visitante es un profesional de RRHH investigando activamente, no un colaborador en su celular.
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <h3>Fuentes de tráfico</h3>
+      <div class="card-sub">Sesiones por canal de origen · últimos 30 días</div>
+      <div class="chart-wrap">
+        <canvas id="chartTrafico"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Dispositivos</h3>
+      <div class="card-sub">Distribución PC vs Mobile en el cluster</div>
+      <div class="chart-wrap">
+        <canvas id="chartDispositivos"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <h3>Usuarios nuevos vs. recurrentes</h3>
+    <div class="card-sub">Últimos 30 días · total cluster /beneficios-laborales</div>
+    <div style="display:flex;gap:40px;align-items:center;margin-top:8px">
+      <div style="flex:1;max-width:300px">
+        <div class="chart-wrap sm">
+          <canvas id="chartUsuarios"></canvas>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font-size:28px;font-weight:700;color:var(--brand)">75.2%</div>
+            <div style="font-size:13px;color:var(--text-secondary);margin-top:3px">Usuarios nuevos — 1,115 personas que llegan por primera vez al cluster</div>
+          </div>
+          <div>
+            <div style="font-size:28px;font-weight:700;color:var(--series-2)">24.8%</div>
+            <div style="font-size:13px;color:var(--text-secondary);margin-top:3px">Usuarios recurrentes — 368 personas que vuelven a explorar la oferta</div>
+          </div>
+          <div class="notice amber" style="margin:0;padding:10px 14px">
+            <strong>Oportunidad:</strong> Con 75% de usuarios nuevos y bounce rate 100% en 3/4 páginas, se pierde la gran mayoría de prospectos en la primera visita. El retargeting y el cross-linking interno son críticos.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ COMPORTAMIENTO ═══════════════════════════ -->
+<div class="section" id="comportamiento">
+  <div class="section-title">Comportamiento de usuario — Profundidad y Fricción</div>
+
+  <div class="two-col">
+    <div class="card">
+      <h3>Profundidad de scroll por página</h3>
+      <div class="card-sub">% promedio de la página que el usuario alcanza a ver</div>
+      <div class="scroll-viz" style="margin-top:16px">
+        <div class="scroll-row">
+          <div class="scroll-name">Pack de Descuentos</div>
+          <div class="scroll-bar-wrap">
+            <div class="scroll-bar" data-pct="42%" style="width:42%;background:var(--series-1)"></div>
+          </div>
+          <div class="scroll-pct">42.0%</div>
+        </div>
+        <div class="scroll-row">
+          <div class="scroll-name">Gestión de Beneficios</div>
+          <div class="scroll-bar-wrap">
+            <div class="scroll-bar" data-pct="32.6%" style="width:32.6%;background:var(--series-2)"></div>
+          </div>
+          <div class="scroll-pct">32.6%</div>
+        </div>
+        <div class="scroll-row">
+          <div class="scroll-name">Planes de Beneficios</div>
+          <div class="scroll-bar-wrap">
+            <div class="scroll-bar" data-pct="32.2%" style="width:32.2%;background:var(--series-3)"></div>
+          </div>
+          <div class="scroll-pct">32.2%</div>
+        </div>
+        <div class="scroll-row">
+          <div class="scroll-name">Bienestar Financiero</div>
+          <div class="scroll-bar-wrap">
+            <div class="scroll-bar" data-pct="26.9%" style="width:26.9%;background:var(--series-4)"></div>
+          </div>
+          <div class="scroll-pct">26.9%</div>
+        </div>
+      </div>
+      <div class="notice amber" style="margin-top:20px;margin-bottom:0">
+        Ninguna página supera el 42% de profundidad — las secciones de valor (casos de éxito, beneficios detallados, precios) probablemente quedan fuera del área de lectura real.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Dead clicks por página</h3>
+      <div class="card-sub">Clics que no produjeron ninguna respuesta del sistema</div>
+      <div style="margin-top:16px">
+        <div class="dc-row">
+          <div class="dc-label">Pack de Descuentos</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:100%"></div></div>
+          <div class="dc-count">25</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-label">Bienestar Financiero</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:24%"></div></div>
+          <div class="dc-count">6</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-label">Planes de Beneficios</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:12%"></div></div>
+          <div class="dc-count">3</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-label">Gestión de Beneficios</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:4%"></div></div>
+          <div class="dc-count">1</div>
+        </div>
+      </div>
+      <div class="notice red" style="margin-top:20px;margin-bottom:0">
+        <strong>25 dead clicks en Pack de Descuentos</strong> sobre 503 sesiones = ~5% de sesiones con frustración activa. Para una página con alta permanencia (80s), esto indica que el usuario quiere interactuar pero algo está roto o no responde.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ STORYTELLING POR PÁGINA ══════════════════ -->
+<div class="section" id="storytelling">
+  <div class="section-title">Análisis de storytelling y experiencia de usuario por página</div>
+
+  <div class="cross-findings">
+    <h4>Patrones transversales detectados en sesiones grabadas</h4>
+    <ul>
+      <li>Usuarios que exploran el cluster tienden a visitar múltiples sub-páginas en secuencia (gestión → planes → pack → bienestar), sugiriendo un arquetipo de "researcher de RRHH" que evalúa la oferta completa.</li>
+      <li>El journey más común de conversión observado: Google → buk.cl home o precios → página de beneficios específica → CTA "Ver Demo Gratis" o formulario de contacto.</li>
+      <li>Sesiones de editores internos de Buk contaminan el data (identificadas por clicks repetidos en "Editar página") — los datos reales de prospectos son más bajos.</li>
+      <li>Visitantes de Google con 0 clics en varias páginas sugieren posible tráfico de bots o visitantes que llegan, ven que la respuesta a su búsqueda no está visible, y se van inmediatamente.</li>
+    </ul>
+  </div>
+
+  <!-- PACK DE DESCUENTOS -->
+  <div class="pa-card pack">
+    <div class="pa-header">
+      <div class="pa-header-left">
+        <div style="margin-bottom:6px"><span class="pill blue">Más visitada</span> <span class="pill red">25 dead clicks</span></div>
+        <h3>Pack de Descuentos</h3>
+        <div class="pa-url"><a href="https://www.buk.cl/productos/beneficios-laborales/pack-de-descuentos" target="_blank">buk.cl/productos/beneficios-laborales/pack-de-descuentos ↗</a></div>
+      </div>
+      <div class="pa-clarity">
+        <div class="pa-kpi">
+          <div class="pa-kpi-val">503</div>
+          <div class="pa-kpi-lab">sesiones</div>
+        </div>
+        <div class="pa-kpi">
+          <div class="pa-kpi-val" style="color:var(--status-serious)">42%</div>
+          <div class="pa-kpi-lab">scroll depth</div>
+        </div>
+        <div class="pa-kpi">
+          <div class="pa-kpi-val">80.4s</div>
+          <div class="pa-kpi-lab">engagement</div>
+        </div>
+        <div class="pa-kpi">
+          <div class="pa-kpi-val" style="color:var(--status-critical)">100%</div>
+          <div class="pa-kpi-lab">bounce rate</div>
+        </div>
+      </div>
+    </div>
+    <div class="pa-body">
+      <div class="pa-col">
+        <div class="pa-col-title">Storytelling y experiencia de usuario</div>
+        <ul class="pa-bullets">
+          <li class="good">Es la página más visitada del cluster (58%). El concepto "descuentos" genera alta atracción orgánica y usuarios verdaderamente motivados — tiempo real en página ~18 min para sesiones engaged.</li>
+          <li class="good">Los 8+ íconos de categorías (Fitness, Salud, Conocimiento, Familia, Mascota, etc.) funcionan bien — usuarios los exploran sistemáticamente en múltiples sesiones, señal de UX intuitivo.</li>
+          <li class="good">El CTA "¡Lo quiero!" sí está siendo clickeado en múltiples sesiones (alta señal de intención). Abre un modal con flujo "Continuar"/"Cerrar".</li>
+          <li class="good">Navegación natural hacia Seguros tras visitar la página — oportunidad de cross-sell orgánico ya existente.</li>
+          <li class="issue">Dead click confirmado: después de cerrar el modal "¡Lo quiero!", el click en la tarjeta de marca (ej. Juan Maestro) no responde. El elemento queda "congelado" post-modal.</li>
+          <li class="issue">Un session con tiempo de carga de 17 segundos registrado — outlier de rendimiento que afecta negativamente la experiencia en ciertas condiciones de red o dispositivo.</li>
+          <li class="issue">100% bounce rate pese al alto engagement: el modal "¡Lo quiero!" no está completando la conversión — los usuarios cierran sin continuar hacia el siguiente paso del funnel.</li>
+        </ul>
+      </div>
+      <div class="pa-col">
+        <div class="pa-col-title">Recomendaciones para mejorar retención</div>
+        <div class="pa-recs">
+          <div class="rec-row">
+            <div class="rec-badge alto">Alto</div>
+            <div class="rec-text">
+              <strong>Corregir estado post-modal en tarjetas de marca</strong>
+              <span>Al cerrar el modal "¡Lo quiero!", los brand cards quedan con un estado que bloquea nuevos clicks. Revisar el manejo de eventos JS del modal y asegurar que el DOM se restaure correctamente al cerrar.</span>
+            </div>
+          </div>
+          <div class="rec-row">
+            <div class="rec-badge alto">Alto</div>
+            <div class="rec-text">
+              <strong>Optimizar el flujo del modal "¡Lo quiero!"</strong>
+              <span>El CTA existe y se usa, pero los usuarios están cerrando en lugar de continuar. Revisar si el paso "Continuar" es claro, si requiere autenticación inesperada, o si el siguiente paso del modal genera fricción.</span>
+            </div>
+          </div>
+          <div class="rec-row">
+            <div class="rec-badge medio">Medio</div>
+            <div class="rec-text">
+              <strong>Activar cross-sell a Seguros con módulo visible</strong>
+              <span>La navegación orgánica a seguros ya existe. Añadir un banner o sección "Complementa con Seguros" antes del footer puede convertir ese intent natural en una acción guiada.</span>
+            </div>
+          </div>
+          <div class="rec-row">
+            <div class="rec-badge bajo">Bajo</div>
+            <div class="rec-text">
+              <strong>Investigar y corregir el outlier de 17s de carga</strong>
+              <span>Aunque es un caso aislado, tiempos de carga extremos pueden afectar a usuarios en conexiones móviles o dispositivos de gama baja. Revisar recursos pesados (imágenes de logos de marcas) que podrían cacharse mejor.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GESTIÓN DE BENEFICIOS -->
+  <div class="pa-card gestion">
+    <div class="pa-header">
+      <div class="pa-header-left">
+        <div style="margin-bottom:6px"><span class="pill green">Mejor bounce rate</span> <span class="pill blue">Mid-funnel</span></div>
+        <h3>Gestión de Beneficios</h3>
+        <div class="pa-url"><a href="https://www.buk.cl/productos/beneficios-laborales/gestion-de-beneficios" target="_blank">buk.cl/productos/beneficios-laborales/gestion-de-beneficios ↗</a></div>
+      </div>
+      <div class="pa-clarity">
+        <div class="pa-kpi">
+          <div class="pa-kpi-val">103</div>
+          <div class="pa-kpi-lab">sesiones</div>
+        </div>
+        <div class="pa-kpi">
+          <div class="pa-kpi-val" style="color:var(--status-serious)">32.6%</div>
+          <div class="pa-kpi-lab">scroll depth</div>
+        </div>
+        <div class="pa-kpi">
+          <div class="pa-kpi-val">50.4s</div>
+          <div class="pa-kpi-lab">engagement</div>
+        </div>
+        <div class="pa-kpi">
+          <div class="pa-kpi-val" style="color:var(--status-good)">24.3%</div>
+          <div class="pa-kpi-lab">bounce rate</div>
+        </div>
+      </div>
+    </div>
+    <div class="pa-body">
+      <div class="pa-col">
+        <div class="pa-col-title">Storytelling y experiencia de usuario</div>
+        <ul class="pa-bullets">
+          <li class="good">Única página con bounce rate sano (24.3%) — cuando el usuario llega con intención clara, la narrativa funciona y genera navegación interna.</li>
+          <li class="good">Sesiones de conversión identificadas: usuarios que llegan desde /precios → hacen click en "Ver Demo Gratis" → completan formulario y ven el Video Demo (3+ minutos de engagement).</li>
+          <li class="good">Usuarios recurrentes del tipo "explorador de beneficios" navegan Gestión → Planes → Pack → Bienestar en una misma sesión.</li>
+          <li class="issue">32.6% scroll depth: el contenido de valor (casos de éxito, lista de beneficios disponibles) probablemente está en la segunda mitad de la página, que la mayoría no alcanza.</li>
+          <li class="issue">Sesiones de 0 clicks desde Google (posibles bots o visitantes que no encuentran respuesta visual inmediata) elevan artificialmente los números.</li>
+          <li class="issue">Performance score de 72 detectado en sesión de conversión — la página carga más lento que otras en el mismo journey (LCP ~2.5s, tiempo total de carga 4–5s).</li>
+        </ul>
+      </div>
+      <div class="pa-col">
+        <div class="pa-col-title">Recomendaciones para mejorar retención</div>
+        <div class="pa-recs">
+          <div class="rec-row">
+            <div class="rec-badge alto">Alto</div>
+            <div class="rec-text">
+              <strong>Optimizar carga de página (performance score 72)</strong>
+              <span>La sesión de conversión detectada tuvo el peor score de rendimiento de todo el journey. Comprimir imágenes y optimizar LCP puede reducir el abandono antes de que la página termine de cargar.</span>
+            </div>
+          </div>
+          <div class="rec-row">
+            <div class="rec-badge alto">Alto</div>
+            <div class="rec-text">
+              <strong>Subir beneficios concretos y social proof al primer scroll</strong>
+              <span>Con solo 32.6% de profundidad, los logos de clientes, testimonios o métricas de impacto deben aparecer antes del 30% de la página para que la mayoría los vea.</span>
+            </div>
+          </div>
+          <div class="rec-row">
+            <div class="rec-badge medio">Medio</div>
+            <div class="rec-text">
+              <strong>Añadir ancla al Video Demo en la parte superior</strong>
+              <span>La sesión de conversión muestra que el Video Demo es un punto de enganche poderoso. Un shortcut visible "→ Ver demo de 3 min" en el hero puede acelerar el journey.</span>
+            </div>
+          </div>
+          <div class="rec-row">
+            <div class="rec-badge bajo">Bajo</div>
+            <div class="rec-text">
+              <strong>Crear segmento en Clarity para filtrar sesiones internas</strong>
+              <span>Excluir IPs o sesiones con "Editar página" para medir engagement real de prospectos y no contaminar el análisis.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANES DE BENEFICIOS -->
+  <div class="pa-card planes">
+    <div class="pa-header">
+      <div class="pa-header-left">
+        <div style="margin-bottom:6px"><span class="pill red">100% bounce</span> <span class="pill amber">UX confuso</span></div>
+        <h3>Planes de Beneficios</h3>
+        <div class="pa-url"><a href="https://www.buk.cl/productos/beneficios-laborales/planes-de-beneficios" target="_blank">buk.cl/productos/beneficios-laborales/planes-de-beneficios ↗</a></div>
+      </div>
+      <div class="pa-clarity">
+        <div class="pa-kpi">
+          <div class="pa-kpi-val">187</div>
+          <div class="pa-kpi-lab">sesiones</div>
+        </div>
+        <div class="pa-kpi">
+          <div class="pa-kpi-val" style="color:var(--status-serious)">32.2%</div>
+          <div class="pa-kpi-lab">scroll depth</div>
+        </div>
+        <div class="pa-kpi">
+          <div class="pa-kpi-val" style="color:var(--status-warning)">28.8s</div>
+          <div class="pa-kpi-lab">engagement</div>
+        </div>
+        <div class="pa-kpi">
+          <div class="pa-kpi-val" style="color:var(--status-critical)">100%</div>
+          <div class="pa-kpi-lab">bounce rate</div>
+        </div>
+      </div>
+    </div>
+    <div class="pa-body">
+      <div class="pa-col">
+        <div class="pa-col-title">Storytelling y experiencia de usuario</div>
+        <ul class="pa-bullets">
+          <li class="good">187 sesiones — el segundo mayor volumen del cluster — sugiere que el tema tiene demanda de búsqueda orgánica.</li>
+          <li class="issue">28.8 segundos de engagement promedio es el más bajo del cluster: en menos de 30 segundos el usuario no encontró lo que buscaba y se fue.</li>
+          <li class="issue">100% bounce rate con el menor engagement del cluster: la narrativa del hero no está conectando con la intención de búsqueda del visitante orgánico.</li>
+          <li class="issue">3 dead clicks: hay al menos un elemento interactivo (probablemente un acordeón de planes o un selector de beneficios) que no responde correctamente.</li>
+          <li class="issue">El nombre "Planes de Beneficios" es genérico — puede que los visitantes lleguen buscando algo más específico (ej. "qué beneficios ofrece Buk") y la página no satisface esa expectativa explícitamente.</li>
+          <li>Sesiones cruzadas muestran que usuarios de Bing navegaron Planes → Gestión → contacto, confirmando que esta página puede ser un punto de entrada al cluster.</li>
+        </ul>
+      </div>
+      <div class="pa-col">
+        <div class="pa-col-title">Recomendaciones para mejorar retención</div>
+        <div class="pa-recs">
+          <div class="rec-row">
+            <div class="rec-badge alto">Alto</div>
+            <div class="rec-text">
+              <strong>Rediseñar el hero con pregunta-problema del visitante</strong>
+              <span>Cambiar de narrativa de producto a narrativa de dolor: "¿Tus colaboradores no valoran los beneficios que ofreces?" o "¿Quieres que tus beneficios realmente sean usados?" — conectar con la motivación real antes de describir la solución.</span>
+            </div>
+          </div>
+          <div class="rec-row">
+            <div class="rec-badge alto">Alto</div>
+            <div class="rec-text">
+              <strong>Revisar y corregir elementos interactivos con dead clicks</strong>
+              <span>Identificar qué está fallando (accordion, slider o botón) y asegurar funcionamiento en todos los dispositivos. Los 3 dead clicks sobre 187 sesiones se concentran en los mismos elementos.</span>
+            </div>
+          </div>
+          <div class="rec-row">
+            <div class="rec-badge medio">Medio</div>
+            <div class="rec-text">
+              <strong>Agregar navegación interna al cluster desde el hero</strong>
+              <span>Si el visitante no encuentra "su plan", mostrar inmediatamente los otros beneficios disponibles (Pack de Descuentos, Bienestar Financiero) para retenerlo dentro del sitio.</span>
+            </div>
+          </div>
+          <div class="rec-row">
+            <div class="rec-badge bajo">Bajo</div>
+            <div class="rec-text">
+              <strong>A/B test del headline</strong>
+              <span>Testear variantes que incluyan beneficios concretos en el título (ej. "Descuentos en salud, educación y deporte para tus colaboradores") vs el nombre genérico actual.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BIENESTAR FINANCIERO -->
+  <div class="pa-card bienestar">
+    <div class="pa-header">
+      <div class="pa-header-left">
+        <div style="margin-bottom:6px"><span class="pill red">Página invisible</span> <span class="pill amber">Alta oportunidad SEO</span></div>
+        <h3>Bienestar Financiero</h3>
+        <div class="pa-url"><a href="https://www.buk.cl/productos/beneficios-laborales/bienestar-financiero" target="_blank">buk.cl/productos/beneficios-laborales/bienestar-financiero ↗</a></div>
+      </div>
+      <div class="pa-clarity">
+        <div class="pa-kpi">
+          <div class="pa-kpi-val">71</div>
+          <div class="pa-kpi-lab">sesiones</div>
+        </div>
+        <div class="pa-kpi">
+          <div class="pa-kpi-val" style="color:var(--status-critical)">26.9%</div>
+          <div class="pa-kpi-lab">scroll depth</div>
+        </div>
+        <div class="pa-kpi">
+          <div class="pa-kpi-val">35.8s</div>
+          <div class="pa-kpi-lab">engagement</div>
+        </div>
+        <div class="pa-kpi">
+          <div class="pa-kpi-val" style="color:var(--status-critical)">100%</div>
+          <div class="pa-kpi-lab">bounce rate</div>
+        </div>
+      </div>
+    </div>
+    <div class="pa-body">
+      <div class="pa-col">
+        <div class="pa-col-title">Storytelling y experiencia de usuario</div>
+        <ul class="pa-bullets">
+          <li class="issue"><strong>Emergencia técnica:</strong> CLS (Cumulative Layout Shift) sobre el umbral "Good" en el 100% de las sesiones medidas (0.10–0.18). La página tiene saltos de layout durante la carga que degradan la experiencia y el ranking SEO.</li>
+          <li class="issue"><strong>Performance score = 0 en todas las sesiones</strong> — Clarity no puede calcular el score, señal de que hay un problema en el bundle JS que impide la medición. LCP varía de 2.1s a 53s (un caso extremo).</li>
+          <li class="issue">Dead click confirmado en "Automatiza: Adelantos de Sueldo" — el elemento del carrusel/tab se clickeó 3 veces sin respuesta. Elemento interactivo roto en el área más relevante de la página.</li>
+          <li class="issue">Usuarios leen todos los FAQs de Adelantos de Sueldo (9–10 minutos explorando 14 preguntas) y luego NO hacen click en ningún CTA. El contenido responde las dudas pero no genera urgencia de siguiente acción.</li>
+          <li>Contenido de FAQs es valorado: usuarios de Google llegan buscando información sobre adelantos de sueldo y encuentran respuestas detalladas — el contenido es bueno, el CTA falla.</li>
+          <li>Usuarios internacionales descubren la página (buk.pe Perú) navegando el cluster de beneficios — tiene potencial de expansión regional.</li>
+        </ul>
+      </div>
+      <div class="pa-col">
+        <div class="pa-col-title">Recomendaciones para mejorar retención</div>
+        <div class="pa-recs">
+          <div class="rec-row">
+            <div class="rec-badge alto">Alto</div>
+            <div class="rec-text">
+              <strong>Auditoría técnica urgente: CLS + Performance score 0</strong>
+              <span>CLS sobre umbral en 100% de sesiones afecta tanto UX como posicionamiento SEO. Performance score 0 indica error en el script de medición. Prioridad técnica antes de cualquier mejora de contenido.</span>
+            </div>
+          </div>
+          <div class="rec-row">
+            <div class="rec-badge alto">Alto</div>
+            <div class="rec-text">
+              <strong>Corregir el carrusel "Automatiza: Adelantos de Sueldo"</strong>
+              <span>El elemento interactivo más relevante de la página (adelantos de sueldo es el contenido que más consultan los usuarios) está roto. Los usuarios que lo buscan quedan bloqueados.</span>
+            </div>
+          </div>
+          <div class="rec-row">
+            <div class="rec-badge alto">Alto</div>
+            <div class="rec-text">
+              <strong>Agregar CTA contextual dentro o al final de cada FAQ</strong>
+              <span>Los usuarios leen los FAQs exhaustivamente pero no hay un "¿Te convenció? Habla con un especialista" al final del bloque. El momento de mayor curiosidad no está capturado por ninguna acción.</span>
+            </div>
+          </div>
+          <div class="rec-row">
+            <div class="rec-badge medio">Medio</div>
+            <div class="rec-text">
+              <strong>SEO para "adelanto de sueldo colaboradores Chile" y similares</strong>
+              <span>El contenido FAQ ya responde esas preguntas. Optimizar las meta-descripciones y headings para keywords específicas puede multiplicar el tráfico orgánico sin cambiar el contenido existente.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ HALLAZGOS ════════════════════════════════ -->
+<div class="section" id="hallazgos">
+  <div class="section-title">Hallazgos prioritarios y plan de acción</div>
+
+  <div class="findings">
+    <div class="finding p-critical">
+      <div class="f-badge critical">Crítico</div>
+      <div class="f-body">
+        <h4>Pack de Descuentos: 25 dead clicks — bloqueador de conversión activo</h4>
+        <p>Con 503 sesiones y 80 segundos de engagement, los usuarios claramente QUIEREN interactuar con la página. Los 25 dead clicks (en ~5% de sesiones) indican que hay elementos interactivos rotos — probablemente acordeones de categorías de descuento, logos de marcas socios, o un CTA prominente que no funciona. Este es el mayor desperdicio de intención del cluster: usuarios motivados que no pueden completar la acción.</p>
+      </div>
+    </div>
+
+    <div class="finding p-critical">
+      <div class="f-badge critical">Crítico</div>
+      <div class="f-body">
+        <h4>3 de 4 páginas con 100% bounce rate — la narrativa no genera continuidad</h4>
+        <p>Planes de Beneficios (187 sesiones), Bienestar Financiero (71) y Pack de Descuentos (503) tienen tasa de abandono del 100%. Ningún visitante continúa navegando el sitio tras ver estas páginas. El problema no es de tráfico sino de storytelling: la propuesta de valor no genera curiosidad ni urgencia para dar el siguiente paso (pedir demo, ver precios, explorar otro beneficio).</p>
+      </div>
+    </div>
+
+    <div class="finding p-warning">
+      <div class="f-badge warning">Atención</div>
+      <div class="f-body">
+        <h4>Scroll depth ≤42% — el contenido de valor está fuera del área de lectura real</h4>
+        <p>Ninguna página supera el 42% de profundidad promedio. Si los casos de éxito, testimonios de clientes, o listados detallados de beneficios están en la segunda mitad de la página, la mayoría de los visitantes nunca los verá. El storytelling debe comprimir las pruebas de valor hacia el primer 30–40% de la página.</p>
+      </div>
+    </div>
+
+    <div class="finding p-warning">
+      <div class="f-badge warning">Atención</div>
+      <div class="f-body">
+        <h4>75% de usuarios nuevos + bounce masivo = pérdida total de prospectos</h4>
+        <p>Con 1,115 usuarios nuevos en 30 días y bounce rate crítico en 3/4 páginas, la gran mayoría de prospectos se pierde en la primera visita sin dejar rastro. No hay mecanismo de retención (scroll CTA, chat proactivo, exit intent, retargeting visible). El 24.8% recurrente demuestra que el interés existe — hay que crear motivos para que los nuevos vuelvan.</p>
+      </div>
+    </div>
+
+    <div class="finding p-warning">
+      <div class="f-badge warning">Atención</div>
+      <div class="f-body">
+        <h4>Performance score bajo en Gestión de Beneficios (72) durante sesión de conversión</h4>
+        <p>La única sesión de conversión confirmada en Gestión de Beneficios tuvo un performance score de 72 — el más bajo de todo su journey. Con LCP ~2.5s y tiempo de carga total de 4–5 segundos, la página más importante para convertir es también la más lenta. Mejoras de rendimiento técnico tienen impacto directo en la tasa de conversión de esta página.</p>
+      </div>
+    </div>
+
+    <div class="finding p-low">
+      <div class="f-badge low">Oportunidad</div>
+      <div class="f-body">
+        <h4>Bienestar Financiero — producto con alta demanda de mercado y casi cero visibilidad</h4>
+        <p>El bienestar financiero laboral es uno de los beneficios de mayor crecimiento en RRHH latinoamérica (2024–2026). Buk tiene una oferta en este espacio pero solo capta 71 sesiones en 30 días — menos de 3 por día. Una inversión SEO moderada (contenido, keywords, links internos desde las otras 3 páginas) podría multiplicar el tráfico de esta página rápidamente.</p>
+      </div>
+    </div>
+
+    <div class="finding p-critical">
+      <div class="f-badge critical">Crítico</div>
+      <div class="f-body">
+        <h4>Bienestar Financiero: CLS fuera de rango + Performance score 0 en el 100% de sesiones</h4>
+        <p>Cumulative Layout Shift entre 0.10–0.18 en todas las sesiones (umbral "Good" es &lt;0.1) — la página salta visualmente mientras carga, degradando UX y SEO. Más grave: Clarity reporta Performance Score = 0 en todas las sesiones, señal de que un error en el bundle JS impide que las métricas sean calculadas. Un caso extremo registró LCP de 53 segundos. Esta página necesita una auditoría técnica antes que cualquier optimización de contenido.</p>
+      </div>
+    </div>
+
+    <div class="finding p-warning">
+      <div class="f-badge warning">Atención</div>
+      <div class="f-body">
+        <h4>Bienestar Financiero: usuarios leen todos los FAQs pero nadie hace click en el CTA</h4>
+        <p>Sesiones grabadas muestran usuarios que abren los 14+ FAQs de "Adelantos de Sueldo" en sesiones de 9–10 minutos, y luego abandonan sin clickear ningún CTA. El contenido responde perfectamente las dudas del visitante, pero el diseño no aprovecha ese momento de máxima intención — no hay un CTA contextual dentro del bloque FAQ que capture la decisión en el momento peak de interés.</p>
+      </div>
+    </div>
+
+    <div class="finding p-warning">
+      <div class="f-badge warning">Atención</div>
+      <div class="f-body">
+        <h4>Datos de sesiones contaminados por bots, crawlers y editores internos</h4>
+        <p>En las 4 páginas analizadas se identificaron: sesiones de crawlers/bots (0 clicks, 43+ páginas en secuencia), sesiones de editores internos de Buk (clicks en "Editar página"), y una sesión referida desde claude.ai (investigador de competencia). Estos patrones inflan artificialmente los conteos de sesiones y distorsionan las métricas de bounce y engagement. El bounce rate real de Planes de Beneficios puede ser menor que 100% una vez depurado el data.</p>
+      </div>
+    </div>
+
+    <div class="finding p-low">
+      <div class="f-badge low">Oportunidad</div>
+      <div class="f-body">
+        <h4>Pack de Descuentos → Seguros: cross-sell natural no aprovechado</h4>
+        <p>Las sesiones muestran que la página más visitada después de Pack de Descuentos es Seguros. Este recorrido orgánico ya existe en el comportamiento de los usuarios — un módulo de cross-sell ("También disponible: Seguros para tus colaboradores") antes del footer de Pack de Descuentos podría capturar este intent sin necesidad de paid acquisition.</p>
+      </div>
+    </div>
+
+    <div class="finding p-low">
+      <div class="f-badge low">Oportunidad</div>
+      <div class="f-body">
+        <h4>Paid Search casi inexistente (3 sesiones) — canal de bajo aprovechamiento</h4>
+        <p>Todo el tráfico del cluster viene de orgánico (67.5%) y directo (32.2%). Las 3 sesiones de Paid Search son prácticamente cero. Dada la audiencia de profesionales RRHH que busca activamente soluciones, una campaña de Google Ads con keywords específicos ("software beneficios laborales", "gestión beneficios colaboradores") podría generar tráfico de alta intención a bajo costo comparativo.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ SESIONES GRABADAS ════════════════════════ -->
+<div class="section" id="sesiones">
+  <div class="section-title">Sesiones grabadas · Top sesiones por página · 4 páginas del cluster</div>
+
+  <div class="notice brand" style="margin-bottom:20px">
+    <strong>Cómo usar estas grabaciones:</strong> Haz click en "Ver en Clarity" para reproducir la sesión completa. Los arquetipos identificados ayudan a entender el tipo de visitante y qué comportamiento priorizar al optimizar la página.
+  </div>
+
+  <div class="session-grid">
+
+    <div class="session-card">
+      <div class="s-page-badge">Gestión de Beneficios</div>
+      <div class="s-id">Arquetipo: Conversión confirmada · Llegó desde /precios</div>
+      <div class="s-row"><span>Duración total</span><span>57 min 01s</span></div>
+      <div class="s-row"><span>Engagement activo</span><span>56 min 48s</span></div>
+      <div class="s-row"><span>Páginas vistas</span><span>10 páginas</span></div>
+      <div class="s-row"><span>Clicks</span><span>32 clicks</span></div>
+      <div class="s-row"><span>Perf. en landing</span><span style="color:var(--status-serious)">72 / 100</span></div>
+      <div class="s-note">Journey: Google → home → precios → Gestión (20s) → "Ver Demo Gratis" → formulario → Video Demo (3 min con carousel). LCP 2.5s en la página objetivo.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/1xmnc8p/1lgo1c5" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+    <div class="session-card">
+      <div class="s-page-badge">Gestión de Beneficios</div>
+      <div class="s-id">Arquetipo: Explorador de beneficios · Bing</div>
+      <div class="s-row"><span>Duración total</span><span>53 min 38s</span></div>
+      <div class="s-row"><span>Engagement activo</span><span>36 min 57s</span></div>
+      <div class="s-row"><span>Páginas vistas</span><span>11 páginas</span></div>
+      <div class="s-row"><span>Clicks</span><span>17 clicks</span></div>
+      <div class="s-row"><span>Issues UX</span><span style="color:var(--status-good)">Ninguno</span></div>
+      <div class="s-note">Entró por Planes (Bing) → Gestión → CTA "Contrata beneficios" → volvió a Planes → "Cotiza aquí" → formulario contacto → Video Demo → Pack → Seguros. Journey completo cross-cluster.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/fq4o2q/1on5qhy" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+    <div class="session-card has-issue">
+      <div class="s-page-badge">Gestión de Beneficios</div>
+      <div class="s-id">Arquetipo: Visitante orgánico pasivo · 0 clicks</div>
+      <div class="s-row"><span>Duración total</span><span>55 min 34s</span></div>
+      <div class="s-row"><span>Engagement activo</span><span>≈ 0 min</span></div>
+      <div class="s-row"><span>Páginas vistas</span><span>5 recargas</span></div>
+      <div class="s-row"><span>Clicks</span><span style="color:var(--status-critical)">0 clicks</span></div>
+      <div class="s-row"><span>Issues UX</span><span style="color:var(--status-warning)">Sin engagement</span></div>
+      <div class="s-note">Solo visitó gestion-de-beneficios, recargó 5 veces desde Google con 0 clicks e 0 interacciones. Cada carga duró 5–9 min. Posible bot o visitante que no encontró respuesta visual inmediata y abandonó repetidamente.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/7u47fl/1264ba7" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+    <div class="session-card">
+      <div class="s-page-badge">Gestión de Beneficios</div>
+      <div class="s-id">Arquetipo: Visitante de email / retargeting</div>
+      <div class="s-row"><span>Duración total</span><span>42 min 42s</span></div>
+      <div class="s-row"><span>Engagement activo</span><span>~35 min</span></div>
+      <div class="s-row"><span>Páginas vistas</span><span>42 páginas</span></div>
+      <div class="s-row"><span>Clicks</span><span>42 clicks</span></div>
+      <div class="s-row"><span>Issues UX</span><span style="color:var(--status-good)">Ninguno</span></div>
+      <div class="s-note">Lead de campaña email. Descargó guía, revisó precios, navegó a Gestión desde menú "Comunicación y Reconocimiento". 36s en página, luego salió a Rendiciones. Alta exploración del sitio en general.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/7707x4/10vn4qr" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+    <div class="session-card">
+      <div class="s-page-badge">Gestión de Beneficios</div>
+      <div class="s-id">Arquetipo: Explorador de caso de uso · redes sociales</div>
+      <div class="s-row"><span>Duración total</span><span>32 min 09s</span></div>
+      <div class="s-row"><span>Engagement activo</span><span>28 min</span></div>
+      <div class="s-row"><span>Páginas vistas</span><span>~8 páginas</span></div>
+      <div class="s-row"><span>Clicks</span><span>20 clicks</span></div>
+      <div class="s-row"><span>Issues UX</span><span style="color:var(--status-good)">Ninguno</span></div>
+      <div class="s-note">Entró desde carrusel home → hizo click en "Gestión de Beneficios" → 5m41s en la página → "Planes de Beneficios" → leyó caso de estudio WOM beneficios (social proof). Enganche claro con contenido de prueba social.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/1skqpfq/1avjymi" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+    <div class="session-card has-issue">
+      <div class="s-page-badge">Gestión de Beneficios</div>
+      <div class="s-id">Arquetipo: Dwell pasivo largo · 0 clicks en página</div>
+      <div class="s-row"><span>Duración total</span><span>46 min 04s</span></div>
+      <div class="s-row"><span>Engagement activo</span><span>41 min 54s</span></div>
+      <div class="s-row"><span>Tiempo en página</span><span style="color:var(--status-warning)">18 min 38s</span></div>
+      <div class="s-row"><span>Clicks en página</span><span style="color:var(--status-critical)">0 clicks</span></div>
+      <div class="s-row"><span>Issues UX</span><span style="color:var(--status-warning)">Sin interacción</span></div>
+      <div class="s-note">18 minutos y 38 segundos en la página con cero clicks: la página fue abierta en una pestaña en segundo plano o el usuario leyó pasivamente todo el contenido sin encontrar un CTA que lo motivara a actuar.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/1u4sspm/1cw61hy" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+  </div>
+
+  <!-- PACK DE DESCUENTOS -->
+  <div class="section-title" style="margin-top:36px">Pack de Descuentos — Sesiones de mayor engagement</div>
+
+  <div class="notice amber" style="margin-bottom:20px">
+    <strong>Insight detectado:</strong> El promedio de tiempo <em>real en página</em> para sesiones engaged es ~18 minutos — muy superior al agregado de 80s de Clarity. Los usuarios que exploran el catálogo de descuentos están genuinamente interesados. El CTA "¡Lo quiero!" es funcional pero el flujo post-modal tiene un dead click confirmado.
+  </div>
+
+  <div class="session-grid">
+
+    <div class="session-card">
+      <div class="s-page-badge">Pack de Descuentos</div>
+      <div class="s-id">Arquetipo: Explorador sistemático de marcas · PC</div>
+      <div class="s-row"><span>Duración en página</span><span>~70 min</span></div>
+      <div class="s-row"><span>Páginas en sesión</span><span>1 página</span></div>
+      <div class="s-row"><span>Clicks</span><span>34 clicks</span></div>
+      <div class="s-row"><span>Marcas clickeadas</span><span>16+ (Decathlon, Laika, Coderhouse…)</span></div>
+      <div class="s-row"><span>CTAs usados</span><span>¡Lo quiero! · Continuar · Cerrar</span></div>
+      <div class="s-note">Sesión de una sola página — toda la sesión fue explorar el catálogo de Pack de Descuentos. Recorrió sistemáticamente 16+ marcas y usó el flujo completo del modal. Sin UX issues reportados.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/4tii4c/1s59zui" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+    <div class="session-card">
+      <div class="s-page-badge">Pack de Descuentos</div>
+      <div class="s-id">Arquetipo: Alta intención · Exploró todas las categorías</div>
+      <div class="s-row"><span>Duración total</span><span>52 min 37s</span></div>
+      <div class="s-row"><span>Páginas en sesión</span><span>3 páginas</span></div>
+      <div class="s-row"><span>Clicks</span><span>21 clicks</span></div>
+      <div class="s-row"><span>Performance score</span><span style="color:var(--status-good)">91 / 100</span></div>
+      <div class="s-row"><span>CTA final</span><span style="color:var(--status-good)">¡Lo quiero! clickeado</span></div>
+      <div class="s-note">3 visitas consecutivas a la misma página (~51 min total). Recorrió los 9 íconos de categorías en orden: salud, educación, familia, trabajo, mascotas, experiencias, fitness, shopping, servicios. Terminó con "¡Lo quiero!".</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/1qounkx/4qzar" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+    <div class="session-card has-issue">
+      <div class="s-page-badge">Pack de Descuentos</div>
+      <div class="s-id">Arquetipo: Comprador comprometido · Dead click post-modal</div>
+      <div class="s-row"><span>Duración total</span><span>43 min 32s</span></div>
+      <div class="s-row"><span>Páginas en sesión</span><span>3 páginas</span></div>
+      <div class="s-row"><span>Clicks</span><span>35 clicks</span></div>
+      <div class="s-row"><span>Librería Nacional</span><span style="color:var(--status-warning)">clickeada 4×</span></div>
+      <div class="s-row"><span>Issue UX</span><span style="color:var(--status-critical)">Dead click post-modal</span></div>
+      <div class="s-note">Completó flujo "¡Lo quiero!" → "Continuar" → "Cerrar". Inmediatamente después, click en "Juan Maestro" no respondió (dead click). El modal cierra pero deja el DOM en estado que bloquea clicks en brand cards. BUG CONFIRMADO.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/1v33fjt/1e8qfev" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+  </div>
+
+  <!-- PLANES DE BENEFICIOS -->
+  <div class="section-title" style="margin-top:36px">Planes de Beneficios — Sesiones de mayor engagement</div>
+
+  <div class="notice amber" style="margin-bottom:20px">
+    <strong>Contexto importante:</strong> Los datos de esta página están significativamente inflados por bots (0 clicks, 43 páginas), crawlers, editores internos de Buk y un investigador desde claude.ai. El único usuario orgánico real identificado en las top sesiones estuvo 38 minutos leyendo y luego fue a info.buk.cl/mas-buk (paso pre-conversión).
+  </div>
+
+  <div class="session-grid">
+
+    <div class="session-card">
+      <div class="s-page-badge">Planes de Beneficios</div>
+      <div class="s-id">Arquetipo: Evaluador real · 38 min leyendo · Google orgánico</div>
+      <div class="s-row"><span>Duración total</span><span>1h 12m 37s</span></div>
+      <div class="s-row"><span>Tiempo en página</span><span style="color:var(--status-good)">~38 min</span></div>
+      <div class="s-row"><span>Páginas en sesión</span><span>4 páginas</span></div>
+      <div class="s-row"><span>Clicks</span><span>7 clicks</span></div>
+      <div class="s-row"><span>Siguiente paso</span><span>info.buk.cl/mas-buk</span></div>
+      <div class="s-note">El único usuario orgánico genuino identificado en el top de sesiones. Llegó desde Google, leyó Planes de Beneficios durante ~38 minutos (lectura profunda, no scroll rápido), luego navegó a Más Buk — landing de conversión. Señal de intención real aunque sin CTA directo.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/1493okw/1veo10j" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+    <div class="session-card">
+      <div class="s-page-badge">Planes de Beneficios</div>
+      <div class="s-id">Arquetipo: Evaluador de plataforma completa · Nav interno</div>
+      <div class="s-row"><span>Duración total</span><span>1h 10m 36s</span></div>
+      <div class="s-row"><span>Páginas en sesión</span><span>13 páginas</span></div>
+      <div class="s-row"><span>Clicks</span><span>35 clicks</span></div>
+      <div class="s-row"><span>Recorrido</span><span>Des. Org. → Planes → Finanzas</span></div>
+      <div class="s-row"><span>Issues UX</span><span style="color:var(--status-good)">Ninguno</span></div>
+      <div class="s-note">Evaluación completa de plataforma desde navegación interna. El recorrido Desarrollo Organizacional → Planes de Beneficios → Finanzas sugiere que los compradores evalúan Beneficios en contexto de plataforma integrada, no como módulo aislado.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/1qox65v/og4yrp" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+    <div class="session-card has-issue">
+      <div class="s-page-badge">Planes de Beneficios</div>
+      <div class="s-id">Arquetipo: Bot / crawler · 43 páginas · 0 clicks</div>
+      <div class="s-row"><span>Duración total</span><span>1h 37m 55s</span></div>
+      <div class="s-row"><span>Páginas visitadas</span><span>43 páginas</span></div>
+      <div class="s-row"><span>Clicks</span><span style="color:var(--status-critical)">0 clicks</span></div>
+      <div class="s-row"><span>Referrer</span><span>null (directo)</span></div>
+      <div class="s-row"><span>Patrón</span><span style="color:var(--status-warning)">Bot/crawler</span></div>
+      <div class="s-note">Visitó 43 páginas del sitio en secuencia sin ninguna interacción. Patrón claro de crawler automatizado. Esta sesión (y otras similares) inflan artificialmente los conteos de sesión y distorsionan el bounce rate reportado. Filtrar en Clarity por "0 clicks" para depurar el análisis.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/hxb5tr/rw0mdl" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+  </div>
+
+  <!-- BIENESTAR FINANCIERO -->
+  <div class="section-title" style="margin-top:36px">Bienestar Financiero — Sesiones de mayor engagement</div>
+
+  <div class="notice red" style="margin-bottom:20px">
+    <strong>Alerta técnica:</strong> Ninguna sesión tiene Performance Score calculable (score = 0 en todas). CLS entre 0.10–0.18 en 100% de sesiones — umbral "Good" es &lt;0.1. La página tiene problemas técnicos estructurales que deben resolverse antes de optimizar el contenido.
+  </div>
+
+  <div class="session-grid">
+
+    <div class="session-card has-issue">
+      <div class="s-page-badge">Bienestar Financiero</div>
+      <div class="s-id">Arquetipo: Lector exhaustivo de FAQs · Sin conversión</div>
+      <div class="s-row"><span>Duración en página</span><span>~9 min 10s</span></div>
+      <div class="s-row"><span>Páginas en sesión</span><span>1 página</span></div>
+      <div class="s-row"><span>Clicks</span><span>17 clicks</span></div>
+      <div class="s-row"><span>FAQs abiertas</span><span style="color:var(--status-warning)">14 de 14 FAQs</span></div>
+      <div class="s-row"><span>CTA clickeado</span><span style="color:var(--status-critical)">Ninguno</span></div>
+      <div class="s-note">Abrió TODAS las FAQs sobre Adelantos de Sueldo (seguridad, impuestos, configuración, beneficios) — máxima intención investigativa. Dead click en "Automatiza: Adelantos de" (carrusel/tab roto). No realizó ninguna acción de conversión pese a 9 minutos de lectura activa. EL CTA POST-FAQ ES CRÍTICO.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/14lr8zh/i6qpn5" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+    <div class="session-card has-issue">
+      <div class="s-page-badge">Bienestar Financiero</div>
+      <div class="s-id">Arquetipo: Lector pasivo profundo · 10 min · 0 clicks</div>
+      <div class="s-row"><span>Duración en página</span><span>~10 min 25s</span></div>
+      <div class="s-row"><span>Páginas en sesión</span><span>1 página</span></div>
+      <div class="s-row"><span>Clicks</span><span style="color:var(--status-critical)">0 clicks</span></div>
+      <div class="s-row"><span>Origen</span><span>buk.cl home</span></div>
+      <div class="s-row"><span>LCP</span><span style="color:var(--status-warning)">3.4s</span></div>
+      <div class="s-note">Llegó desde el home de Buk. Leyó durante más de 10 minutos sin hacer ningún click. Lectura pasiva total — el contenido no generó ningún punto de acción percibido. Caso extremo de "contenido sin CTA": el usuario consumió todo sin saber qué hacer después.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/1ol5cdm/kmg3xz" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+    <div class="session-card">
+      <div class="s-page-badge">Bienestar Financiero</div>
+      <div class="s-id">Arquetipo: Evaluador cross-cluster · buk.pe (Perú)</div>
+      <div class="s-row"><span>Duración total</span><span>30 min 28s</span></div>
+      <div class="s-row"><span>Tiempo en página</span><span>~10 min 42s</span></div>
+      <div class="s-row"><span>Páginas en sesión</span><span>5 páginas</span></div>
+      <div class="s-row"><span>Recorrido</span><span>buk.pe → Gestión → Planes → Bienestar</span></div>
+      <div class="s-row"><span>Issues UX</span><span style="color:var(--status-good)">Ninguno</span></div>
+      <div class="s-note">Usuario internacional desde buk.pe (Perú) que exploró el cluster completo de beneficios en secuencia. Bienestar Financiero fue la página final del journey — 10+ minutos leyendo sin clicks. Señal de interés regional en la oferta de bienestar financiero.</div>
+      <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/1y1xvlx/etgozm" target="_blank">Ver en Clarity ↗</a>
+    </div>
+
+  </div>
+
+</div><!-- /container -->
+
+<!-- ════════════════════ FOOTER ═══════════════════════════════════ -->
+<div class="report-footer">
+  Reporte generado el 14 Jul 2026 · Fuente: Microsoft Clarity · Cluster /productos/beneficios-laborales · Período 14 Jun – 14 Jul 2026 · buk.cl
+</div>
+
+<script>
+Chart.register(ChartDataLabels);
+
+const PAGES = ['Gestión de Benef.', 'Planes de Benef.', 'Bienestar Fin.', 'Pack de Desc.'];
+const COLORS = ['#1baf7a', '#eda100', '#e34948', '#2a78d6'];
+
+/* ── Comparativa: sesiones + scroll ─────────────── */
+new Chart(document.getElementById('chartComparativa'), {
+  type: 'bar',
+  data: {
+    labels: PAGES,
+    datasets: [
+      {
+        label: 'Sesiones',
+        data: [103, 187, 71, 503],
+        backgroundColor: COLORS,
+        yAxisID: 'y',
+        borderRadius: 4,
+      },
+      {
+        label: '% Scroll Depth',
+        data: [32.6, 32.19, 26.9, 42.04],
+        backgroundColor: COLORS.map(c => c + '55'),
+        borderColor: COLORS,
+        borderWidth: 2,
+        type: 'line',
+        yAxisID: 'y2',
+        tension: 0.3,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        fill: false,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 14 } },
+      datalabels: {
+        display: ctx => ctx.datasetIndex === 0,
+        anchor: 'end', align: 'top',
+        font: { size: 11, weight: 700 },
+        color: '#2b3c6a',
+        formatter: v => v.toLocaleString()
+      }
+    },
+    scales: {
+      y: { position: 'left', grid: { color: '#f0ede8' }, ticks: { font: { size: 11 } }, title: { display: true, text: 'Sesiones', font: { size: 11 } } },
+      y2: { position: 'right', min: 0, max: 60, grid: { drawOnChartArea: false }, ticks: { font: { size: 11 }, callback: v => v + '%' }, title: { display: true, text: 'Scroll %', font: { size: 11 } } }
+    }
+  }
+});
+
+/* ── Engagement + Dead Clicks ───────────────────── */
+new Chart(document.getElementById('chartEngagement'), {
+  type: 'bar',
+  data: {
+    labels: PAGES,
+    datasets: [
+      {
+        label: 'Engagement (seg)',
+        data: [50.41, 28.78, 35.79, 80.35],
+        backgroundColor: COLORS,
+        yAxisID: 'y',
+        borderRadius: 4,
+      },
+      {
+        label: 'Dead clicks',
+        data: [1, 3, 6, 25],
+        backgroundColor: '#d03b3b55',
+        borderColor: '#d03b3b',
+        borderWidth: 2,
+        type: 'line',
+        yAxisID: 'y2',
+        tension: 0.3,
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        pointBackgroundColor: '#d03b3b',
+        fill: false,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 14 } },
+      datalabels: {
+        display: ctx => ctx.datasetIndex === 0,
+        anchor: 'end', align: 'top',
+        font: { size: 11, weight: 700 },
+        color: '#2b3c6a',
+        formatter: v => v.toFixed(0) + 's'
+      }
+    },
+    scales: {
+      y: { position: 'left', grid: { color: '#f0ede8' }, ticks: { font: { size: 11 }, callback: v => v + 's' }, title: { display: true, text: 'Segundos', font: { size: 11 } } },
+      y2: { position: 'right', min: 0, grid: { drawOnChartArea: false }, ticks: { font: { size: 11 } }, title: { display: true, text: 'Dead clicks', font: { size: 11 } } }
+    }
+  }
+});
+
+/* ── Tráfico por canal ──────────────────────────── */
+new Chart(document.getElementById('chartTrafico'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Organic Search', 'Direct', 'Paid Search'],
+    datasets: [{
+      data: [618, 295, 3],
+      backgroundColor: ['#2a78d6', '#1baf7a', '#eda100'],
+      borderWidth: 2, borderColor: '#fff',
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 12 }, padding: 16, boxWidth: 14 } },
+      datalabels: {
+        color: '#fff',
+        font: { size: 12, weight: 700 },
+        formatter: (v, ctx) => {
+          const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+          const pct = (v/total*100).toFixed(1);
+          return pct >= 5 ? pct + '%' : '';
+        }
+      }
+    }
+  }
+});
+
+/* ── Dispositivos ───────────────────────────────── */
+new Chart(document.getElementById('chartDispositivos'), {
+  type: 'doughnut',
+  data: {
+    labels: ['PC / Desktop', 'Mobile'],
+    datasets: [{
+      data: [532, 384],
+      backgroundColor: ['#2f4daa', '#1baf7a'],
+      borderWidth: 2, borderColor: '#fff',
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 12 }, padding: 16, boxWidth: 14 } },
+      datalabels: {
+        color: '#fff',
+        font: { size: 13, weight: 700 },
+        formatter: (v, ctx) => {
+          const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+          return (v/total*100).toFixed(1) + '%';
+        }
+      }
+    }
+  }
+});
+
+/* ── Nuevos vs recurrentes ──────────────────────── */
+new Chart(document.getElementById('chartUsuarios'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Nuevos', 'Recurrentes'],
+    datasets: [{
+      data: [1115, 368],
+      backgroundColor: ['#2a78d6', '#1baf7a'],
+      borderWidth: 2, borderColor: '#fff',
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 12 }, padding: 12, boxWidth: 14 } },
+      datalabels: {
+        color: '#fff',
+        font: { size: 13, weight: 700 },
+        formatter: (v, ctx) => {
+          const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+          return (v/total*100).toFixed(1) + '%';
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
