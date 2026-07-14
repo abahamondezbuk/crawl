@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clarity — Páginas de Productos · buk.cl</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+  <style>
+    /* ── Design tokens — Buk brand ──────────────────── */
+    :root {
+      --brand:           #2f4daa;   /* Buk blue */
+      --brand-mid:       #2f6fc2;   /* Buk middle blue */
+      --brand-light:     #e7eeff;   /* Buk modules bg */
+      --brand-dark:      #1a2441;   /* Buk dark navy */
+      --surface-page:    #f4f7fc;   /* light blue-tinted bg */
+      --surface-card:    #ffffff;
+      --text-primary:    #1a2441;   /* Buk wb-font-color-1 */
+      --text-secondary:  #2b3c6a;   /* Buk dark-blue */
+      --text-muted:      #7d7d7d;   /* Buk color-grey-buk */
+      --border:          #dde3f5;   /* subtle blue-tinted border */
+      --baseline:        #aab4d4;
+      --series-1: #2a78d6;
+      --series-2: #1baf7a;
+      --series-3: #eda100;
+      --series-4: #008300;
+      --series-5: #4a3aa7;
+      --series-6: #e34948;
+      --status-good:     #0ca30c;
+      --status-warning:  #fab219;
+      --status-serious:  #ec835a;
+      --status-critical: #d03b3b;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--surface-page);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    h1, h2, h3, h4,
+    .report-header h1,
+    .section-title,
+    .stat-tile .tile-label,
+    .stat-tile .tile-value,
+    .card > h3,
+    .pa-header h3,
+    .pa-col-title,
+    .nd-header strong,
+    .cross-findings h4 {
+      font-family: 'Source Sans Pro', system-ui, sans-serif;
+    }
+
+    /* ── Header ──────────────────────────────────────── */
+    .report-header {
+      background: linear-gradient(135deg, #1a2441 0%, #2f4daa 100%);
+      color: #fff;
+      padding: 36px 56px 32px;
+    }
+    .report-header .eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; opacity: .7; margin-bottom: 10px;
+    }
+    .report-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+    .report-header .meta { font-size: 13px; opacity: .75; display: flex; gap: 28px; flex-wrap: wrap; align-items: center; }
+
+    /* ── Sticky nav ───────────────────────────────────── */
+    .sticky-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: #1a2441;
+      display: flex; padding: 0 56px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    .sticky-nav a {
+      color: rgba(255,255,255,.7);
+      font-size: 12px; font-weight: 600;
+      padding: 12px 16px;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color .15s, border-color .15s;
+    }
+    .sticky-nav a:hover { color: #fff; border-bottom-color: rgba(255,255,255,.5); }
+
+    /* ── Layout ───────────────────────────────────────── */
+    .container { max-width: 1120px; margin: 0 auto; padding: 44px 56px; }
+    .section { margin-bottom: 52px; }
+    .section-title {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Stat tiles ───────────────────────────────────── */
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .stat-tile {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 22px 24px 20px;
+    }
+    .stat-tile .tile-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;
+    }
+    .stat-tile .tile-value {
+      font-size: 36px; font-weight: 700; line-height: 1;
+      margin-bottom: 6px; font-variant-numeric: tabular-nums;
+    }
+    .stat-tile .tile-sub { font-size: 12px; color: var(--text-secondary); }
+    .stat-tile.ok   .tile-value { color: var(--text-primary); }
+    .stat-tile.warn .tile-value { color: var(--status-serious); }
+    .stat-tile.alert .tile-value { color: var(--status-critical); }
+
+    /* ── Eng tiles ────────────────────────────────────── */
+    .engagement-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+    .eng-tile {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px 24px; text-align: center;
+    }
+    .eng-tile .e-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;
+    }
+    .eng-tile .e-value { font-size: 30px; font-weight: 700; line-height: 1; margin-bottom: 5px; }
+    .eng-tile .e-sub { font-size: 12px; color: var(--text-secondary); }
+
+    /* ── Podio (top 3 productos destacados) ──────────── */
+    .podio-strip {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px;
+    }
+    .podio-card {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px 22px;
+      border-top: 3px solid var(--series-1);
+    }
+    .podio-card:nth-child(2) { border-top-color: var(--series-2); }
+    .podio-card:nth-child(3) { border-top-color: var(--series-3); }
+    .podio-badge {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .07em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;
+    }
+    .podio-icon { font-size: 20px; margin-bottom: 6px; }
+    .podio-name { font-size: 16px; font-weight: 700; margin-bottom: 5px; line-height: 1.25; }
+    .podio-visits { font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; }
+    .podio-bar-wrap { height: 6px; background: #f0ede8; border-radius: 3px; overflow: hidden; }
+    .podio-bar { height: 100%; border-radius: 3px; }
+    .podio-pct { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
+
+    /* ── Card ─────────────────────────────────────────── */
+    .card {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 26px 28px;
+    }
+    .card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .card h3 { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .card-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+
+    /* ── Charts ───────────────────────────────────────── */
+    .chart-wrap { position: relative; height: 260px; }
+    .chart-wrap.tall { height: 340px; }
+    .chart-wrap.xl { height: 420px; }
+    .chart-wrap.xxl { height: 380px; }
+
+    /* Quadrant labels overlay */
+    .quadrant-wrap { position: relative; }
+    .q-label {
+      position: absolute; font-size: 10px; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--text-muted); pointer-events: none; line-height: 1.3;
+    }
+    .q-tl { top: 8px; left: 8px; }
+    .q-tr { top: 8px; right: 8px; text-align: right; }
+    .q-bl { bottom: 8px; left: 8px; }
+    .q-br { bottom: 8px; right: 8px; text-align: right; }
+
+    /* ── Legend ───────────────────────────────────────── */
+    .legend { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
+    .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text-secondary); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+    .legend-link { color: var(--text-secondary); text-decoration: none; }
+    .legend-link:hover { color: var(--brand); text-decoration: underline; }
+    .legend-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 16px; margin-top: 16px;
+    }
+
+    /* ── Data table ───────────────────────────────────── */
+    .data-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+    .data-table th {
+      font-size: 11px; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--text-muted);
+      padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border);
+    }
+    .data-table th.num { text-align: right; }
+    .data-table td { padding: 9px 10px; font-size: 13px; border-bottom: 1px solid var(--border); }
+    .data-table td.num { text-align: right; color: var(--text-secondary); }
+    .data-table tr:last-child td { border-bottom: none; }
+    .dot {
+      display: inline-block; width: 8px; height: 8px;
+      border-radius: 2px; margin-right: 6px; vertical-align: middle;
+    }
+    .rank-num { color: var(--text-muted); font-size: 12px; }
+
+    /* ── Dead-click bars ──────────────────────────────── */
+    .dc-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 9px 0; border-bottom: 1px solid var(--border);
+    }
+    .dc-row:last-child { border-bottom: none; }
+    .dc-label { width: 200px; font-size: 12px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .dc-bar-wrap { flex: 1; height: 8px; background: #f0ede8; border-radius: 4px; overflow: hidden; }
+    .dc-bar { height: 100%; border-radius: 4px; background: var(--status-critical); }
+    .dc-count {
+      width: 50px; text-align: right; font-size: 12px; font-weight: 600;
+      color: var(--text-secondary); font-variant-numeric: tabular-nums; flex-shrink: 0;
+    }
+
+    /* ── Priority findings ────────────────────────────── */
+    .findings { display: flex; flex-direction: column; gap: 12px; }
+    .finding {
+      display: flex; align-items: flex-start; gap: 16px;
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-left-width: 4px; border-radius: 10px; padding: 16px 20px;
+    }
+    .finding.p-critical { border-left-color: var(--status-critical); }
+    .finding.p-warning  { border-left-color: var(--status-warning); }
+    .finding.p-low      { border-left-color: var(--status-good); }
+    .f-badge {
+      flex-shrink: 0; font-size: 10.5px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .06em;
+      padding: 3px 9px; border-radius: 5px; margin-top: 2px;
+    }
+    .f-badge.critical { background: #fee2e2; color: var(--status-critical); }
+    .f-badge.warning  { background: #fef3c7; color: #b45309; }
+    .f-badge.low      { background: #d1fae5; color: #065f46; }
+    .f-body h4 { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+    .f-body p  { font-size: 13px; color: var(--text-secondary); }
+
+    /* ── Notices / banners ────────────────────────────── */
+    .notice {
+      border-radius: 8px; padding: 13px 18px; font-size: 13px; margin-bottom: 20px;
+    }
+    .notice.amber { background: #fef3c7; border: 1px solid #fde68a; color: #78350f; }
+    .notice.brand { background: var(--brand-light); border: 1px solid #ddd6fe; color: var(--brand); }
+    .notice strong { font-weight: 700; }
+
+    /* ── Session cards ────────────────────────────────── */
+    .session-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .session-card {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px 20px;
+    }
+    .s-id { font-size: 11px; color: var(--text-muted); margin-bottom: 12px; }
+    .s-row {
+      display: flex; justify-content: space-between; font-size: 13px;
+      padding: 5px 0; border-bottom: 1px solid var(--border);
+    }
+    .s-row:last-of-type { border-bottom: none; }
+    .s-row span:first-child { color: var(--text-secondary); }
+    .s-row span:last-child { font-weight: 600; font-variant-numeric: tabular-nums; }
+    .s-link {
+      display: block; margin-top: 14px; text-align: center; padding: 8px;
+      background: var(--brand-light); color: var(--brand);
+      border-radius: 7px; font-size: 12px; font-weight: 700;
+      text-decoration: none; transition: background .15s;
+    }
+    .s-link:hover { background: #ddd6fe; }
+
+    /* ── Pill badge ───────────────────────────────────── */
+    .pill {
+      display: inline-block; font-size: 12px; font-weight: 700;
+      padding: 2px 9px; border-radius: 99px; font-variant-numeric: tabular-nums;
+    }
+    .pill.red   { background: #fee2e2; color: var(--status-critical); }
+    .pill.amber { background: #fef3c7; color: #b45309; }
+    .pill.green { background: #d1fae5; color: #065f46; }
+
+    /* ── Storytelling section ─────────────────────── */
+    .selector-bar {
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      margin-bottom: 24px; padding: 16px 20px;
+      background: var(--surface-card); border: 1px solid var(--border); border-radius: 10px;
+    }
+    .selector-bar label { font-size: 12px; font-weight: 700; color: var(--text-muted); white-space: nowrap; }
+    .selector-bar select {
+      flex: 1; min-width: 220px; max-width: 380px;
+      font-size: 13px; font-family: inherit; color: var(--text-primary);
+      background: var(--surface-page); border: 1px solid var(--border);
+      border-radius: 7px; padding: 8px 12px; cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23898781' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+      padding-right: 32px;
+    }
+    .selector-count { font-size: 12px; color: var(--text-muted); }
+    .cross-findings {
+      background: var(--brand-light); border: 1px solid #ddd6fe; border-radius: 10px;
+      padding: 18px 22px; margin-bottom: 24px;
+    }
+    .cross-findings h4 {
+      font-size: 11px; font-weight: 700; color: var(--brand);
+      letter-spacing: .09em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .cross-findings ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .cross-findings li { font-size: 13px; color: var(--brand); padding-left: 20px; position: relative; line-height: 1.4; }
+    .cross-findings li::before { content: "→"; position: absolute; left: 0; font-weight: 700; }
+    .pa-card {
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: 10px; margin-bottom: 16px;
+      border-left: 4px solid var(--border);
+    }
+    .pa-card[data-category="categorias-principales"] { border-left-color: var(--brand); }
+    .pa-card[data-category="plataforma"]             { border-left-color: var(--series-1); }
+    .pa-card[data-category="administracion"]         { border-left-color: var(--series-2); }
+    .pa-card[data-category="desarrollo-organizacional"] { border-left-color: var(--series-3); }
+    .pa-card[data-category="beneficios"]             { border-left-color: var(--series-4); }
+    .pa-card[data-category="opcional"]               { border-left-color: var(--series-5); }
+    .pa-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 16px; padding: 18px 22px 14px; flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+    }
+    .pa-header-left { flex: 1; min-width: 0; }
+    .pa-header-left h3 { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+    .pa-url { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+    .pa-url a { color: var(--text-muted); text-decoration: none; }
+    .pa-url a:hover { color: var(--brand); text-decoration: underline; }
+    .pa-cat-badge {
+      display: inline-block; font-size: 10.5px; font-weight: 700;
+      padding: 2px 9px; border-radius: 4px; margin-right: 8px;
+      background: var(--brand-light); color: var(--brand);
+    }
+    .pa-clarity { display: flex; gap: 18px; flex-wrap: wrap; flex-shrink: 0; }
+    .pa-kpi { text-align: right; }
+    .pa-kpi-val { font-size: 18px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+    .pa-kpi-lab { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+    .pa-no-data { font-size: 11px; color: var(--text-muted); font-style: italic; align-self: center; }
+    .pa-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .pa-col { padding: 16px 22px 20px; }
+    .pa-col:first-child { border-right: 1px solid var(--border); }
+    .pa-col-title {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 12px;
+    }
+    .pa-bullets { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .pa-bullets li { font-size: 13px; color: var(--text-secondary); padding-left: 16px; position: relative; line-height: 1.45; }
+    .pa-bullets li::before { content: "·"; position: absolute; left: 4px; color: var(--baseline); font-weight: 700; }
+    .pa-bullets li.weak::before { content: "!"; color: var(--status-warning); font-size: 11px; top: 1px; }
+    .pa-recs { display: flex; flex-direction: column; gap: 10px; }
+    .rec-row { display: flex; align-items: flex-start; gap: 10px; }
+    .rec-badge {
+      flex-shrink: 0; font-size: 9.5px; font-weight: 700; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 4px; margin-top: 2px; letter-spacing: .04em;
+    }
+    .rec-badge.alto  { background: #fee2e2; color: var(--status-critical); }
+    .rec-badge.medio { background: #fef3c7; color: #b45309; }
+    .rec-badge.bajo  { background: #f0fdf4; color: #065f46; }
+    .rec-text strong { display: block; font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+    .rec-text span   { font-size: 12px; color: var(--text-secondary); line-height: 1.4; display: block; }
+    .pa-card.hidden  { display: none; }
+    .interactive-pill {
+      font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 3px;
+      background: #e0f2fe; color: #0369a1; margin-left: 6px; vertical-align: middle;
+    }
+
+    /* ── Sin datos en Clarity ────────────────────────── */
+    .nd-block {
+      border: 1px solid var(--border); border-radius: 10px;
+      overflow: hidden; margin-top: 20px;
+    }
+    .nd-header {
+      background: var(--surface-page); padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .nd-header strong { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .nd-header p { font-size: 12px; color: var(--text-secondary); line-height: 1.55; margin: 0; }
+    .nd-groups { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+    .nd-group { display: flex; flex-direction: column; gap: 8px; }
+    .nd-cat {
+      font-size: 10px; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: .09em;
+    }
+    .nd-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .nd-chip {
+      display: flex; flex-direction: column;
+      background: var(--surface-card); border: 1px solid var(--border);
+      border-radius: 7px; padding: 6px 11px; min-width: 160px;
+    }
+    .nd-chip-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+    .nd-link {
+      font-size: 10.5px; color: var(--text-muted); text-decoration: none;
+      margin-top: 2px; word-break: break-all;
+    }
+    .nd-link:hover { color: var(--brand); text-decoration: underline; }
+
+    /* ── Footer ───────────────────────────────────────── */
+    .report-footer {
+      text-align: center; font-size: 12px; color: var(--text-muted);
+      padding: 28px 56px; border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ════════════════════════════════ -->
+<div class="report-header">
+  <div class="eyebrow">Microsoft Clarity · Análisis de comportamiento de usuario</div>
+  <h1>Páginas de Productos · buk.cl</h1>
+  <div class="meta">
+    <span>Período: 1 Ene – 13 Jul 2026 (año en curso)</span>
+    <span>314,726 visitas · 11 páginas de productos</span>
+    <span>Generado: 13 Jul 2026</span>
+  </div>
+</div>
+
+<!-- ═════════════════════════════ STICKY NAV ═════════════════════════════ -->
+<nav class="sticky-nav">
+  <a href="#resumen">Resumen</a>
+  <a href="#portafolio">Mapa de interés</a>
+  <a href="#ranking">Ranking</a>
+  <a href="#trafico">Fuentes de tráfico</a>
+  <a href="#interaccion">Comportamiento</a>
+  <a href="#lectura">Profundidad de lectura</a>
+  <a href="#hallazgos">Hallazgos</a>
+  <a href="#sesiones">Grabaciones</a>
+  <a href="#storytelling">Análisis de páginas</a>
+</nav>
+
+<div class="container">
+
+  <!-- ══════════════ SECCIÓN 0 — RESUMEN EJECUTIVO ══════════════════════ -->
+  <div class="section" id="resumen">
+    <div class="section-title">Resumen ejecutivo · 1 Ene – 13 Jul 2026</div>
+
+    <!-- KPIs agregados -->
+    <div class="stat-grid">
+      <div class="stat-tile ok">
+        <div class="tile-label">Visitas a páginas de productos</div>
+        <div class="tile-value">314K</div>
+        <div class="tile-sub">Páginas /productos/* · año en curso</div>
+      </div>
+      <div class="stat-tile alert">
+        <div class="tile-label">Profundidad de lectura</div>
+        <div class="tile-value">14.2%</div>
+        <div class="tile-sub">Promedio sobre todas las páginas de productos</div>
+      </div>
+      <div class="stat-tile warn">
+        <div class="tile-label">Tiempo de interacción activa</div>
+        <div class="tile-value">0m 16s</div>
+        <div class="tile-sub">Promedio por visita a página de producto</div>
+      </div>
+      <div class="stat-tile alert">
+        <div class="tile-label">Interacciones sin respuesta</div>
+        <div class="tile-value">292K+</div>
+        <div class="tile-sub">Top 10 elementos · páginas de productos</div>
+      </div>
+    </div>
+
+    <!-- Highlights del portafolio -->
+    <div class="engagement-grid">
+      <div class="eng-tile">
+        <div class="e-label">Producto más visitado</div>
+        <div class="e-value" style="font-size:20px;margin-top:4px">Buk Finanzas</div>
+        <div class="e-sub">181,783 visitas · 58% del tráfico de productos</div>
+      </div>
+      <div class="eng-tile">
+        <div class="e-label">Mejor engagement del portafolio</div>
+        <div class="e-value" style="color:var(--status-good)">Onboarding</div>
+        <div class="e-sub">37.6% lectura · 41s de interacción activa</div>
+      </div>
+      <div class="eng-tile">
+        <div class="e-label">Dispositivo dominante</div>
+        <div class="e-value">84% Mobile</div>
+        <div class="e-sub">15% PC · 1% Tablet · Fuente principal: Meta/Facebook</div>
+      </div>
+    </div>
+
+    <!-- Podio: top 3 productos destacados -->
+    <div class="podio-strip">
+      <div class="podio-card">
+        <div class="podio-badge">Mayor volumen de visitas</div>
+        <div class="podio-icon">🥇</div>
+        <div class="podio-name">Buk Finanzas</div>
+        <div class="podio-visits">181,783 visitas · 58% del total</div>
+        <div class="podio-bar-wrap"><div class="podio-bar" style="width:9.13%;background:var(--status-critical)"></div></div>
+        <div class="podio-pct">9.1% profundidad de lectura</div>
+      </div>
+      <div class="podio-card">
+        <div class="podio-badge">Mejor engagement del portafolio</div>
+        <div class="podio-icon">🏆</div>
+        <div class="podio-name">Onboarding</div>
+        <div class="podio-visits">664 visitas · 41.6s de interacción activa</div>
+        <div class="podio-bar-wrap"><div class="podio-bar" style="width:37.57%;background:var(--status-warning)"></div></div>
+        <div class="podio-pct">37.6% profundidad de lectura</div>
+      </div>
+      <div class="podio-card">
+        <div class="podio-badge">Mejor balance tráfico–lectura</div>
+        <div class="podio-icon">⭐</div>
+        <div class="podio-name">Portal del Colaborador</div>
+        <div class="podio-visits">22,292 visitas · 31.5% lectura</div>
+        <div class="podio-bar-wrap"><div class="podio-bar" style="width:31.5%;background:var(--status-warning)"></div></div>
+        <div class="podio-pct">12.9s de interacción activa</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECCIÓN 1 — MAPA DE INTERÉS ════════════════════════ -->
+  <div class="section" id="portafolio">
+    <div class="section-title">Portafolio de Productos — ¿Dónde está el interés?</div>
+    <div class="card">
+      <h3>Mapa de interés por producto</h3>
+      <div class="card-sub">
+        Posición horizontal = tiempo de interacción activa · Posición vertical = volumen de visitas ·
+        Tamaño de burbuja = profundidad de lectura
+      </div>
+      <div class="notice brand" style="margin-bottom:16px">
+        <strong>Cómo leer este mapa:</strong> Los productos en el cuadrante superior derecho generan el mayor volumen de visitas Y retienen la atención del visitante. Los productos en la parte inferior derecha tienen buena lectura pero poco tráfico — candidatos para mayor inversión en pauta o SEO.
+      </div>
+      <div class="quadrant-wrap">
+        <div class="chart-wrap xl" style="margin-bottom:4px">
+          <canvas id="bubbleChart"></canvas>
+        </div>
+        <div class="q-label q-tl">Mucho tráfico<br>Mejorar contenido</div>
+        <div class="q-label q-tr">Alto interés<br>Proteger</div>
+        <div class="q-label q-bl">Bajo rendimiento<br>Revisar</div>
+        <div class="q-label q-br">Buena lectura<br>Promover más</div>
+      </div>
+      <div class="legend-grid">
+        <div class="legend-item"><div class="legend-dot" style="background:#2a78d6"></div><a class="legend-link" href="https://buk.cl/productos/finanzas" target="_blank">Buk Finanzas ↗</a></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#1baf7a"></div><a class="legend-link" href="https://buk.cl/productos/plataforma-de-rrhh" target="_blank">Plataforma RRHH ↗</a></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#eda100"></div><a class="legend-link" href="https://buk.cl/productos/plataforma-de-rrhh/portal-del-colaborador" target="_blank">Portal del Colaborador ↗</a></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#008300"></div><a class="legend-link" href="https://buk.cl/productos/beneficios-laborales/seguros" target="_blank">Seguros ↗</a></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4a3aa7"></div><a class="legend-link" href="https://buk.cl/productos/administracion/control-de-asistencia" target="_blank">Control de Asistencia ↗</a></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e34948"></div><a class="legend-link" href="https://buk.cl/productos/administracion/software-de-remuneraciones" target="_blank">Remuneraciones ↗</a></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#2a78d6;opacity:.6"></div><a class="legend-link" href="https://buk.cl/productos/finanzas/gestion-de-activos" target="_blank">Gestión de Activos ↗</a></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#1baf7a;opacity:.6"></div><a class="legend-link" href="https://buk.cl/productos/administracion/gestion-documental-y-firma-digital" target="_blank">Firma Digital ↗</a></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#eda100;opacity:.6"></div><a class="legend-link" href="https://buk.cl/productos/desarrollo-organizacional/capacitaciones" target="_blank">Capacitaciones ↗</a></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#008300;opacity:.6"></div><a class="legend-link" href="https://buk.cl/productos/buk-ai" target="_blank">Buk AI ↗</a></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4a3aa7;opacity:.6"></div><a class="legend-link" href="https://buk.cl/productos/administracion/onboarding" target="_blank">Onboarding ↗</a></div>
+      </div>
+    </div>
+    <div id="noDataPages"></div>
+  </div>
+
+  <!-- ══════════════ SECCIÓN 2 — RANKING ═══════════════════════════════ -->
+  <div class="section" id="ranking">
+    <div class="section-title">Ranking de productos por interés del visitante</div>
+    <div class="card-grid-2">
+      <div class="card">
+        <h3>Top productos por volumen de visitas</h3>
+        <div class="card-sub">Páginas /productos/* · año en curso</div>
+        <div class="chart-wrap tall">
+          <canvas id="rankingChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Métricas de engagement por producto</h3>
+        <div class="card-sub">Lectura = profundidad promedio · Interacción = tiempo activo promedio</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Producto</th>
+              <th class="num">Visitas</th>
+              <th class="num">Lectura</th>
+              <th class="num">Interacción</th>
+            </tr>
+          </thead>
+          <tbody id="rankingTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECCIÓN 3 — FUENTES DE TRÁFICO ════════════════════ -->
+  <div class="section" id="trafico">
+    <div class="section-title">Fuentes de tráfico y dispositivos</div>
+    <div class="card">
+      <h3>Visitas por fuente de origen</h3>
+      <div class="card-sub">Páginas de productos · año en curso · desglose por dispositivo</div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--series-1)"></div>Mobile</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--series-2)"></div>PC</div>
+      </div>
+      <div class="chart-wrap" style="height:240px">
+        <canvas id="trafficChart"></canvas>
+      </div>
+      <table class="data-table" style="margin-top:20px">
+        <thead>
+          <tr>
+            <th>Fuente</th>
+            <th class="num"><span class="dot" style="background:var(--series-1)"></span>Mobile</th>
+            <th class="num"><span class="dot" style="background:var(--series-2)"></span>PC</th>
+            <th class="num">Total</th>
+            <th class="num">% del total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Meta (paid)</td><td class="num">171,489</td><td class="num">—</td><td class="num">171,489</td><td class="num">54.5%</td></tr>
+          <tr><td>Facebook</td><td class="num">59,348</td><td class="num">—</td><td class="num">59,348</td><td class="num">18.9%</td></tr>
+          <tr><td>Google</td><td class="num">22,576</td><td class="num">22,332</td><td class="num">44,908</td><td class="num">14.3%</td></tr>
+          <tr><td>buk.cl (tráfico interno)</td><td class="num">7,856</td><td class="num">11,760</td><td class="num">19,616</td><td class="num">6.2%</td></tr>
+          <tr><td>Directo</td><td class="num">1,703</td><td class="num">9,792</td><td class="num">11,495</td><td class="num">3.7%</td></tr>
+          <tr><td>Bing</td><td class="num">—</td><td class="num">2,879</td><td class="num">2,879</td><td class="num">0.9%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECCIÓN 4 — COMPORTAMIENTO ════════════════════════ -->
+  <div class="section" id="interaccion">
+    <div class="section-title">¿Cómo interactúan los visitantes con las páginas de productos?</div>
+    <div class="card-grid-2">
+      <div class="card">
+        <h3>Elementos más consultados</h3>
+        <div class="card-sub">Clics totales en páginas de productos · año en curso</div>
+        <div class="chart-wrap tall">
+          <canvas id="clicksChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Elementos que no respondieron al visitante</h3>
+        <div class="card-sub">Cada clic sin respuesta es una oportunidad de mejora perdida</div>
+
+        <div class="dc-row">
+          <div class="dc-label">Áreas en blanco</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:100%"></div></div>
+          <div class="dc-count">162K</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-label">"Automatiza tu cobranza" (Finanzas)</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:48.6%"></div></div>
+          <div class="dc-count">78.9K</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-label">Pagos a Proveedores (Finanzas)</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:13.1%"></div></div>
+          <div class="dc-count">21.3K</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-label">Planes de seguros</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:6.9%"></div></div>
+          <div class="dc-count">11.2K</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-label">Firma Digital (texto)</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:3.2%"></div></div>
+          <div class="dc-count">5.1K</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-label">Rendiciones (texto)</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:2.3%"></div></div>
+          <div class="dc-count">3.7K</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-label">"Centraliza la gestión..."</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:2.0%"></div></div>
+          <div class="dc-count">3.2K</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-label">Precios únicos (texto)</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:1.7%"></div></div>
+          <div class="dc-count">2.8K</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-label">Barra de navegación</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:1.2%"></div></div>
+          <div class="dc-count">2.0K</div>
+        </div>
+        <div class="dc-row">
+          <div class="dc-label">Cotiza aquí (CTA)</div>
+          <div class="dc-bar-wrap"><div class="dc-bar" style="width:1.1%"></div></div>
+          <div class="dc-count">1.8K</div>
+        </div>
+
+        <p style="font-size:12px;color:var(--text-muted);margin-top:14px">
+          Señales de frustración (clics repetidos en el mismo elemento): <strong style="color:var(--status-warning)">651</strong> detectadas en páginas de productos.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECCIÓN 5 — PROFUNDIDAD DE LECTURA ════════════════ -->
+  <div class="section" id="lectura">
+    <div class="section-title">¿Cuánto del contenido es leído en cada página?</div>
+    <div class="card">
+      <h3>Profundidad de lectura promedio por producto</h3>
+      <div class="card-sub">Línea punteada = referencia 50% · Verde ≥50% · Ámbar 25–49% · Rojo &lt;25%</div>
+      <div class="chart-wrap xxl">
+        <canvas id="scrollDepthChart"></canvas>
+      </div>
+      <p style="font-size:13px;color:var(--text-secondary);margin-top:16px">
+        <strong>9 de 11 páginas de productos no superan el 25% de profundidad de lectura.</strong>
+        El contenido clave — propuesta de valor, casos de uso, llamados a la acción — puede estar quedando fuera del rango visible del visitante en la gran mayoría de las visitas.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECCIÓN 6 — HALLAZGOS ═════════════════════════════ -->
+  <div class="section" id="hallazgos">
+    <div class="section-title">Hallazgos prioritarios y acciones recomendadas</div>
+    <div class="findings">
+
+      <div class="finding p-critical">
+        <div class="f-badge critical">Alta</div>
+        <div class="f-body">
+          <h4>Buk Finanzas concentra el 58% del tráfico pero tiene el peor engagement del portafolio</h4>
+          <p>Con 181,783 visitas, Finanzas es lejos la página más consultada. Sin embargo, los visitantes solo leen el 9.1% de su contenido y permanecen apenas 12 segundos activos. La página recibe masivo tráfico desde Meta y Facebook — visitantes que probablemente llegan sin intención de compra clara. El contenido del hero no está convirtiendo la atención en lectura.</p>
+        </div>
+      </div>
+
+      <div class="finding p-critical">
+        <div class="f-badge critical">Alta</div>
+        <div class="f-body">
+          <h4>Más de 100,000 interacciones sin respuesta en la página de Buk Finanzas</h4>
+          <p>Los visitantes hacen clic sobre el texto "Automatiza tu cobranza..." (78,900 veces) y "Pagos a Proveedores" (21,300 veces) esperando que sean elementos interactivos — botones, accordions o carruseles. Ese texto no tiene ninguna acción configurada. Cada uno de esos clics es un momento de frustración que puede estar precipitando el abandono de la página.</p>
+        </div>
+      </div>
+
+      <div class="finding p-critical">
+        <div class="f-badge critical">Alta</div>
+        <div class="f-body">
+          <h4>162,000+ interacciones en zonas vacías — posibles elementos superpuestos o secciones sin acción</h4>
+          <p>Las áreas en blanco registran 162,444 clics sin respuesta. Esto puede indicar capas invisibles que bloquean el clic, elementos posicionados que cubren el contenido, o zonas de la página que visualmente invitan al clic (imágenes, secciones con fondo) sin tener enlace ni acción configurada.</p>
+        </div>
+      </div>
+
+      <div class="finding p-warning">
+        <div class="f-badge warning">Media</div>
+        <div class="f-body">
+          <h4>El 74% del tráfico llega desde Meta y Facebook — visitantes con menor intención de compra</h4>
+          <p>171,489 sesiones de Meta paid + 59,348 de Facebook representan casi 3 de cada 4 visitas. Los visitantes que llegan desde pauta social tienen típicamente menor intención de compra que los que buscan activamente el producto. Esto explica en parte el bajo scroll y tiempo de interacción general. Vale la pena revisar si las audiencias de las campañas están bien segmentadas.</p>
+        </div>
+      </div>
+
+      <div class="finding p-warning">
+        <div class="f-badge warning">Media</div>
+        <div class="f-body">
+          <h4>Onboarding y Capacitaciones tienen el mejor engagement del portafolio pero reciben menos del 2% del tráfico</h4>
+          <p>Onboarding registra 37.6% de lectura y 41.6 segundos de interacción activa — los mejores números de todo el portafolio. Capacitaciones alcanza 34.7 segundos de interacción activa. Ambas páginas tienen contenido que claramente engancha al visitante, pero con apenas 664 y 3,900 visitas respectivamente, están totalmente subutilizadas como herramientas de conversión.</p>
+        </div>
+      </div>
+
+      <div class="finding p-warning">
+        <div class="f-badge warning">Media</div>
+        <div class="f-body">
+          <h4>El CTA "Cotiza aquí" tiene 1,787 interacciones sin respuesta</h4>
+          <p>El principal llamado a la acción falla en responder en aproximadamente 1 de cada 5 clics (8,585 totales, 1,787 sin respuesta). Esto puede ocurrir durante la carga del formulario, en ciertos navegadores mobile o bajo condiciones de red lentas. Cada fallo es una oportunidad de prospecto perdida.</p>
+        </div>
+      </div>
+
+      <div class="finding p-low">
+        <div class="f-badge low">Baja</div>
+        <div class="f-body">
+          <h4>Gestión de Activos tiene el peor engagement de todos los productos</h4>
+          <p>Solo 8.5% de profundidad de lectura y 8.2 segundos de interacción activa. Los visitantes llegan y se van sin ningún tipo de interacción real. Revisar si el tráfico que llega a esta página tiene afinidad con el producto o si se trata de tráfico mal atribuido desde campañas más genéricas.</p>
+        </div>
+      </div>
+
+      <div class="finding p-low">
+        <div class="f-badge low">Baja</div>
+        <div class="f-body">
+          <h4>Portal del Colaborador y Seguros son los productos con mejor balance tráfico–engagement</h4>
+          <p>Portal del Colaborador (22,292 visitas, 31.5% lectura) y Seguros (21,307 visitas, 23.9s de interacción activa) muestran el mejor equilibrio del portafolio. Son las páginas en mejor estado actual. Analizar su estructura de contenido como referencia para las páginas con bajo engagement.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ SECCIÓN 7 — GRABACIONES ═══════════════════════════ -->
+  <div class="section" id="sesiones">
+    <div class="section-title">Grabaciones recomendadas para el equipo</div>
+    <div class="notice brand">
+      Sesiones seleccionadas que incluyen visitas a páginas de productos con interacciones sin respuesta. Útiles para el equipo de Producto y Marketing al diseñar mejoras. Ordenadas por duración descendente.
+    </div>
+    <div class="session-grid">
+
+      <div class="session-card">
+        <div class="s-id">ID: 1aforik</div>
+        <div class="s-row"><span>Duración</span><span>3h 26min</span></div>
+        <div class="s-row"><span>Clics totales</span><span>71</span></div>
+        <div class="s-row"><span>Páginas visitadas</span><span>20</span></div>
+        <div class="s-row"><span>Productos revisados</span><span>Finanzas, Remuneraciones, Beneficios</span></div>
+        <div class="s-row"><span>Por qué revisar</span><span>Exploración completa del portafolio</span></div>
+        <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/1aforik/9p7eti" target="_blank">Ver grabación →</a>
+      </div>
+
+      <div class="session-card">
+        <div class="s-id">ID: 1fu64v3</div>
+        <div class="s-row"><span>Duración</span><span>1h 53min</span></div>
+        <div class="s-row"><span>Clics totales</span><span>17</span></div>
+        <div class="s-row"><span>Páginas visitadas</span><span>14</span></div>
+        <div class="s-row"><span>Productos revisados</span><span>Onboarding, Roadmap</span></div>
+        <div class="s-row"><span>Por qué revisar</span><span>Interés profundo en Onboarding</span></div>
+        <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/1fu64v3/unhs48" target="_blank">Ver grabación →</a>
+      </div>
+
+      <div class="session-card">
+        <div class="s-id">ID: 1y4ninm</div>
+        <div class="s-row"><span>Duración</span><span>1h 39min</span></div>
+        <div class="s-row"><span>Clics totales</span><span>33</span></div>
+        <div class="s-row"><span>Páginas visitadas</span><span>15</span></div>
+        <div class="s-row"><span>Productos revisados</span><span>Onboarding, Administración</span></div>
+        <div class="s-row"><span>Por qué revisar</span><span>Foco prolongado en Onboarding</span></div>
+        <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/1y4ninm/1ckh6y3" target="_blank">Ver grabación →</a>
+      </div>
+
+      <div class="session-card">
+        <div class="s-id">ID: gppld7</div>
+        <div class="s-row"><span>Duración</span><span>1h 27min</span></div>
+        <div class="s-row"><span>Clics totales</span><span>34</span></div>
+        <div class="s-row"><span>Páginas visitadas</span><span>11</span></div>
+        <div class="s-row"><span>Productos revisados</span><span>Workflows, Administración</span></div>
+        <div class="s-row"><span>Por qué revisar</span><span>Evaluación de Workflows RRHH</span></div>
+        <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/gppld7/o3wa6r" target="_blank">Ver grabación →</a>
+      </div>
+
+      <div class="session-card">
+        <div class="s-id">ID: xwgn39</div>
+        <div class="s-row"><span>Duración</span><span>1h 12min</span></div>
+        <div class="s-row"><span>Clics totales</span><span>18</span></div>
+        <div class="s-row"><span>Páginas visitadas</span><span>9</span></div>
+        <div class="s-row"><span>Productos revisados</span><span>Buk AI, Reportería, Asistencia</span></div>
+        <div class="s-row"><span>Por qué revisar</span><span>Evaluación de Buk AI</span></div>
+        <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/xwgn39/wk9w6s" target="_blank">Ver grabación →</a>
+      </div>
+
+      <div class="session-card">
+        <div class="s-id">ID: nechbd</div>
+        <div class="s-row"><span>Duración</span><span>1h 11min</span></div>
+        <div class="s-row"><span>Clics totales</span><span>49</span></div>
+        <div class="s-row"><span>Páginas visitadas</span><span>25</span></div>
+        <div class="s-row"><span>Productos revisados</span><span>Beneficios, Capacitaciones</span></div>
+        <div class="s-row"><span>Por qué revisar</span><span>Abandono en Beneficios y Capacitaciones</span></div>
+        <a class="s-link" href="https://clarity.microsoft.com/player/rxdbrscldn/nechbd/k9wgny" target="_blank">Ver grabación →</a>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ SECCIÓN 8 — ANÁLISIS DE PÁGINAS ════════════════════ -->
+  <div class="section" id="storytelling">
+    <div class="section-title">Análisis de páginas — Storytelling y recomendaciones UX</div>
+
+    <div class="cross-findings">
+      <h4>Hallazgos transversales — presentes en casi todas las páginas</h4>
+      <ul>
+        <li>"Cotiza aquí" es el único CTA en 24 de 27 páginas — sin alternativa para visitantes en etapa de descubrimiento (74% del tráfico proviene de Meta/Facebook, embudo alto).</li>
+        <li>~60% de las páginas usa el nombre del producto como H1, en vez de un enunciado de beneficio orientado al visitante.</li>
+        <li>Prueba social ausente en 18 de 27 páginas — sin logos de clientes, testimonios ni cifras de impacto visible en el primer scroll.</li>
+        <li>El texto "Todas las funcionalidades que necesitas en un solo lugar" aparece verbatim en ~20 páginas, reduciendo la diferenciación percibida entre productos.</li>
+        <li>Workflows es la página de mayor calidad del portafolio (simulador interactivo, estadística concreta de 800 hrs/mes, FAQ). Su estructura puede servir de modelo para el resto.</li>
+      </ul>
+    </div>
+
+    <div class="selector-bar">
+      <label>Ver análisis de:</label>
+      <select id="pageSelector" onchange="filterStoryCards(this.value)">
+        <option value="all">— Todas las páginas (27) —</option>
+        <optgroup label="Categorías principales">
+          <option value="finanzas">Buk Finanzas</option>
+          <option value="plataforma-rrhh">Plataforma de RRHH</option>
+          <option value="administracion-cat">Administración</option>
+          <option value="desarrollo-org-cat">Desarrollo Organizacional</option>
+          <option value="beneficios-cat">Beneficios Laborales</option>
+        </optgroup>
+        <optgroup label="Plataforma">
+          <option value="estructura-org">Estructura Organizacional</option>
+          <option value="portal-colaborador">Portal del Colaborador</option>
+          <option value="usuarios-perfiles">Usuarios y Perfiles</option>
+          <option value="workflows">Workflows</option>
+          <option value="reporteria">Reportería RR.HH.</option>
+        </optgroup>
+        <optgroup label="Administración">
+          <option value="remuneraciones">Software de Remuneraciones</option>
+          <option value="asistencia">Control de Asistencia</option>
+          <option value="firma-digital">Gestión Documental y Firma Digital</option>
+          <option value="onboarding">Onboarding</option>
+          <option value="canal-denuncias">Canal de Denuncias</option>
+          <option value="servicio-colaborador">Servicio al Colaborador</option>
+        </optgroup>
+        <optgroup label="Desarrollo Organizacional">
+          <option value="desempeno">Gestión del Desempeño</option>
+          <option value="comunicacion">Comunicación y Reconocimiento</option>
+          <option value="reclutamiento">Reclutamiento y Selección</option>
+          <option value="capacitaciones">Capacitaciones</option>
+          <option value="encuestas">Encuestas</option>
+        </optgroup>
+        <optgroup label="Beneficios">
+          <option value="gestion-beneficios">Gestión de Beneficios</option>
+          <option value="seguros">Seguros</option>
+          <option value="bienestar-financiero">Bienestar Financiero</option>
+          <option value="planes-beneficios">Planes de Beneficios</option>
+          <option value="pack-descuentos">Pack de Descuentos</option>
+        </optgroup>
+        <optgroup label="Innovación">
+          <option value="buk-ai">Buk AI</option>
+        </optgroup>
+      </select>
+      <span class="selector-count" id="selectorCount">27 páginas</span>
+    </div>
+
+    <div id="pageCards"></div>
+  </div>
+
+</div><!-- /container -->
+
+<div class="report-footer">
+  Microsoft Clarity · Páginas de Productos · buk.cl · 1 Ene – 13 Jul 2026
+</div>
+
+<!-- ═════════════════════════ SCRIPTS ══════════════════════════════════ -->
+<script>
+Chart.register(ChartDataLabels);
+
+const S1='#2a78d6', S2='#1baf7a', S3='#eda100', S4='#008300', S5='#4a3aa7', S6='#e34948';
+const CATEGORICAL = [S1,S2,S3,S4,S5,S6];
+const GRID='#e1e0d9', AXIS='#c3c2b7', TICK='#898781', LABEL='#52514e';
+const GOOD='#0ca30c', WARN='#fab219', SERIOUS='#ec835a', CRITICAL='#d03b3b';
+
+const PRODUCTS = [
+  { label:'Buk Finanzas',           sessions:181783, scroll:9.13,  active:11.93 },
+  { label:'Plataforma RRHH',        sessions:43976,  scroll:23.92, active:15.49 },
+  { label:'Portal del Colaborador', sessions:22292,  scroll:31.5,  active:12.93 },
+  { label:'Seguros',                sessions:21307,  scroll:9.92,  active:23.87 },
+  { label:'Control de Asistencia',  sessions:16780,  scroll:18.58, active:18.56 },
+  { label:'Remuneraciones',         sessions:15675,  scroll:15.1,  active:18.2  },
+  { label:'Gestión de Activos',     sessions:7121,   scroll:8.52,  active:8.2   },
+  { label:'Firma Digital',          sessions:5866,   scroll:19.75, active:21.34 },
+  { label:'Capacitaciones',         sessions:3912,   scroll:22.41, active:34.67 },
+  { label:'Buk AI',                 sessions:3771,   scroll:23.32, active:26.82 },
+  { label:'Onboarding',             sessions:664,    scroll:37.57, active:41.61 },
+];
+
+function scrollColor(pct) {
+  if (pct >= 50) return GOOD;
+  if (pct >= 25) return WARN;
+  return CRITICAL;
+}
+
+const scaleXCat = {
+  grid: { display:false },
+  border: { color:AXIS },
+  ticks: { font:{size:12,family:'system-ui'}, color:LABEL }
+};
+const scaleYVal = {
+  grid: { color:GRID },
+  border: { dash:[3,3], color:'transparent' },
+  ticks: { font:{size:11,family:'system-ui'}, color:TICK,
+    callback: v => v>=1000 ? (v/1000).toFixed(0)+'K' : v }
+};
+const scaleYCat = {
+  grid: { display:false },
+  border: { color:AXIS },
+  ticks: { font:{size:12,family:'system-ui'}, color:LABEL }
+};
+const scaleXVal = {
+  grid: { color:GRID },
+  border: { dash:[3,3], color:'transparent' },
+  ticks: { font:{size:11,family:'system-ui'}, color:TICK,
+    callback: v => v>=1000 ? (v/1000).toFixed(0)+'K' : v }
+};
+
+// ── Chart 1 — Bubble: Mapa de interés ────────────────────────────────────
+const MEDIAN_ACTIVE = 18.56;
+const MEDIAN_SESS_K = 15.675;
+
+const quadrantPlugin = {
+  id:'quadrants',
+  beforeDraw(chart) {
+    const {ctx, chartArea:{left,right,top,bottom}, scales:{x,y}} = chart;
+    const mx = x.getPixelForValue(MEDIAN_ACTIVE);
+    const my = y.getPixelForValue(MEDIAN_SESS_K);
+    ctx.save();
+    const fills = [
+      {x:left,  y:top,  w:mx-left,  h:my-top,    c:'rgba(250,178,25,.07)'},
+      {x:mx,    y:top,  w:right-mx, h:my-top,    c:'rgba(12,163,12,.07)'},
+      {x:left,  y:my,   w:mx-left,  h:bottom-my, c:'rgba(208,59,59,.06)'},
+      {x:mx,    y:my,   w:right-mx, h:bottom-my, c:'rgba(42,120,214,.06)'},
+    ];
+    fills.forEach(f => { ctx.fillStyle=f.c; ctx.fillRect(f.x,f.y,f.w,f.h); });
+    ctx.strokeStyle='#c3c2b7'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(mx,top); ctx.lineTo(mx,bottom); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(left,my); ctx.lineTo(right,my); ctx.stroke();
+    ctx.restore();
+  }
+};
+
+const bubbleDatasets = PRODUCTS.map((p,i) => ({
+  label: p.label,
+  data: [{ x:p.active, y:p.sessions/1000, r: 5+(p.scroll/100)*20 }],
+  backgroundColor: CATEGORICAL[i%6]+'BF',
+  borderColor:     CATEGORICAL[i%6],
+  borderWidth: 1.5,
+}));
+
+new Chart(document.getElementById('bubbleChart'), {
+  type:'bubble',
+  plugins:[quadrantPlugin],
+  data:{ datasets:bubbleDatasets },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ display:false },
+      tooltip:{
+        callbacks:{
+          label: ctx => {
+            const p = PRODUCTS[ctx.datasetIndex];
+            return [`${p.label}`, `Visitas: ${p.sessions.toLocaleString('es-CL')}`, `Lectura: ${p.scroll}%`, `Interacción activa: ${p.active}s`];
+          }
+        }
+      },
+      datalabels:{
+        display:true, align:'end', anchor:'end', offset:5,
+        formatter:(_,ctx) => PRODUCTS[ctx.datasetIndex].label,
+        font:{ size:10, weight:600, family:'system-ui' },
+        color:'#52514e', clip:false,
+      }
+    },
+    scales:{
+      x:{
+        title:{ display:true, text:'Tiempo de interacción activa (seg)', color:TICK, font:{size:11} },
+        min:0, max:50,
+        grid:{ color:GRID }, border:{ color:AXIS },
+        ticks:{ font:{size:11}, color:TICK }
+      },
+      y:{
+        title:{ display:true, text:'Visitas (miles)', color:TICK, font:{size:11} },
+        min:0,
+        grid:{ color:GRID }, border:{ dash:[3,3], color:'transparent' },
+        ticks:{ font:{size:11}, color:TICK, callback:v=>`${v}K` }
+      }
+    }
+  }
+});
+
+// ── Chart 2 — Ranking horizontal bar ─────────────────────────────────────
+const TOP10 = [...PRODUCTS].sort((a,b)=>b.sessions-a.sessions).slice(0,10);
+
+new Chart(document.getElementById('rankingChart'), {
+  type:'bar',
+  data:{
+    labels: TOP10.map(p => p.label),
+    datasets:[{
+      data: TOP10.map(p => p.sessions),
+      backgroundColor: S1, borderRadius:4, borderSkipped:false,
+    }]
+  },
+  options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ display:false },
+      datalabels:{ display:false },
+      tooltip:{ callbacks:{ label: ctx=>`${ctx.raw.toLocaleString('es-CL')} visitas` } }
+    },
+    scales:{ x:scaleXVal, y:scaleYCat }
+  }
+});
+
+const tbody = document.getElementById('rankingTableBody');
+TOP10.forEach((p,i) => {
+  const color = scrollColor(p.scroll);
+  const activeStr = p.active >= 60
+    ? `${Math.floor(p.active/60)}m ${Math.round(p.active%60)}s`
+    : `${p.active}s`;
+  tbody.innerHTML += `<tr>
+    <td class="rank-num">${i+1}</td>
+    <td>${p.label}</td>
+    <td class="num">${p.sessions.toLocaleString('es-CL')}</td>
+    <td class="num">
+      <span style="display:inline-flex;align-items:center;gap:4px">
+        <span style="width:8px;height:8px;border-radius:2px;background:${color};display:inline-block"></span>
+        ${p.scroll}%
+      </span>
+    </td>
+    <td class="num">${activeStr}</td>
+  </tr>`;
+});
+
+// ── Chart 3 — Traffic by source ───────────────────────────────────────────
+new Chart(document.getElementById('trafficChart'), {
+  type:'bar',
+  data:{
+    labels:['Meta (paid)','Facebook','Google','buk.cl (interno)','Directo','Bing'],
+    datasets:[
+      { label:'Mobile', data:[171489,59348,22576,7856,1703,0],   backgroundColor:S1, borderRadius:4, borderSkipped:false },
+      { label:'PC',     data:[0,0,22332,11760,9792,2879], backgroundColor:S2, borderRadius:4, borderSkipped:false },
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ display:false },
+      datalabels:{ display:false },
+      tooltip:{ callbacks:{ label:ctx=>`${ctx.dataset.label}: ${ctx.raw.toLocaleString('es-CL')} visitas` } }
+    },
+    scales:{ x:scaleXCat, y:scaleYVal }
+  }
+});
+
+// ── Chart 4 — Top clicks ─────────────────────────────────────────────────
+new Chart(document.getElementById('clicksChart'), {
+  type:'bar',
+  data:{
+    labels:['Áreas en blanco','Ingresar (botón)','Automatiza cobranza (Fin.)','Cotiza aquí (CTA)','Productos (nav)','Navbar completo','Número enmascarado','Selector de países','Planes de seguros','Recursos (nav)'],
+    datasets:[{
+      data:[32580,17082,12167,8585,4552,2869,2176,1647,1637,1550],
+      backgroundColor:S1, borderRadius:4, borderSkipped:false,
+    }]
+  },
+  options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ display:false },
+      datalabels:{ display:false },
+      tooltip:{ callbacks:{ label:ctx=>`${ctx.raw.toLocaleString('es-CL')} clics` } }
+    },
+    scales:{ x:scaleXVal, y:scaleYCat }
+  }
+});
+
+// ── Chart 5 — Scroll depth per product ───────────────────────────────────
+const scrollRef50Plugin = {
+  id:'scrollRef',
+  afterDraw(chart) {
+    const {ctx, chartArea:{top,bottom}, scales:{x}} = chart;
+    const px = x.getPixelForValue(50);
+    ctx.save();
+    ctx.strokeStyle='#c3c2b7'; ctx.lineWidth=1.5; ctx.setLineDash([5,5]);
+    ctx.beginPath(); ctx.moveTo(px,top); ctx.lineTo(px,bottom); ctx.stroke();
+    ctx.fillStyle=TICK; ctx.font='10px system-ui'; ctx.textAlign='center';
+    ctx.fillText('50%', px, top-4);
+    ctx.restore();
+  }
+};
+
+const PRODS_BY_SCROLL = [...PRODUCTS].sort((a,b)=>b.scroll-a.scroll);
+new Chart(document.getElementById('scrollDepthChart'), {
+  type:'bar',
+  plugins:[scrollRef50Plugin],
+  data:{
+    labels: PRODS_BY_SCROLL.map(p=>p.label),
+    datasets:[{
+      data: PRODS_BY_SCROLL.map(p=>p.scroll),
+      backgroundColor: PRODS_BY_SCROLL.map(p=>scrollColor(p.scroll)),
+      borderRadius:4, borderSkipped:false,
+    }]
+  },
+  options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ display:false },
+      datalabels:{
+        display:true, align:'end', anchor:'end', offset:4,
+        formatter:v=>`${v}%`, font:{size:11,weight:700}, color:LABEL,
+      },
+      tooltip:{ callbacks:{ label:ctx=>`Profundidad de lectura: ${ctx.raw}%` } }
+    },
+    scales:{
+      x:{
+        min:0, max:50,
+        grid:{color:GRID}, border:{dash:[3,3],color:'transparent'},
+        ticks:{ font:{size:11}, color:TICK, callback:v=>`${v}%` }
+      },
+      y:scaleYCat
+    }
+  }
+});
+
+// ── Sección 8 — Análisis de páginas (Storytelling) ───────────────────────
+
+const STORY_DATA = [
+  { id:'finanzas', name:'Buk Finanzas', url:'/productos/finanzas', category:'categorias-principales', catLabel:'Categoría principal', sessions:181783, scroll:9.13, active:11.93,
+    storytelling:[
+      'La página con más tráfico del portafolio (181K visitas), pero la lectura más baja entre las categorías principales (9.1% scroll) — la mayoría abandona antes del primer scroll.',
+      'El carrusel de 12 características genera parálisis decisional: demasiadas opciones sin jerarquía clara de beneficio.',
+      'El texto "Automatiza tu cobranza" tiene más de 100K clics sin respuesta — los visitantes lo tratan como botón. Es tráfico de alta intención que se pierde.',
+      'Sin video ni demostración del producto. Una solución de finanzas necesita mostrar el output, no solo describirlo.',
+      'Sin prueba social visible — ningún logo de cliente ni cifra de impacto en el primer scroll.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Convertir textos con clics masivos en botones reales', desc:'Las frases como "Automatiza tu cobranza" reciben clicks masivos sin respuesta. Transformarlos en botones anclados a un formulario o demo puede capturar tráfico de alta intención que hoy se pierde.' },
+      { impacto:'alto', titulo:'Agregar un video demo en el hero', desc:'Sin interactivo ni video, la página es solo texto. Un video de 60–90s del dashboard real aumentaría la permanencia y la credibilidad para un producto financiero.' },
+      { impacto:'alto', titulo:'Reducir el carrusel de 12 a 5 características clave', desc:'Priorizar las funciones más diferenciadas (cobros automáticos, conciliación bancaria, anticipos) y eliminar el resto del carrusel principal.' },
+      { impacto:'medio', titulo:'Añadir logos de clientes y una cifra de impacto', desc:'"X empresas usan Buk Finanzas" o logos de clientes reconocibles reducen la fricción de confianza para nuevos prospectos.' },
+      { impacto:'medio', titulo:'CTA secundario para etapa de descubrimiento', desc:'Agregar "Ver demo" o "Descargar brochure" para visitantes que aún no están listos para cotizar. Más del 70% del tráfico llega de Meta (embudo alto).' },
+    ]
+  },
+  { id:'plataforma-rrhh', name:'Plataforma de RRHH', url:'/productos/plataforma-de-rrhh', category:'categorias-principales', catLabel:'Categoría principal', sessions:43976, scroll:23.92, active:15.49,
+    storytelling:[
+      'Segunda página en tráfico (44K visitas), pero scroll del 24% indica que la mayoría no llega a ver las funcionalidades específicas de la plataforma.',
+      'Actúa como página hub de navegación, pero no guía al visitante hacia el sub-producto más relevante para su necesidad.',
+      'El H1 describe la plataforma en vez de articular el beneficio principal — falta un enunciado de impacto para el jefe de personas.',
+      'Sin segmentación de visitante: la misma página sirve a empresas de 50 y de 5.000 colaboradores, sin personalización ni guía de selección.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Reescribir H1 con beneficio orientado al decisor', desc:'"Gestiona todo el ciclo de tus personas desde una sola plataforma" — foco en el impacto, no en la descripción del producto.' },
+      { impacto:'alto', titulo:'Agregar un selector de necesidad o segmento', desc:'"¿Qué necesitas resolver?" con 3–4 opciones (Remuneraciones, Desempeño, Beneficios, Todo) para redirigir al sub-producto correcto.' },
+      { impacto:'medio', titulo:'Crear un video tour de la plataforma', desc:'Una página hub necesita mostrar la amplitud del producto. Un recorrido de 2 min del dashboard aumenta el contexto sin requerir scroll profundo.' },
+      { impacto:'medio', titulo:'Destacar números de impacto en el hero', desc:'Cifras concretas ("X países, Y clientes, Z% retención") establecen credibilidad inmediata para visitantes que llegan por primera vez.' },
+    ]
+  },
+  { id:'administracion-cat', name:'Administración', url:'/productos/administracion', category:'categorias-principales', catLabel:'Categoría principal', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Página hub del módulo de Administración (Remuneraciones, Asistencia, Firma Digital, Onboarding, Canal de Denuncias).',
+      'Sin datos de Clarity para esta URL — el tráfico probablemente llega directamente a las páginas de sub-productos.',
+      'El contenido de "Administración" es intrínsecamente amplio, lo que dificulta un mensaje hero claro y específico.',
+      'Oportunidad de estructurar la página como guía de selección entre los módulos del área.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Convertir en página de diagnóstico administrativo', desc:'"¿Cuál es tu mayor desafío de administración?" con opciones (sueldos, turnos, firma de contratos, etc.) que guíen al sub-producto correcto.' },
+      { impacto:'medio', titulo:'Añadir estadísticas de impacto por sub-módulo', desc:'"Remuneraciones: X horas ahorradas/mes", "Firma digital: Y% menos papel" — cifras por área motivan el clic hacia el detalle.' },
+      { impacto:'bajo', titulo:'Conectar con casos de uso regulatorios', desc:'El módulo de Administración está ligado a cumplimiento legal. Mencionar Ley Karin (Canal de Denuncias) y la Ley de firma electrónica como motivadores de adopción.' },
+    ]
+  },
+  { id:'desarrollo-org-cat', name:'Desarrollo Organizacional', url:'/productos/desarrollo-organizacional', category:'categorias-principales', catLabel:'Categoría principal', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Página hub para los módulos de Desempeño, Comunicación, Reclutamiento, Capacitaciones y Encuestas.',
+      'Sin datos de Clarity para esta URL — tráfico probablemente disperso entre sub-páginas.',
+      'El "Desarrollo Organizacional" como concepto es más aspiracional que operativo, lo que puede generar páginas con mucho texto y bajo engagement.',
+      'Los visitantes típicamente buscan resolver un problema específico (ej. proceso de evaluación anual), no explorar una categoría abstracta.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Estructurar alrededor de momentos del ciclo de personas', desc:'"Contratar", "Desarrollar", "Evaluar", "Fidelizar" — facilita que el visitante se identifique con su necesidad y navegue al módulo correcto.' },
+      { impacto:'medio', titulo:'Agregar un comparador de antes/después', desc:'"Antes: Excel para evaluaciones. Después: ciclos automáticos con seguimiento." Los comparadores son de alta efectividad en páginas de categoría.' },
+      { impacto:'bajo', titulo:'Incluir estadísticas de impacto en people analytics', desc:'Cifras sobre reducción de rotación o mejora en engagement de equipos establecen el valor de negocio de esta categoría.' },
+    ]
+  },
+  { id:'beneficios-cat', name:'Beneficios Laborales', url:'/productos/beneficios-laborales', category:'categorias-principales', catLabel:'Categoría principal', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Hub para Seguros, Bienestar Financiero, Planes de Beneficios, Gestión de Beneficios y Pack de Descuentos.',
+      'La propuesta de valor de "beneficios" puede ser percibida como un costo — el framing narrativo como herramienta de retención es clave.',
+      'La categoría incluye el Pack de Descuentos, que es gratuito — puede actuar como puerta de entrada para empresas que aún no son clientes de Buk.',
+      'Sin datos de Clarity disponibles para esta URL.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Enmarcar beneficios como herramienta de retención de talento', desc:'"Colaboradores más satisfechos, menor rotación" — el ROI de los beneficios debe estar en el hero. Las empresas no compran beneficios; compran retención.' },
+      { impacto:'alto', titulo:'Destacar el Pack de Descuentos como producto gratuito de entrada', desc:'"Comienza gratis con Pack de Descuentos" como CTA secundario puede convertir visitantes de descubrimiento.' },
+      { impacto:'medio', titulo:'Agregar un testimonio del colaborador (no solo del área de RRHH)', desc:'En beneficios el usuario final es el colaborador. Un testimonio desde su perspectiva genera un tipo de confianza diferente al de los decisores de compra.' },
+    ]
+  },
+  { id:'estructura-org', name:'Estructura Organizacional', url:'/productos/plataforma-de-rrhh/estructura-organizacional', category:'plataforma', catLabel:'Plataforma', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Módulo que permite diseñar y visualizar el organigrama de la empresa. Audiencia: jefes de personas y directores que planifican crecimiento.',
+      'Sin datos de Clarity disponibles — volumen de tráfico probablemente bajo, producto de nicho dentro de la plataforma.',
+      'El storytelling puede enfocarse en momentos de alta demanda: expansión, M&A o restructuración organizacional.',
+      'La visualización del organigrama es el "wow factor" del producto — es mejor mostrarlo que describirlo.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Agregar captura de pantalla o video del organigrama real', desc:'El producto es visual por naturaleza. Una imagen de alta calidad del organigrama interactivo supera cualquier texto descriptivo.' },
+      { impacto:'medio', titulo:'Conectar con casos de uso de crecimiento empresarial', desc:'"¿Tu empresa va a contratar 50 personas este año? Empieza con la estructura correcta." — apela al decisor en un momento de expansión.' },
+      { impacto:'bajo', titulo:'Destacar integración con Reportería de RRHH', desc:'La estructura organizacional alimenta los reportes de headcount. Esta integración aumenta la percepción de valor del módulo.' },
+    ]
+  },
+  { id:'portal-colaborador', name:'Portal del Colaborador', url:'/productos/plataforma-de-rrhh/portal-del-colaborador', category:'plataforma', catLabel:'Plataforma', sessions:22292, scroll:31.5, active:12.93,
+    storytelling:[
+      'Tercer producto en tráfico (22K visitas) con la mejor profundidad de lectura de la plataforma (31.5%) — el contenido es relevante para quien llega.',
+      'El tiempo activo (12.9s) es bajo dado el scroll, lo que sugiere que los visitantes leen rápido sin interactuar con elementos.',
+      'Los colaboradores como usuarios finales son distintos a los decisores de compra — el copy debe convencer a RRHH de que sus colaboradores adoptarán el portal.',
+      'La app mobile y las funcionalidades autoservicio son los beneficios más tangibles, pero probablemente están en el fold inferior.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Mover la app mobile al hero', desc:'La app del colaborador es el beneficio más tangible del portal. Un mockup del teléfono en el primer scroll aumenta la percepción de modernidad del producto.' },
+      { impacto:'alto', titulo:'Agregar testimonio del colaborador, no del área de RRHH', desc:'"Antes esperaba el correo de RRHH para ver mi liquidación. Ahora lo veo en el celular al instante." — ese cambio de perspectiva convierte.' },
+      { impacto:'medio', titulo:'Incluir CTA de demo del portal desde la vista del colaborador', desc:'"Ver cómo lo ven tus colaboradores" — un micro-demo del portal diferencia este CTA del genérico "Cotiza aquí".' },
+    ]
+  },
+  { id:'usuarios-perfiles', name:'Usuarios y Perfiles', url:'/productos/plataforma-de-rrhh/usuarios-y-perfiles', category:'plataforma', catLabel:'Plataforma', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Módulo de gestión de permisos y accesos para los distintos roles de la organización. Audiencia: IT y jefes de personas.',
+      'Sin datos de Clarity para esta URL.',
+      'El valor central del módulo es la seguridad y el control: cada persona accede solo a lo que le corresponde. Este es un argumento de compliance y gobierno de datos.',
+      'En el contexto de regulaciones de privacidad vigentes, la gestión de accesos puede ser un diferenciador legal.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Reencuadrar desde seguridad y compliance', desc:'"Define quién ve qué, con auditoría completa de accesos" — para IT y legal, la seguridad supera en importancia a la usabilidad.' },
+      { impacto:'medio', titulo:'Mostrar roles típicos con casos concretos', desc:'"Jefe de planta ve solo su equipo. RRHH central ve toda la empresa. Finanzas accede solo a liquidaciones." — ejemplos reales hacen el producto inmediatamente comprensible.' },
+      { impacto:'bajo', titulo:'Agregar compatibilidad con SSO si aplica', desc:'La integración con sistemas de identidad corporativa (Microsoft, Google) es un desempate técnico frecuente en ventas B2B.' },
+    ]
+  },
+  { id:'workflows', name:'Workflows', url:'/productos/plataforma-de-rrhh/workflows', category:'plataforma', catLabel:'Plataforma', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'La mejor página del portafolio: estadística concreta ("800 horas/mes ahorradas"), simulador interactivo, FAQ y prueba social. Es el modelo a seguir.',
+      'El simulador de ahorro de tiempo es el elemento más diferenciador de todo el portafolio — permite que el visitante calcule su propio beneficio.',
+      'A pesar de ser la mejor página, la estadística de 800 horas está en la zona media, no en el hero. El visitante puede abandonar antes de verla.',
+      'Demuestra que cuando hay datos concretos y herramientas interactivas, el engagement mejora notoriamente — aplicable al resto del portafolio.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Mover "800 horas/mes ahorradas" al H1 o al subtítulo del hero', desc:'Esta estadística es el hook más poderoso del portafolio. En el primer scroll capta la atención antes de que el visitante abandone.' },
+      { impacto:'alto', titulo:'Agregar testimonios después del simulador', desc:'Post-interacción con el simulador es el mejor momento para mostrar testimonios — el visitante ya vio el número, ahora necesita la prueba de que funciona en la práctica.' },
+      { impacto:'medio', titulo:'CTA posterior al simulador con el número precalculado', desc:'"Cotiza los flujos que te ahorrarían X horas al mes" — personalizar el CTA con el resultado del simulador aumenta la intención de conversión.' },
+      { impacto:'bajo', titulo:'Permitir descargar o compartir el resultado del simulador', desc:'Exportar el cálculo del simulador convierte la herramienta en un argumento de venta interno del cliente ante su propia dirección.' },
+    ]
+  },
+  { id:'reporteria', name:'Reportería RR.HH.', url:'/productos/plataforma-de-rrhh/reporteria-para-recursos-humanos', category:'plataforma', catLabel:'Plataforma', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'La reportería de RRHH es uno de los módulos más deseados por jefes de personas — ver datos del equipo en tiempo real es una necesidad recurrente.',
+      'Sin datos de Clarity para esta URL.',
+      'El desafío de este módulo: los beneficios de "reportería" son abstractos hasta que el visitante ve el dashboard real.',
+      'Los compradores de este módulo buscan reemplazar Excel — el copy debe hablar explícitamente de ese dolor.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Mostrar el dashboard de reportería en el hero', desc:'Una imagen de alta calidad del dashboard con datos reales (anonimizados) es el argumento más potente. La visualización vende sola.' },
+      { impacto:'alto', titulo:'Enmarcar contra el dolor de Excel', desc:'"¿Sigues construyendo reportes de RRHH en Excel? Descubre una alternativa que se actualiza sola." — el adversario es el statu quo, no la competencia.' },
+      { impacto:'medio', titulo:'Listar los tipos de reportes disponibles con ejemplos', desc:'Headcount, rotación, ausentismo, brecha salarial — nombrar los reportes específicos ayuda a los visitantes a identificar su caso de uso.' },
+    ]
+  },
+  { id:'remuneraciones', name:'Software de Remuneraciones', url:'/productos/administracion/software-de-remuneraciones', category:'administracion', catLabel:'Administración', sessions:15675, scroll:15.1, active:18.2,
+    storytelling:[
+      'Cuarto producto en tráfico (15.7K visitas), pero scroll del 15% sugiere que el visitante no encuentra el argumento decisivo en el primer fold.',
+      'Remuneraciones es el producto más regulado del portafolio — la presión legal (SII, AFP, DT) es el principal motivador de adopción.',
+      'El tiempo activo de 18.2s indica algo de engagement, pero la baja profundidad sugiere que hay información relevante que nunca se ve.',
+      'El cierre de mes es el momento de mayor urgencia de compra — si los visitantes se van rápido, se pierde esa ventana.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Destacar el cumplimiento tributario y legal en el hero', desc:'"Liquida sueldos en cumplimiento total con el SII, AFP y Salud" — para el decisor de administración, el compliance es más urgente que la automatización.' },
+      { impacto:'alto', titulo:'Agregar una promesa de tiempo de cierre de mes', desc:'"Cierre de mes en menos de X horas" es concreta y resuena con quienes hoy pasan días en el proceso.' },
+      { impacto:'medio', titulo:'Incluir una calculadora de ahorro similar a Workflows', desc:'Una calculadora simple ("¿Cuántos trabajadores tiene tu empresa?") que proyecte tiempo ahorrado aumentaría el engagement y la permanencia.' },
+      { impacto:'medio', titulo:'Señalar actualizaciones automáticas de la ley', desc:'"Cada cambio legal se actualiza automáticamente" reduce el miedo a errores y la carga de seguimiento manual.' },
+    ]
+  },
+  { id:'asistencia', name:'Control de Asistencia', url:'/productos/administracion/control-de-asistencia', category:'administracion', catLabel:'Administración', sessions:16780, scroll:18.58, active:18.56,
+    storytelling:[
+      'Quinto producto en tráfico (16.8K visitas) con scroll del 18.6% — alto interés pero lectura superficial.',
+      'Control de asistencia es el producto de mayor "inmediatez" en la decisión de compra: los gestores lo perciben como solución operativa urgente.',
+      'La promesa de marcaje biométrico, geolocalización y turnos variables son diferenciadores técnicos que probablemente están en el fold inferior.',
+      'Para empresas con trabajo por turnos (retail, manufactura, salud), este módulo resuelve un problema diario — la urgencia es alta.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Mover el marcaje geolocalizado al hero', desc:'"Tus colaboradores marcan asistencia desde donde trabajan, sin papel ni tarjeta." — esta es la propuesta de valor central para equipos de campo o teletrabajo.' },
+      { impacto:'alto', titulo:'Segmentar por tipo de empresa', desc:'Una empresa de retail con 2.000 cajeros tiene necesidades distintas a una de 50 colaboradores en oficina. Un selector de caso de uso puede personalizar el contenido.' },
+      { impacto:'medio', titulo:'Mostrar el reporte de asistencia en tiempo real', desc:'Una captura del dashboard con datos en tiempo real es el argumento visual más potente para este módulo.' },
+      { impacto:'bajo', titulo:'Destacar integración nativa con Remuneraciones', desc:'"Las horas automáticamente alimentan la liquidación de sueldos" es un diferenciador frente a soluciones de punto.' },
+    ]
+  },
+  { id:'firma-digital', name:'Gestión Documental y Firma Digital', url:'/productos/administracion/gestion-documental-y-firma-digital', category:'administracion', catLabel:'Administración', sessions:5866, scroll:19.75, active:21.34,
+    storytelling:[
+      'Con 5.9K visitas y scroll del 19.7%, hay interés real pero la lectura es superficial para un producto con tanta propuesta de valor regulatoria.',
+      'La firma electrónica avanzada tiene validez legal en Chile (Ley 19.799) — este es el argumento de autoridad más potente y probablemente está enterrado en el contenido.',
+      'La gestión documental conecta directamente con Onboarding y Remuneraciones — el valor está en el ecosistema Buk.',
+      'Post-pandemia, los equipos remotos e híbridos generaron una demanda permanente de firma digital. El timing de la necesidad ya está instalado.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Destacar validez legal desde el hero', desc:'"Firma contratos y finiquitos con validez legal completa en Chile" — el argumento legal debe estar antes que el de comodidad o ahorro de papel.' },
+      { impacto:'alto', titulo:'Agregar un flujo visual del proceso de firma', desc:'"Prepara → Envía → Colaborador firma → Queda almacenado" — 4 pasos en un diagrama visual simple hacen el proceso inmediatamente comprensible.' },
+      { impacto:'medio', titulo:'Incluir ahorro en papel y tiempo de administración', desc:'"Elimina la impresión, el escaneo y el archivado físico de contratos" — los directores de administración entienden el costo oculto del papel.' },
+    ]
+  },
+  { id:'onboarding', name:'Onboarding', url:'/productos/administracion/onboarding', category:'administracion', catLabel:'Administración', sessions:664, scroll:37.57, active:41.61,
+    storytelling:[
+      'Menor volumen del portafolio en Clarity (664 visitas), pero la mejor combinación de profundidad de lectura (37.6%) y tiempo activo (41.6s) — quienes llegan están genuinamente interesados.',
+      'El módulo de onboarding tiene un ROI claro y medible: menor tiempo de inducción y mayor retención en los primeros 90 días. La página puede capitalizarlo mejor.',
+      'El bajo tráfico sugiere que el módulo no se está promoviendo suficientemente, en un mercado donde la rotación de talento es un problema crítico.',
+      'Con 37.6% de scroll, los visitantes llegan a la mitad de la página — hay contenido relevante siendo visto, pero falta empujar el CTA en esa zona.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Aumentar tráfico pagado a esta página', desc:'Es la página con mejor engagement del portafolio. Invertir en pauta para traer más tráfico tiene el mayor potencial de conversión del portafolio.' },
+      { impacto:'alto', titulo:'Agregar estadística de retención en primeros 90 días', desc:'"Las empresas con un buen proceso de onboarding retienen un X% más de colaboradores en sus primeros 3 meses" — conecta el módulo con el ROI de negocio.' },
+      { impacto:'medio', titulo:'Ofrecer un checklist descargable de onboarding', desc:'Un PDF de "Checklist de onboarding para nuevas contrataciones" captura el correo del visitante y entrega valor inmediato — lead magnet natural.' },
+      { impacto:'medio', titulo:'Conectar narrativamente con Firma Digital', desc:'"Desde la oferta hasta el primer día, completamente digital" — posicionar el onboarding como el último paso de la firma crea un flujo narrativo coherente.' },
+    ]
+  },
+  { id:'canal-denuncias', name:'Canal de Denuncias', url:'/productos/administracion/canal-de-denuncias', category:'administracion', catLabel:'Administración', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Producto con la oportunidad más urgente del portafolio: la Ley Karin (vigente en Chile desde agosto 2024) obliga a las empresas a implementar un canal de denuncias anónimo.',
+      'Sin datos de Clarity para esta URL — pero el argumento legal debería generar tráfico activo si se comunica con la urgencia correcta.',
+      'La Ley Karin establece sanciones para empresas que no implementen el canal. Esta urgencia regulatoria es el motivador de compra más directo del portafolio.',
+      'La audiencia incluye a directores de sostenibilidad y compliance que buscan evidencias de buena gobernanza corporativa.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Agregar "Cumple con la Ley Karin" en el H1 o como badge del hero', desc:'La Ley Karin es el trigger de compra más inmediato de este producto. Si el visitante no la ve en los primeros 3 segundos, puede buscar otra solución.' },
+      { impacto:'alto', titulo:'Crear urgencia con referencia al cumplimiento vigente', desc:'"La Ley Karin está vigente desde agosto 2024. ¿Tu empresa ya cumple?" — una pregunta de verificación es más efectiva que un CTA genérico.' },
+      { impacto:'medio', titulo:'Agregar FAQ de cumplimiento legal', desc:'"¿A qué empresas aplica la Ley Karin?", "¿Cuáles son las sanciones?", "¿Cómo implementar el canal?" — preguntas frecuentes legales aumentan el tiempo en página y la confianza.' },
+      { impacto:'bajo', titulo:'Ofrecer una guía descargable de cumplimiento', desc:'Un PDF de "Guía de cumplimiento de la Ley Karin para empresas" es un lead magnet poderoso que captura prospectos en etapa de evaluación.' },
+    ]
+  },
+  { id:'servicio-colaborador', name:'Servicio al Colaborador', url:'/productos/administracion/servicio-al-colaborador', category:'administracion', catLabel:'Administración', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Módulo de gestión de solicitudes y casos de colaboradores (tickets, respuestas, SLAs de RRHH). Similar a un helpdesk interno de personas.',
+      'Sin datos de Clarity para esta URL.',
+      'El pain point es claro: los jefes de personas reciben cientos de preguntas repetitivas de colaboradores todos los días. Este módulo es la solución.',
+      'Compite conceptualmente con Zendesk y otros service desks — la diferenciación de Buk es que está integrado nativamente con los datos reales del colaborador.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Enmarcar el ahorro de tiempo del área de RRHH', desc:'"¿Tu equipo de RRHH responde las mismas preguntas todos los días? Automatiza las respuestas más frecuentes." — el ahorro de tiempo del área es el ROI central.' },
+      { impacto:'medio', titulo:'Mostrar tipos de consultas resueltas automáticamente', desc:'Vacaciones, liquidaciones, certificados de trabajo — mostrar los 5 tipos de consultas más frecuentes que el sistema automatiza hace el valor inmediatamente tangible.' },
+      { impacto:'medio', titulo:'Destacar integración nativa con datos de RRHH', desc:'"A diferencia de un sistema de tickets genérico, Buk responde con los datos reales del colaborador" — esta integración es el diferenciador frente a alternativas.' },
+    ]
+  },
+  { id:'desempeno', name:'Gestión del Desempeño', url:'/productos/desarrollo-organizacional/gestion-del-desempeno', category:'desarrollo-organizacional', catLabel:'Desarrollo Organizacional', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Módulo para procesos de evaluación de desempeño, objetivos y feedback continuo. Audiencia: gerentes y jefes de personas.',
+      'Sin datos de Clarity para esta URL.',
+      'La gestión del desempeño tiene ciclos naturales (evaluaciones anuales, semestrales) — la demanda es estacional y la página debería capitalizar esos picos.',
+      'El principal obstáculo de adopción: los managers perciben las evaluaciones como carga administrativa, no como herramienta de desarrollo.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Reencuadrar la evaluación como herramienta de desarrollo, no de control', desc:'"Convierte las evaluaciones en conversaciones de crecimiento" — el frame de desarrollo supera al de auditoría en la percepción de los managers.' },
+      { impacto:'alto', titulo:'Mostrar el flujo de un ciclo de evaluación', desc:'"Definir objetivos → Seguimiento → Evaluación → Plan de mejora" — un diagrama visual de los 4 pasos hace el proceso concreto y manejable.' },
+      { impacto:'medio', titulo:'Ofrecer plantillas de evaluación descargables como lead magnet', desc:'"Descarga gratis 3 plantillas de evaluación de desempeño" captura leads y muestra el valor del módulo antes de contratar.' },
+    ]
+  },
+  { id:'comunicacion', name:'Comunicación y Reconocimiento', url:'/productos/desarrollo-organizacional/comunicacion-y-reconocimiento', category:'desarrollo-organizacional', catLabel:'Desarrollo Organizacional', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Módulo de comunicación interna y reconocimiento entre colaboradores. Conecta con la agenda de employee engagement.',
+      'Sin datos de Clarity disponibles.',
+      'El reconocimiento entre pares es uno de los drivers más efectivos de engagement según múltiples estudios de RRHH — la página puede capitalizar este respaldo.',
+      'La audiencia incluye a gerentes de personas que buscan mejorar el "ambiente" sin saber exactamente qué herramienta necesitan.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Usar datos de impacto en engagement como hook', desc:'"Las empresas con programas de reconocimiento activos tienen X% más de retención de talento" — una estadística establece el valor de negocio del módulo.' },
+      { impacto:'medio', titulo:'Mostrar ejemplos reales de reconocimientos', desc:'Capturas de reconocimientos enviados entre colaboradores (con datos ficticios o de clientes con permiso) hacen el producto inmediatamente comprensible y deseable.' },
+      { impacto:'medio', titulo:'Conectar con el módulo de Encuestas en la narrativa', desc:'"Reconoce → Mide → Mejora" — mostrar el reconocimiento y las encuestas como un ciclo integrado crea una narrativa de mejora continua.' },
+    ]
+  },
+  { id:'reclutamiento', name:'Reclutamiento y Selección', url:'/productos/desarrollo-organizacional/reclutamiento-y-seleccion', category:'desarrollo-organizacional', catLabel:'Desarrollo Organizacional', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'ATS (sistema de seguimiento de candidatos) integrado nativamente en la plataforma de Buk. Compite con soluciones especializadas como Greenhouse, Workday y otros ATSs regionales.',
+      'Sin datos de Clarity disponibles.',
+      'La integración nativa con el resto de Buk es el diferenciador principal — pasar de candidato a colaborador en el mismo sistema, sin exportaciones ni integraciones manuales.',
+      'El reclutamiento tiene la mayor competencia directa en el mercado RRHH — la narrativa de diferenciación necesita ser muy precisa.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Comunicar el flujo continuo candidato → colaborador', desc:'"De la postulación al primer contrato firmado, sin cambiar de sistema" — la integración con Onboarding y Firma Digital es el diferenciador frente a ATSs independientes.' },
+      { impacto:'alto', titulo:'Mostrar el pipeline de candidatos como visual central', desc:'Una captura del kanban de reclutamiento es más convincente que cualquier texto. Los reclutadores reconocen inmediatamente la herramienta.' },
+      { impacto:'medio', titulo:'Agregar métricas de tiempo de contratación', desc:'"Reduce tu tiempo promedio de contratación de X a Y días" — una promesa concreta con benchmarks de industria establece la propuesta de valor.' },
+    ]
+  },
+  { id:'capacitaciones', name:'Capacitaciones', url:'/productos/desarrollo-organizacional/capacitaciones', category:'desarrollo-organizacional', catLabel:'Desarrollo Organizacional', sessions:3912, scroll:22.41, active:34.67,
+    storytelling:[
+      'Con solo 3.9K visitas, pero el segundo tiempo activo más alto del portafolio (34.7s) — quienes llegan se quedan e interactúan.',
+      'El módulo LMS compite con Moodle, Cornerstone y otros sistemas de capacitación especializados — la narrativa de "nativo en Buk" es clave.',
+      'Los beneficios tributarios de capacitación vía SENCE en Chile son un motivador de compra muy específico que probablemente no está suficientemente destacado.',
+      'Con 22.4% de scroll y 34.7s activos, hay más interacción que lectura — posiblemente el contenido interactivo está funcionando bien.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Destacar el beneficio tributario SENCE en el hero', desc:'"Capacita a tu equipo y recupera hasta el 100% del costo con SENCE" — este argumento es exclusivo del mercado chileno y convierte inmediatamente.' },
+      { impacto:'alto', titulo:'Mostrar una muestra del catálogo de cursos disponibles', desc:'Los LMS se venden por el contenido disponible. Una muestra del catálogo o la capacidad de subir contenido propio establece el valor real del módulo.' },
+      { impacto:'medio', titulo:'Agregar métricas de cumplimiento de capacitación', desc:'"Ve quién completó, quién está en progreso y quién nunca empezó" — el control de cumplimiento es el argumento clave para el área de RRHH.' },
+    ]
+  },
+  { id:'encuestas', name:'Encuestas', url:'/productos/desarrollo-organizacional/encuestas', category:'desarrollo-organizacional', catLabel:'Desarrollo Organizacional', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Módulo de encuestas de clima, engagement y pulso organizacional. Compite con SurveyMonkey, Culture Amp y Qualtrics.',
+      'Sin datos de Clarity disponibles.',
+      'La diferenciación de Buk en encuestas es el contexto de datos: puede correlacionar respuestas con datos de RRHH (rotación, desempeño, asistencia).',
+      'Las encuestas de pulso (cortas y frecuentes) son una tendencia creciente que la página puede capitalizar para diferenciarse de herramientas genéricas.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Mostrar un ejemplo de encuesta con visualización de resultados', desc:'Los compradores de herramientas de encuestas quieren ver los dashboards de resultados antes de comprar. Una captura real del análisis es más convincente que texto.' },
+      { impacto:'medio', titulo:'Posicionar el contexto de datos de RRHH como diferenciador', desc:'"A diferencia de una encuesta genérica, Buk cruza tus respuestas con datos de rotación y desempeño para darte insights accionables." — esta es la ventaja única.' },
+      { impacto:'medio', titulo:'Ofrecer plantillas de encuesta gratuitas como lead magnet', desc:'"Encuesta de clima laboral", "NPS de empleados" y "Encuesta de salida" como descarga gratuita atraen a equipos que aún no tienen un sistema.' },
+    ]
+  },
+  { id:'gestion-beneficios', name:'Gestión de Beneficios', url:'/productos/beneficios-laborales/gestion-de-beneficios', category:'beneficios', catLabel:'Beneficios', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Módulo central de beneficios: permite configurar, asignar y hacer seguimiento de los beneficios de cada colaborador según su perfil.',
+      'Sin datos de Clarity disponibles.',
+      'La gestión de beneficios es un área de complejidad creciente — diversidad generacional, teletrabajo y reformas regulatorias crean una demanda creciente de sistemas formales.',
+      'La audiencia es dual: RRHH que gestiona los beneficios y el colaborador que los consume. La página debe convencer a RRHH de que sus colaboradores adoptarán el sistema.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Mostrar el panel del colaborador para elegir sus beneficios', desc:'La experiencia del colaborador al seleccionar beneficios es tan importante como la herramienta de gestión. Mostrar ambas vistas duplica el impacto persuasivo.' },
+      { impacto:'medio', titulo:'Incluir casos de uso por tipo de beneficio', desc:'Seguro de salud, días adicionales, horario flexible, bonos — listar los tipos más frecuentes ayuda a los visitantes a identificar su caso de uso inmediatamente.' },
+      { impacto:'bajo', titulo:'Agregar cifras de adopción de beneficios digitales', desc:'"Las empresas que gestionan beneficios digitalmente tienen X% más de utilización" — un dato de adopción establece el valor de tener un sistema.' },
+    ]
+  },
+  { id:'seguros', name:'Seguros', url:'/productos/beneficios-laborales/seguros', category:'beneficios', catLabel:'Beneficios', sessions:21307, scroll:9.92, active:23.87,
+    storytelling:[
+      'Cuarto producto en tráfico (21.3K visitas) con el peor scroll del portafolio (9.9%) pero el cuarto tiempo activo más alto (23.9s) — los visitantes interactúan pero no leen.',
+      'La discrepancia entre alto tiempo activo y bajo scroll es inusual: posible interacción con elementos del primer fold (cotizador, acordeones, tooltips) sin scroll posterior.',
+      'El módulo de seguros es un producto financiero con alta regulación — el visitante necesita confianza antes de cualquier acción.',
+      'El tráfico de 21K puede incluir colaboradores buscando información sobre su seguro activo, además de decisores de compra. Este doble público necesita mensajes diferenciados.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Crear una sección separada para colaboradores vs. empresas', desc:'Si hay colaboradores buscando info de su seguro, necesitan acceso diferenciado. Un CTA "¿Eres colaborador? Accede aquí" reduce la fricción y mejora la conversión para cada segmento.' },
+      { impacto:'alto', titulo:'Agregar elementos que incentiven el scroll', desc:'Una barra de progreso de contenido o un índice de secciones ("Lo que encontrarás aquí") puede motivar a los visitantes a explorar más allá del primer fold.' },
+      { impacto:'medio', titulo:'Mostrar coberturas típicas con lenguaje simple', desc:'"Salud, dental, vida, catastrófico" — listar las coberturas sin jerga de seguros aumenta la comprensión y reduce la fricción de cotizar.' },
+      { impacto:'bajo', titulo:'Agregar un comparador básico de planes', desc:'Una tabla de cobertura comparativa entre planes reduce el tiempo de búsqueda de información y acelera la decisión.' },
+    ]
+  },
+  { id:'bienestar-financiero', name:'Bienestar Financiero', url:'/productos/beneficios-laborales/bienestar-financiero', category:'beneficios', catLabel:'Beneficios', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Producto de anticipos de sueldo y educación financiera para colaboradores. Conecta con Buk Finanzas y el módulo de Remuneraciones.',
+      'Sin datos de Clarity disponibles.',
+      'El bienestar financiero es una tendencia creciente post-pandemia — las empresas reconocen el impacto del estrés financiero en la productividad del equipo.',
+      'La audiencia principal es el área de RRHH, pero el beneficio final es el colaborador. La narrativa debe hablarle a RRHH en términos de impacto en el equipo.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Conectar bienestar financiero con productividad y retención', desc:'"Los colaboradores con estrés financiero tienen X% más ausentismo. El acceso a anticipos reduce ese estrés." — el impacto en el negocio es el argumento que convence a RRHH.' },
+      { impacto:'medio', titulo:'Mostrar la experiencia del colaborador al solicitar un anticipo', desc:'Un flujo de "3 clics para solicitar un anticipo" demuestra que la adopción por parte del colaborador será alta y sin fricción.' },
+      { impacto:'bajo', titulo:'Destacar integración con Remuneraciones', desc:'"El anticipo fluye directamente a la liquidación de sueldos" da confianza sobre la gestión financiera del proceso y diferencia a Buk de soluciones independientes.' },
+    ]
+  },
+  { id:'planes-beneficios', name:'Planes de Beneficios', url:'/productos/beneficios-laborales/planes-de-beneficios', category:'beneficios', catLabel:'Beneficios', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Módulo para crear paquetes de beneficios diferenciados por segmento (por cargo, antigüedad, jornada, etc.).',
+      'Sin datos de Clarity disponibles.',
+      'La personalización de beneficios es una tendencia en auge — las empresas modernas ya no ofrecen lo mismo a todos los colaboradores.',
+      'El desafío del storytelling: "planes de beneficios" suena a seguro colectivo genérico, en vez de a una herramienta de flexibilidad y personalización.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Reencuadrar hacia "Beneficios flexibles y personalizados"', desc:'"Que cada colaborador elija los beneficios que más valora" — el frame de flexibilidad y elección personal es mucho más atractivo que "planes".' },
+      { impacto:'medio', titulo:'Mostrar el constructor de planes con casos concretos', desc:'Una imagen de la interfaz de configuración con 3–4 ejemplos de reglas (senior vs junior, remoto vs presencial) hace el producto concreto e intuitivo.' },
+      { impacto:'bajo', titulo:'Conectar con métricas de satisfacción de colaboradores', desc:'"Las empresas con beneficios flexibles reportan X% más de satisfacción en encuestas de clima" — el vínculo con engagement cierra el argumento de valor.' },
+    ]
+  },
+  { id:'pack-descuentos', name:'Pack de Descuentos', url:'/productos/beneficios-laborales/pack-de-descuentos', category:'beneficios', catLabel:'Beneficios', sessions:null, scroll:null, active:null,
+    storytelling:[
+      'Producto gratuito de descuentos en comercios para los colaboradores de clientes de Buk. El CTA actual es "Cotiza aquí", incorrecto para un producto sin costo.',
+      'Sin datos de Clarity disponibles.',
+      'Este es el producto de mayor facilidad de adopción del portafolio — no tiene costo, no requiere integración compleja, y el beneficio es inmediato para el colaborador.',
+      'Puede actuar como puerta de entrada para empresas que aún no son clientes de Buk — el costo de adquisición para ellos es cero.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Cambiar el CTA de "Cotiza aquí" a "Activar mi Pack"', desc:'"Cotiza aquí" es el CTA incorrecto para un producto gratuito — genera fricción innecesaria. "Activar mi Pack" o "Comenzar gratis" comunica el valor real.' },
+      { impacto:'alto', titulo:'Destacar "Gratis para tus colaboradores" en el hero', desc:'Si el producto no tiene costo, esa información debe estar en el primer fold. Es el argumento de adopción más poderoso de toda la página.' },
+      { impacto:'medio', titulo:'Mostrar el catálogo de categorías de descuentos', desc:'Farmacéuticas, supermercados, entretenimiento — listar las categorías de descuentos establece el valor tangible del pack para los colaboradores.' },
+      { impacto:'bajo', titulo:'Usar como gancho de captación de prospectos', desc:'"Activa el Pack de Descuentos gratis y descubre todo lo que Buk puede hacer por tus colaboradores" — puede ser el entry point para empresas que aún no son clientes.' },
+    ]
+  },
+  { id:'buk-ai', name:'Buk AI', url:'/productos/buk-ai', category:'opcional', catLabel:'Innovación', sessions:3771, scroll:23.32, active:26.82,
+    storytelling:[
+      'Segunda mejor relación scroll/activo del portafolio (23.3% / 26.8s) — los visitantes están genuinamente interesados en la propuesta de IA de Buk.',
+      'La página tiene el mejor storytelling aspiracional del portafolio, con varios casos de uso de IA aplicada a RRHH.',
+      'El riesgo: los visitantes ven múltiples "soluciones potenciadas por IA" pero no tienen un CTA específico por función — no saben por dónde empezar.',
+      'El mercado de IA para RRHH está en etapa temprana de educación — Buk tiene la oportunidad de posicionarse como líder de pensamiento en el tema.',
+    ],
+    recs:[
+      { impacto:'alto', titulo:'Agregar CTAs individuales por solución de IA', desc:'Cada funcionalidad (generador de descripciones de cargo, análisis de desempeño, asistente de RRHH) debe tener su propio CTA de "Ver demo". El visitante interesado en IA quiere explorar la función específica.' },
+      { impacto:'alto', titulo:'Crear una demo interactiva de una función de IA', desc:'Una demo en vivo donde el visitante escribe una descripción de cargo y ve la IA generar la publicación es el tipo de experiencia que se recuerda y se comparte.' },
+      { impacto:'medio', titulo:'Agregar un mapa de qué módulos de Buk tienen IA integrada', desc:'"Buk AI está presente en Remuneraciones, Desempeño, Reclutamiento y más" — un diagrama de integración posiciona a Buk como plataforma inteligente, no como feature aislada.' },
+      { impacto:'bajo', titulo:'Incluir una sección de seguridad y privacidad de datos en IA', desc:'Los equipos de IT y legal tienen preguntas específicas sobre cómo se usan los datos de RRHH en modelos de IA. Una sección dedicada reduce esta fricción en el proceso de venta.' },
+    ]
+  },
+];
+
+function renderStoryCards() {
+  const container = document.getElementById('pageCards');
+  if (!container) return;
+  container.innerHTML = STORY_DATA.map(p => {
+    const hasData = p.sessions !== null;
+    const kpiHtml = hasData
+      ? `<div class="pa-clarity">
+          <div class="pa-kpi">
+            <div class="pa-kpi-val">${p.sessions.toLocaleString('es-CL')}</div>
+            <div class="pa-kpi-lab">Visitas (ene–jul 2026)</div>
+          </div>
+          <div class="pa-kpi">
+            <div class="pa-kpi-val" style="color:${scrollColor(p.scroll)}">${p.scroll}%</div>
+            <div class="pa-kpi-lab">Lectura</div>
+          </div>
+          <div class="pa-kpi">
+            <div class="pa-kpi-val">${p.active}s</div>
+            <div class="pa-kpi-lab">Interacción activa</div>
+          </div>
+        </div>`
+      : `<div class="pa-no-data">Sin datos de Clarity para esta URL</div>`;
+    const bullets = p.storytelling.map(t => `<li>${t}</li>`).join('');
+    const recs = p.recs.map(r => `
+      <div class="rec-row">
+        <span class="rec-badge ${r.impacto}">${r.impacto}</span>
+        <div class="rec-text"><strong>${r.titulo}</strong><span>${r.desc}</span></div>
+      </div>`).join('');
+    return `<div class="pa-card" data-id="${p.id}" data-category="${p.category}">
+      <div class="pa-header">
+        <div class="pa-header-left">
+          <h3>${p.name}</h3>
+          <div class="pa-url"><span class="pa-cat-badge">${p.catLabel}</span><a href="https://buk.cl${p.url}" target="_blank">${p.url} ↗</a></div>
+        </div>
+        ${kpiHtml}
+      </div>
+      <div class="pa-body">
+        <div class="pa-col">
+          <div class="pa-col-title">Análisis actual</div>
+          <ul class="pa-bullets">${bullets}</ul>
+        </div>
+        <div class="pa-col">
+          <div class="pa-col-title">Recomendaciones</div>
+          <div class="pa-recs">${recs}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterStoryCards(val) {
+  const cards = document.querySelectorAll('.pa-card');
+  let visible = 0;
+  cards.forEach(c => {
+    const show = val === 'all' || c.dataset.id === val;
+    c.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+  const cnt = document.getElementById('selectorCount');
+  if (cnt) cnt.textContent = visible === STORY_DATA.length
+    ? `${STORY_DATA.length} páginas`
+    : `1 de ${STORY_DATA.length} páginas`;
+}
+
+renderStoryCards();
+
+function renderNoDataPages() {
+  const container = document.getElementById('noDataPages');
+  if (!container) return;
+  const missing = STORY_DATA.filter(p => p.sessions === null);
+  const groupMap = {};
+  missing.forEach(p => {
+    if (!groupMap[p.catLabel]) groupMap[p.catLabel] = [];
+    groupMap[p.catLabel].push(p);
+  });
+  const rows = Object.entries(groupMap).map(([cat, pages]) => `
+    <div class="nd-group">
+      <div class="nd-cat">${cat}</div>
+      <div class="nd-chips">${pages.map(p => `
+        <div class="nd-chip">
+          <span class="nd-chip-name">${p.name}</span>
+          <a class="nd-link" href="https://buk.cl${p.url}" target="_blank">buk.cl${p.url} ↗</a>
+        </div>`).join('')}
+      </div>
+    </div>`).join('');
+  container.innerHTML = `
+    <div class="nd-block">
+      <div class="nd-header">
+        <strong>${missing.length} páginas no aparecen en el mapa de interés</strong>
+        <p>Clarity no registró sesiones suficientes para incluirlas en el análisis durante el período enero–julio 2026. Las causas más frecuentes son: tráfico muy bajo o nulo hacia esas URLs o páginas que aún no reciben pauta ni tráfico orgánico. Se incluyen en la sección "Análisis de páginas" con recomendaciones de contenido. Visita cada URL para verificar su estado actual.</p>
+      </div>
+      <div class="nd-groups">${rows}</div>
+    </div>`;
+}
+renderNoDataPages();
+</script>
+</body>
+</html>
